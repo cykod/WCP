@@ -1,0 +1,51 @@
+Server Roles:
+Master DB
+Slave DB
+Memcached
+Starling
+Background Process
+
+
+
+Deployment Needs to support:
+
+Initial Deployment
+Update Deployment
+Disaster recovery deployment
+Add a DB Server
+Small Deployments (no recreating all the web servers)
+Upgrade Memory
+Add a web server
+Add a memcached server
+
+Automated deployments:
+Cloudwatch - says load too high, automatically add a server
+Disaster recovery deployment - Check DB server, if not
+  - recreate from latest snapshot
+Check for Memcached server, if not - 
+  - launch a new memcached server
+Check for Web servers, if not -
+  - launch new web server
+
+Example initial deployment:
+1. Launch RDS master server
+2. Launch RDS backup server
+3. Wait until master server is operating
+4. Add users to master server
+5. Launch memcached server
+6. Run DB migration
+
+Example Update deployment:
+1. Create a whole bunch of new web servers
+2. Configure all the new servers
+3. Wait until all the servers are in a solid state
+4. E-mail the admin to check the servers
+5. Wait for an "Update Load Balancer" button push from admin
+6. Update the load balancer to the new servers
+7. Email the admin to check the new deployment
+8. Wait for a "Remove the old servers" button push from admin
+9. Teardown the old servers
+
+Example partial update deployment:
+1. Update the memcached server with the latest roles
+

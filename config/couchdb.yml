@@ -1,0 +1,7 @@
+
+development: wcp_development
+test: wcp_test
+production: wcp
+
+# curl -X PUT http://localhost:5984/wcp_development
+#
