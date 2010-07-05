@@ -1,0 +1,17 @@
+%h1 Machines
+
+%table.main_table
+  %tr
+    %th Machine Name
+    %th Type
+    %th Roles
+    %th Created
+    %th Status
+  - @machines.each do |machine|
+    %tr
+      %td= link_to machine.name,machine
+      %td= machine.instance_type_display
+      %td= machine.roles_display
+
+      %td= machine.created_at.to_s(:short)
+      %td= machine.status_display

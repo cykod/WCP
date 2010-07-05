@@ -1,0 +1,5 @@
+
+%ul
+  - @main_menu.each do |item|
+    %li{:class => item[:active] ? "active" : nil}
+      %a{:href => item[:url] }= item[:name]

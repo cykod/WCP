@@ -1,4 +1,19 @@
 WCP::Application.routes.draw do |map|
+
+  # User / Login Routes
+  match "login" => "login#login", :as => :login
+  match "login/missing_password"
+  post "login/logout", :as => :logout
+  
+  # Account Routes
+  get "account" => "account#index", :as => :account
+
+  match "account/update", :as => :account_update
+
+  # Company Routes
+  get 'company' => 'company#index', :as => :company
+  post 'company/update' => 'company#update'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -9,7 +24,21 @@ WCP::Application.routes.draw do |map|
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
+  match 'dashboard(/:action)' => 'dashboard', :as => :dashboard
 
+  root :to => "dashboard#index" 
+
+  resources :clouds
+  resources :deployments
+
+  get 'machines(.:format)' => 'machines#index'
+  get 'machines/:id(.:format)' => 'machines#show'
+  get 'machines/:id/edit' => 'machines#edit'
+  put 'machines/:id(.:format)' => 'machines#update'
+  delete 'machines/:id(.:format)' => 'machines#destroy'
+
+
+  resources :machines
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 

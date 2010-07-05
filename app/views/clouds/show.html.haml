@@ -1,0 +1,6 @@
+%h1= @cloud.name
+
+.right_action
+  = link_to "Destroy", @cloud, :confirm => "Are you sure you want to destroy this whole cloud?", :method => :delete
+= link_to 'Edit', edit_cloud_path(@cloud) 
+= link_to 'Back', clouds_path 

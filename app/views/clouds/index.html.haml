@@ -1,0 +1,16 @@
+%h1 Listing Clouds
+.top_links
+  = link_to 'Create a  New cloud', new_cloud_path
+%table.main_table
+  %tr
+    %th Cloud Name
+    %th Cloud Status
+    %th Created
+    %th Machines
+  - @clouds.each do |cloud| 
+    %tr
+      %td= link_to cloud.name,cloud
+      %td= cloud.status_display
+      %td= cloud.created_at.to_s(:short)
+      %td= cloud.machines.count
+

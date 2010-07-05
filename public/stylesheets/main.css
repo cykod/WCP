@@ -1,0 +1,91 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { margin:0; padding:0; }
+table { border-collapse:collapse; border-spacing:0; }
+fieldset,img { border:0; }
+address,caption,cite,code,dfn,em,strong,th,var { font-style:normal; font-weight:normal; }
+ol,ul { list-style:none; }
+caption,th { text-align:left; }
+h1,h2,h3,h4,h5,h6 { font-size:100%; font-weight:normal; }
+q:before,q:after { content:''; }
+abbr,acronym { border:0;}
+
+
+
+html { background-color:#6BA2CD; }
+
+
+body {
+ margin:0 auto;
+ width:960px;
+ font-family:Arial;
+ font-size:15px;
+}
+
+
+#header { position:relative; height:90px; }
+  #header h1 { font-size:30px; font-weight:bold; }
+
+  #header ul { list-style:none; display:block; position:absolute; bottom:0px; }
+  #header ul li { list-style:none; display:block; float:left; margin:0 4px 0 0; }
+  #header ul li a { 
+     color:#CCCCCC;
+     display:block; padding:4px 20px; color:black; background-color:#40627b; text-decoration:none; 
+     -moz-border-radius-topleft:5px;
+     -webkit-border-top-left-radius:5px;
+     -moz-border-radius-topright:5px;
+     -webkit-border-top-right-radius:5px;
+  }
+
+  #header ul li.active a, #header ul li a:hover { background-color:white; color:black; }
+
+#container { background-color:white; padding:20px; }
+
+h1 { font-size:30px; margin-bottom:10px;  }
+
+
+p.notice {
+ background-color: #A6CDDA;
+ border: 1px solid #999999;
+ color: #0F75BC;
+ font-weight:bold;
+ text-align:center;
+ padding:10px;
+ margin: 15px 0px;
+}
+
+.top_links { padding:10px 0px; }
+
+
+table.main_table { }
+ table.main_table tr { padding:5px; }
+ table.main_table th { background-color:#999999; color:white; padding:10px 5px; border-right:1px solid white; }
+ table.main_table td { padding:10px 5px; }
+
+
+form.formtastic li { width:650px; }
+form.formtastic fieldset ol li label { width:22%; padding-right:3%; text-align:right; padding-top:5px; }
+
+
+form.formtastic fieldset ol li.string input,
+form.formtastic fieldset ol li.password input { 
+  border:2px solid #CCCCCC;
+  border-color:#999999;
+  opacity: 0.8;
+  padding:5px 10px;
+  width:60%; 
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+ }
+
+ form.formtastic fieldset ol li.string input:focus,
+form.formtastic fieldset ol li.password input:focus { 
+  background-color:#DDDDDD;
+  border-color:#0000CC;
+}
+
+form.formtastic fieldset ol li.error input { 
+  border-color:#CC0000 !important;
+}
+
+
+
+

@@ -1,0 +1,13 @@
+
+
+mb = MachineBlueprint.create(:name => 'Debian Tester', :identifier => 'debian_simple', :launcher_class => 'AwsAppServer', :instance_type => 'm1.small', :machine_image => 'ami-01d13e68')
+
+c = Company.create(:name => 'Test Company',:key_name => 'tester', :aws_key =>  '0ZSC21BGW6SF18HF93R2',  :aws_secret => 'qQVzqzcEAmFhZRRItq59BYHX0yDRWHxzGgKt2UYU')
+
+
+db = DeploymentBlueprint.create(:name => 'Full Instance launcher')
+db.add_step("Launch instance","Simple::LaunchFullInstance")
+
+d = c.deploy(db,{ :app_machine_blueprint => "debian_simple" } )
+
+

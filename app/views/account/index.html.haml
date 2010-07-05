@@ -1,0 +1,10 @@
+%h1 Edit your Account
+= semantic_form_for @user, :url => account_update_url do |f|
+  = f.semantic_errors 
+  = f.inputs do
+    = f.input :email
+    = f.input :password, :label => 'New Password'
+    = f.input :password_confirmation, :type => :password, :label => 'Confirm Reset'
+  = f.buttons do
+    = f.commit_button "Update Account"
+

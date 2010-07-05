@@ -3,6 +3,7 @@
 
 class Simple::LaunchFullInstance < Step
 
+  step_info :substeps => 1,  :options => "Simple::LaunchFullInstance::Options"
 
   class Options < HashModel
     attributes :machine_id => nil
@@ -11,7 +12,10 @@ class Simple::LaunchFullInstance < Step
 
   def execute!(step)
     blueprint = MachineBlueprint.fetch(self.deployment.parameter(:app_machine_blueprint))
+
+    fail_step unless blueprint
     machine = self.deployment.add_machine([:web,:memcached,:starling,:background,:updater],blueprint)
+    machine.launch!
 
     step.options.machine_id = machine.id
   end

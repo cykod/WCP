@@ -1,0 +1,13 @@
+%h1 Edit Company Information
+- if !@company
+  %p This account is not associated with a company
+- else
+  = semantic_form_for :company, @company, :url => company_update_url do |f|
+    = f.semantic_errors 
+    = f.inputs do 
+      = f.input :name
+      = f.input :aws_key
+      = f.input :aws_secret
+      = f.input :key_name, :hint => 'Name of key used in AWS'
+    = f.buttons do
+      = f.commit_button "Update Company"

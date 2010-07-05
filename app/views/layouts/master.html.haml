@@ -1,0 +1,17 @@
+!!!
+%html
+  %head
+    %title Webiva Cloud Platform
+    = stylesheet_link_tag 'formtastic'
+    = stylesheet_link_tag 'main'
+    = javascript_include_tag :defaults
+    = csrf_meta_tag
+  %body
+    #header
+      %h1 Webiva Cloud Platform
+      #menu= render :partial => '/common/menu'
+      #links= top_links
+    #container
+      - if notice
+        %p.notice= notice 
+      = yield

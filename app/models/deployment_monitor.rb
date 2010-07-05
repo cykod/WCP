@@ -15,7 +15,11 @@ class DeploymentMonitor < Monitor
   end
 
   def monitor_cycle
-    if self.deployment.step_finished?(self.active_step)
+    if self.deployment.finished?
+       self.deployment.finish!
+       self.active = false
+       self.save
+    elsif self.deployment.step_finished?(self.active_step)
       self.active_step = self.active_step + 1
       if self.save
         if !self.deployment.execute_step!(self.active_step)
@@ -24,6 +28,7 @@ class DeploymentMonitor < Monitor
         end
       end
     end
+    self.reload
   end
 
 

@@ -6,7 +6,6 @@ rescue LoadError
   require 'bundler'
   Bundler.setup
 
-
   # To use 2.x style vendor/rails and RubyGems
   #
   # vendor_rails = File.expand_path('../../vendor/rails', __FILE__)

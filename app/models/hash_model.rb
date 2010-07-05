@@ -23,9 +23,9 @@ class HashModel
       hsh.each do |atr,val|
         attr_accessor atr.to_sym
         
-        if atr.to_s =~ /_(id|number)$/ 
-          int_opts << atr.to_sym
-        end
+#        if atr.to_s =~ /_(id|number)$/ 
+#          int_opts << atr.to_sym
+#        end
       end
       
       df = self.defaults.merge(hsh)

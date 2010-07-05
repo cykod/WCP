@@ -40,8 +40,15 @@ module WCP
     #   g.template_engine :erb
     #   g.test_framework  :test_unit, :fixture => true
     # end
+    config.secret_token = 'e46b16b9dbf3c379e9b9b9a2368579e4cee19c3c8b818ebb1962b3988b3a03c1b10998a3eb2bba66fe8b5d54563229fccd46e180cfcdff7569ef3d96194ff128'
 
+    config.session_store = {
+      :key    => '_WCP_session',
+      :secret => '0009af6dffcbb006b899c255587ef2bdf6a7df04c28f58663c64bb1321c2c0bc16f004f2d69f2290292a31a280d265215e3d7ee86355cfe6a63177c89f6fad79'
+    }
+    
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters << :password
+
   end
 end

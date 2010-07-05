@@ -1,0 +1,10 @@
+%h1 
+  Login Controller
+= semantic_form_for @user, :url => login_path do |f|
+  = f.inputs do 
+    = f.input :email
+    = f.input :password,:type => :password
+  = f.buttons do
+    = f.commit_button "Login"
+
+  

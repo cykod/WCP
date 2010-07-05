@@ -13,7 +13,13 @@ class LaunchMonitor < Monitor
   end
 
   def monitor_cycle
-    case self.machine.check_status 
+    if !self.machine
+      self.active = false
+      self.save
+      return
+    end
+
+    case self.machine.check_status! 
     when 'active':
       self.machine.deployment.machine_activated!(self.machine)
       self.active = false
