@@ -40,6 +40,7 @@ body {
 #container { background-color:white; padding:20px; }
 
 h1 { font-size:30px; margin-bottom:10px;  }
+h2 { font-size:20px; margin:10px 0px; }
 
 
 p.notice {
@@ -61,8 +62,10 @@ table.main_table { }
  table.main_table td { padding:10px 5px; }
 
 
-form.formtastic li { width:650px; }
-form.formtastic fieldset ol li label { width:22%; padding-right:3%; text-align:right; padding-top:5px; }
+form.formtastic >  fieldset > ol > li { width:650px; }
+form.formtastic > fieldset > ol > li > label { width:22%; padding-right:3%; text-align:right; padding-top:5px; }
+form.formtastic li.radio ol { margin-top:25px; }
+form.formtastic li.radio ol li { display:block; width:400px; }
 
 
 form.formtastic fieldset ol li.string input,

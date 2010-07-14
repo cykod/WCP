@@ -4,7 +4,9 @@ class Deployment < BaseModel
 
   belongs_to :company
   belongs_to :cloud
-  belongs_to :deployment_blueprint
+  belongs_to :blueprint
+
+  attr_accessor :create_execute
 
   property :active_step, :type => Fixnum, :default => -1
   property :completed_step, :type => Fixnum, :default => -1
@@ -17,6 +19,9 @@ class Deployment < BaseModel
   has_many :machines
   has_many :deployment_step_data, :dependent => :destroy
   has_many :deployment_monitors, :dependent => :destroy
+
+  validates_presence_of :blueprint
+  validates_presence_of :cloud
 
   def add_machine(roles,blueprint,options={})
     Machine.create(
@@ -31,6 +36,15 @@ class Deployment < BaseModel
     )
   end
 
+
+  def blueprint_options
+    self.blueprint.options(self.deployment_options)
+  end
+
+  def blueprint_partial
+    self.blueprint.options_partial
+  end
+
   def parameter(name)
     self.deployment_options[name.to_sym]
   end
@@ -42,12 +56,12 @@ class Deployment < BaseModel
   end
 
   def finished?
-    self.deployment_blueprint.finished?(active_step)
+    self.blueprint.finished?(active_step)
   end
 
 
   def step_finished?(step_number)
-    step_number < active_step || self.deployment_blueprint.step_finished?(step_data(step_number))
+    step_number < active_step || self.blueprint.step_finished?(step_data(step_number))
   end
 
 
@@ -55,7 +69,7 @@ class Deployment < BaseModel
      step = DeploymentStepDatum.find_by_deployment_id_and_step(self.id,step_number) 
      unless step
        step = DeploymentStepDatum.new(:deployment => self,:step => step_number)
-       self.deployment_blueprint.initialize_step(step)
+       self.blueprint.initialize_step(step)
      end
      step
   end
@@ -74,7 +88,7 @@ class Deployment < BaseModel
         self.finish!
         return false
       else
-        self.deployment_blueprint.execute_step!(step_data(self.active_step))
+        self.blueprint.execute_step!(step_data(self.active_step))
       end
     end
     true
@@ -86,11 +100,11 @@ class Deployment < BaseModel
   end
   
   def machine_failed!(machine)
-    self.deployment_blueprint.machine_failed!(step_data(machine.step),machine)
+    self.blueprint.machine_failed!(step_data(machine.step),machine)
   end
 
   def machine_activated!(machine)
-    self.deployment_blueprint.machine_activated!(step_data(machine.step),machine)
+    self.blueprint.machine_activated!(step_data(machine.step),machine)
   end
 
 end

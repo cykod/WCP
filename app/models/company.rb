@@ -1,5 +1,5 @@
 
-class Company 
+class Company < BaseModel
    include SimplyStored::Couch
 
    property :name

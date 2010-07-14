@@ -21,6 +21,11 @@ class ApplicationController < ActionController::Base
     myself.company
   end
 
+  def current_cloud
+    current_company.clouds[0]
+  end
+
+
   def generate_menu
     @current_tab = current_tab 
 
@@ -34,9 +39,15 @@ class ApplicationController < ActionController::Base
           :name => "Machines" },
         { :url => deployments_url,
           :name => "Deployments" },
-        { :url => company_url,
+        { :url => company_config_url,
           :name => "Company" }
       ]
+      if myself.admin?
+        @main_menu << { :url => companies_url,
+                        :name => "Companies" }
+        @main_menu << { :url => blueprints_url,
+                        :name => "Blueprints" }
+      end
     else
       @main_menu = [
         { :url => login_url,

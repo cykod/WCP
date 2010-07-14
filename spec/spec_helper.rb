@@ -41,6 +41,18 @@ end
 module RSpec
  module Core 
   class ExampleGroup
+
+    def self.reset_models(*tables)
+      callback = lambda do 
+        tables.each do |table|
+          table.to_s.classify.constantize.all.map(&:destroy)
+        end
+      end
+      before(:each,&callback)
+    end
+
+
+
     def mock_user(email='tester@webiva.com',options = {})
       company = Company.create(:name => 'Super test company')
       @myself = user = User.create({:email => email,:password=>'tester',:company => company}.merge(options))

@@ -33,7 +33,7 @@ class Machine < BaseModel
                    'domain_db' => 'Domain DB',
                    'slave_db' => 'Slave DB',
                    'memcache' => 'Memcache',
-                   'starling' => 'Background Queue',
+                   'starling' => 'Queue',
                    'workling' => 'Workling',
                    'cron' => 'Cron' }
 

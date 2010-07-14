@@ -1,0 +1,14 @@
+%h1 Listing blueprints
+.action_links
+  = link_to 'New Blueprint', new_blueprint_path
+%table.main_table
+  %tr
+    %th Name
+    %th Edit
+    %th Destroy
+  - @blueprints.each do |blueprint|
+    %tr
+      %td= link_to blueprint.name, blueprint_path(blueprint)
+      %td= link_to 'Edit', edit_blueprint_path(blueprint)
+      %td= link_to 'Destroy', blueprint_path(blueprint), :confirm => 'Are you sure?', :method => :delete
+%br/

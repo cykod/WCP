@@ -1,0 +1,11 @@
+%h1 Deployments
+
+.action_bar 
+  = link_to "Launch a new Deployment", new_deployment_path
+
+%h2 Previous Deployments
+- if @deployments.length > 0
+  = render :partial => 'list'
+- else
+  No previous deployments
+

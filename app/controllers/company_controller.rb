@@ -13,7 +13,7 @@ class CompanyController < ApplicationController
 
     if @company.valid? && @company.save
       flash[:notice] = "Company information updated"
-      return redirect_to company_url
+      return redirect_to company_config_url
     end
 
     render :action => 'index'

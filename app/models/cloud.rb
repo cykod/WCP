@@ -24,13 +24,17 @@ class Cloud < BaseModel
     attributes :security_group => 'default', :availability_zone => 'us-east-1a'
   end
 
+  def cloud_machine(machine_id)
+    machine = Machine.find(machine_id)
+    machine && machine.cloud_id == self.id ? machine : nil
+  end
 
-  def deploy(deployment_blueprint, deployment_parameters)
+  def deploy(blueprint, deployment_parameters)
     if self.status == 'normal'
       self.status = 'deploying'
       if self.save
         deployment = Deployment.create(
-            :deployment_blueprint => deployment_blueprint, 
+            :blueprint => blueprint, 
             :deployment_options => deployment_parameters,
             :cloud => self,
             :company => self.company)

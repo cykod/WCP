@@ -1,0 +1,4 @@
+
+- @blueprint.steps.each do |step|
+  %li.line_item{:id => "#blueprint_step_#{step.id}"}
+    = "##{step.position} #{step.name} (#{step.substep})"

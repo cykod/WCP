@@ -1,5 +1,14 @@
 WCP::Application.routes.draw do |map|
 
+
+  resources :blueprints do
+    member do
+      post :add_step
+      get :resort_steps
+    end
+
+  end
+
   # User / Login Routes
   match "login" => "login#login", :as => :login
   match "login/missing_password"
@@ -11,8 +20,10 @@ WCP::Application.routes.draw do |map|
   match "account/update", :as => :account_update
 
   # Company Routes
-  get 'company' => 'company#index', :as => :company
-  post 'company/update' => 'company#update'
+  get 'company' => 'company#index', :as => :company_config
+  post 'company/update' => 'company#update', :as => :company_config_update
+
+  resources :companies
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -30,7 +41,6 @@ WCP::Application.routes.draw do |map|
 
   resources :clouds
   resources :deployments
-
   get 'machines(.:format)' => 'machines#index'
   get 'machines/:id(.:format)' => 'machines#show'
   get 'machines/:id/edit' => 'machines#edit'

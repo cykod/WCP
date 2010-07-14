@@ -2,7 +2,7 @@
 - if !@company
   %p This account is not associated with a company
 - else
-  = semantic_form_for :company, @company, :url => company_update_url do |f|
+  = semantic_form_for :company, @company, :url => company_config_update_url do |f|
     = f.semantic_errors 
     = f.inputs do 
       = f.input :name

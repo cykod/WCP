@@ -1,5 +1,4 @@
-<p id="notice"><%= notice %></p>
+%h1= "Machine: #{@machine.name}"
 
-
-<%= link_to 'Edit', edit_machine_path(@machine) %> |
-<%= link_to 'Back', machines_path %>
+= link_to 'Edit', edit_machine_path(@machine)
+= link_to 'Back', machines_path

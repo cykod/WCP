@@ -1,0 +1,8 @@
+= semantic_form_for(@blueprint, :as => :blueprint) do |f|
+  = f.semantic_errors
+  = f.inputs do 
+    = f.input :name
+    - if @blueprint.new_record?
+      = f.input :options_class, :as => :select, :collection => Blueprint.options_class_options
+  = f.buttons do
+    = f.commit_button "Submit"

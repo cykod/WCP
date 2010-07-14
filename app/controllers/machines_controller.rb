@@ -5,7 +5,7 @@ class MachinesController < ApplicationController
   # GET /machines
   # GET /machines.xml
   def index
-    @machines = Machine.all
+    @machines = current_cloud.machines
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,7 +16,7 @@ class MachinesController < ApplicationController
   # GET /machines/1
   # GET /machines/1.xml
   def show
-    @machine = Machine.find(params[:id])
+    @machine = current_cloud.cloud_machine(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,26 +34,15 @@ class MachinesController < ApplicationController
   def update
     @machine = Machine.find(params[:id])
 
+    @machine.attributes = params[:machine]
     respond_to do |format|
-      if @machine.update_attributes(params[:machine])
+      if @machine.valid? && @machine.save
         format.html { redirect_to(@machine, :notice => 'Machine was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @machine.errors, :status => :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /machines/1
-  # DELETE /machines/1.xml
-  def destroy
-    @machine = Machine.find(params[:id])
-    @machine.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(machines_url) }
-      format.xml  { head :ok }
     end
   end
 end

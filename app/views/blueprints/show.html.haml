@@ -1,0 +1,41 @@
+:javascript
+  Blueprint = {
+    addStep: function() { 
+      var name =  $('#options_step_name').val();
+      var step_class = $('#options_add_step').val();
+      if(step_class=='' || name=='') {
+        alert('Please enter a name and a step class');
+      } else {
+        $("#blueprint_steps").load('#{url_for(:action => 'add_step')}',{name:name,step_class:step_class})
+      }
+    },
+
+    createSortables: function() {
+      $('#blueprint_steps').sortable({
+        update : function () { 
+          var order = $('#blueprint_steps').sortable('serialize', { key: 'step_id[]' }); 
+          $("#blueprint_steps").load('#{url_for(:action => 'resort_steps')}',order);
+        } 
+
+      }
+      );
+         $('#blueprint_steps').disableSelection();
+    }
+
+  }
+
+  $(function() { Blueprint.createSortables(); });
+%h1= @blueprint.name
+
+.add_step
+  = text_field_tag(:options_step_name,'',:size => 20)
+  = select_tag(:options_add_step, options_for_select([[]] + BlueprintStep.available_step_options))
+  %button{:onclick => "Blueprint.addStep()"}
+    Add Steps
+
+%ul#blueprint_steps
+  = render 'blueprint_steps'
+
+= link_to 'Edit', edit_blueprint_path(@blueprint)
+|
+= link_to 'Back', blueprints_path

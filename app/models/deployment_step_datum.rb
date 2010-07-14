@@ -1,6 +1,4 @@
 
-
-
 class DeploymentStepDatum
   include SimplyStored::Couch
 

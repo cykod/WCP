@@ -6,7 +6,7 @@ class DeploymentsController < ApplicationController
   # GET /deployments
   # GET /deployments.xml
   def index
-    @deployments = Deployment.all
+    @deployments = current_cloud.deployments
 
     respond_to do |format|
       format.html # index.html.erb
@@ -29,11 +29,8 @@ class DeploymentsController < ApplicationController
   # GET /deployments/new.xml
   def new
     @deployment = Deployment.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @deployment }
-    end
+    @blueprints = Blueprint.select_options
+    @clouds = current_company.clouds
   end
 
   # GET /deployments/1/edit
@@ -45,16 +42,16 @@ class DeploymentsController < ApplicationController
   # POST /deployments.xml
   def create
     @deployment = Deployment.new(params[:deployment])
+    @blueprints = Deployment.select_options
+    @clouds = current_company.clouds
 
-    respond_to do |format|
-      if @deployment.save
-        format.html { redirect_to(@deployment, :notice => 'Deployment was successfully created.') }
-        format.xml  { render :xml => @deployment, :status => :created, :location => @deployment }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @deployment.errors, :status => :unprocessable_entity }
+    if @deployment.create_execute
+      if @deployment.valid?
+        @deployment = @deployment.cloud.deploy(@deployment.blueprint,@deployment.blueprint_options)
+        redirect_to(@deployment, :notice => 'Deployment created and executing') 
       end
     end
+    render :action => "new" 
   end
 
   # PUT /deployments/1
