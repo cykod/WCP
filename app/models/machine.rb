@@ -1,4 +1,5 @@
 
+# ssh webiva@cykodcore.cykod.com -R 4000:127.0.0.1:4000
 
 class Machine < BaseModel
   include SimplyStored::Couch
@@ -19,13 +20,16 @@ class Machine < BaseModel
 
   property :instance_id
   property :machine_image
+  property :private_hostname
   property :hostname
+  property :ip_address
+  property :private_ip_address
   property :instance_type
 
   before_create :initialization_details
 
   has_options :instance_type, [["App Server", "ec2"],["Load Balancer","load_balancer"],["Database","rds"]]
-  has_options :status, [['Created','created'],['Launching','launching'],['Active','active']]
+  has_options :status, [['Created','created'],['Launching','launching'],['Active','active'],['Launched','launched'],['Terminating','terminating'],['Terminated','terminated']]
 
   @@role_names = { 'web' => "Web",
                    'deployment' => 'Deployment',
@@ -38,10 +42,16 @@ class Machine < BaseModel
                    'cron' => 'Cron' }
 
 
-
   def roles_display
     self.roles.map { |rl| @@role_names[rl] }.compact.to_sentence
+  end
 
+  def full_name
+    if self.name.blank?
+     "#{self.launcher_class.to_s.titleize} - #{self.instance_id}"
+    else
+      self.name
+    end
   end
 
   protected
@@ -67,9 +77,24 @@ class Machine < BaseModel
     end
   end
 
+  def ssh(&block)
+    ret = nil
+    Net::SSH.start(self.ip_address,'root',:key_data => [self.company.certificate]) do |ssh| 
+      ret = yield ssh
+    end
+    ret
+  end
 
   def active?
     self.status == 'active'
+  end
+
+  def terminating?
+    self.status =='terminating'
+  end
+
+  def terminated?
+    self.status == 'terminated'
   end
 
   def launcher
@@ -83,7 +108,11 @@ class Machine < BaseModel
 
 
   def terminate!
-    launcher.terminate!
+    self.status = 'terminating'
+    if self.save
+      launcher.terminate!
+    end
+    monitor_launch!
   end
 
   private 

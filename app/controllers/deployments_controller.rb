@@ -6,7 +6,7 @@ class DeploymentsController < ApplicationController
   # GET /deployments
   # GET /deployments.xml
   def index
-    @deployments = current_cloud.deployments
+    @deployments = current_cloud.deployment_list
 
     respond_to do |format|
       format.html # index.html.erb
@@ -42,13 +42,15 @@ class DeploymentsController < ApplicationController
   # POST /deployments.xml
   def create
     @deployment = Deployment.new(params[:deployment])
-    @blueprints = Deployment.select_options
+    @blueprints = Blueprint.select_options
     @clouds = current_company.clouds
 
-    if @deployment.create_execute
-      if @deployment.valid?
-        @deployment = @deployment.cloud.deploy(@deployment.blueprint,@deployment.blueprint_options)
-        redirect_to(@deployment, :notice => 'Deployment created and executing') 
+    if params[:commit] && @deployment.valid?
+      @deployment = @deployment.cloud.deploy(@deployment.blueprint,@deployment.blueprint_options)
+      if @deployment
+       return redirect_to(@deployment, :notice => 'Deployment created and executing') 
+      else
+        return redirect_to(deployments_path)
       end
     end
     render :action => "new" 

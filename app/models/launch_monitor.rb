@@ -28,6 +28,9 @@ class LaunchMonitor < Monitor
       self.machine.deployment.machine_failed!(self.machine)
       self.active = false
       self.save
+    when 'terminated':
+      self.active = false
+      self.save
     end
   end
 

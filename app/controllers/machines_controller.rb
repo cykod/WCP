@@ -13,6 +13,12 @@ class MachinesController < ApplicationController
     end
   end
 
+  def cleanup
+    machines_to_cleanup = current_cloud.machines.select { |machine| machine.terminated? }
+    machines_to_cleanup.map { |m| m.destroy }
+    redirect_to :action => 'index'
+  end
+
   # GET /machines/1
   # GET /machines/1.xml
   def show
@@ -27,6 +33,13 @@ class MachinesController < ApplicationController
   # GET /machines/1/edit
   def edit
     @machine = Machine.find(params[:id])
+  end
+
+  def destroy
+    @machine = Machine.find(params[:id])
+    @machine.terminate!
+
+    redirect_to :action => 'index'
   end
 
    # PUT /machines/1

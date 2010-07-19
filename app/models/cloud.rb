@@ -18,10 +18,17 @@ class Cloud < BaseModel
 
   has_options :status, [["Normal","normal"],["Deploying","deploying"]]
 
+  attr_accessor :reset_cloud
+
   before_save :update_options
+  before_save :auto_force_reset
 
   class Options < HashModel
     attributes :security_group => 'default', :availability_zone => 'us-east-1a'
+  end
+
+  def deployment_list(page=1)
+    self.deployments.sort { |a,b| b.created_at <=> a.created_at }
   end
 
   def cloud_machine(machine_id)
@@ -73,7 +80,16 @@ class Cloud < BaseModel
      @options ||= Options.new(self.options_hash)
   end
 
+  protected
+
   def update_options
     self.options_hash = self.options.to_hash
   end
+
+  def auto_force_reset
+    if self.reset_cloud.to_s == '1'
+      self.status = 'normal'
+    end
+  end
+
 end

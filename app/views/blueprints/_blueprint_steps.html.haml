@@ -1,4 +1,6 @@
 
 - @blueprint.steps.each do |step|
   %li.line_item{:id => "#blueprint_step_#{step.id}"}
-    = "##{step.position} #{step.name} (#{step.substep})"
+    = "##{step.position} #{step.name}  -- [ #{step.step_name} ] (#{step.substep})"
+    %a{:href => 'javascript:void(0);',  :onclick => "Blueprint.removeStep('#{step.id}')"}
+      x

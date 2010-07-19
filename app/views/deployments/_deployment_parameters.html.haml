@@ -1,0 +1,4 @@
+= semantic_fields_for 'deployment[deployment_options]', @deployment.deployment_options do |f|
+  = f.inputs do
+    - @deployment.parameters.each do |param|
+      = f.input param[0], (param[1].is_a?(Hash) ? param[1] : param[1].call)

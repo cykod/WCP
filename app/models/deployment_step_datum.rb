@@ -11,7 +11,7 @@ class DeploymentStepDatum
   property :initialized, :type => :boolean, :default => false
   property :options_class_name
 
-  view :by_deployment_id_and_step, :ley => [:deployment_id, :step]
+  view :by_deployment_id_and_step, :key => [:deployment_id, :step]
 
   def options
     @options ||= options_class_name.constantize.new(self.data)

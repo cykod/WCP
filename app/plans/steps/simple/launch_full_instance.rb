@@ -3,7 +3,14 @@
 
 class Steps::Simple::LaunchFullInstance < Steps::Base
 
-  step_info "Launch a full Webiva single Instance", :substeps => 1,  :options => "Simple::LaunchFullInstance::Options"
+  step_info "Launch a full Webiva single Instance", :substeps => 1,  :options => "Steps::Simple::LaunchFullInstance::Options"
+
+  parameter(:app_machine_blueprint, Proc.new {  
+                { :as => :select,
+                  :collection => MachineBlueprint.select_options
+                } })
+
+  deployment_parameter :roles
 
   class Options < HashModel
     attributes :machine_id => nil
@@ -11,9 +18,9 @@ class Steps::Simple::LaunchFullInstance < Steps::Base
 
 
   def execute!(step)
-    blueprint = MachineBlueprint.fetch(self.deployment.parameter(:app_machine_blueprint))
+    blueprint = MachineBlueprint.fetch(self.deployment.blueprint_options.app_machine_blueprint)
 
-    fail_step unless blueprint
+    fail_step("Missing Blueprint") unless blueprint
     machine = self.deployment.add_machine([:web,:memcached,:starling,:background,:updater],blueprint)
     machine.launch!
 

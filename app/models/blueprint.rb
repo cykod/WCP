@@ -2,11 +2,9 @@ class Blueprint < BaseModel
   include SimplyStored::Couch
 
   property :name
-  property :options_class
   property :blueprint_options_data, :type => Hash, :default => {}
 
   validates_presence_of :name
-  validates_presence_of :options_class
 
   has_many :blueprint_steps
 
@@ -17,42 +15,44 @@ class Blueprint < BaseModel
     step_data
   end
 
-  def options_instance
-    @options_instance ||= self.options_class.constantize.new(self)
+  class Options < HashModel
+
+  end
+
+  def blueprint_parameters
+    self.steps.inject([]) do |elems,step|
+      elems + step.step_class_object.blueprint_parameters
+    end.uniq
+  end
+
+  def parameters
+    self.steps.inject([]) do |elems,step|
+      elems + step.step_class_object.deployment_parameters
+    end.uniq
+  end
+
+  def blueprint_parameters_list
+    self.blueprint_parameters.map { |elm| elm[0] }
+  end
+
+  def parameters_list 
+    self.parameters.map { |elm| elm[0] }
   end
 
   def blueprint_options=(val)
     self.blueprint_options_data = blueprint_options(val).to_hash
   end
 
-  def blueprint_options(opts=ni)
-     options_instance.blueprint_options(opts || blueprint_options_data)
+  def blueprint_options(opts=nil)
+     opts = Options.new(opts || blueprint_options_data)
+     opts.additional_vars(self.blueprint_parameters_list)
+     opts
   end
 
-  def self.blueprints_directories
-    [ Rails.root.join("app/plans/blueprints/**") ]
-  end
-
-  def self.options_class_options
-    opts = []
-    blueprints_directories.each do |dir|
-      Dir.glob(dir).each do |filepath|
-        fl = File.basename(filepath,".rb")
-        if fl != "base"
-          cls = "Blueprints::#{fl.camelcase}"
-          opts << [ cls.constantize.blueprint_name, cls.underscore ] 
-        end
-      end
-    end
-    opts
-  end
-  
   def options(opts)
-    options_instance.options(opts)
-  end
-
-  def options_partial
-    options_instance.options_partial
+    opts = Options.new(opts)
+    opts.additional_vars(self.parameters_list)
+    opts
   end
 
  def add_step(name,step_class_name)
@@ -98,6 +98,13 @@ class Blueprint < BaseModel
 
   def machine_activated!(step_data,machine)
     self.steps[step_data.step].machine_activated!(step_data,machine)
+  end
+
+  def resort_steps!
+    self.steps.each_with_index do |step,idx|
+      step.update_attributes(:position => idx + 1)
+    end
+
   end
 
   def steps

@@ -1,5 +1,8 @@
 %h1 Machines
 
+.action_links
+  = link_to 'Cleanup Terminated', url_for(:action => :cleanup), :method => :post
+
 %table.main_table
   %tr
     %th Machine Name
@@ -9,7 +12,7 @@
     %th Status
   - @machines.each do |machine|
     %tr
-      %td= link_to machine.name,machine
+      %td= link_to machine.full_name,machine
       %td= machine.instance_type_display
       %td= machine.roles_display
 

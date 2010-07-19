@@ -7,6 +7,7 @@ class Company < BaseModel
    property :aws_key
    property :key_name
    property :aws_secret
+   property :certificate, :type => String
 
    validates_presence_of :name
 
@@ -24,12 +25,12 @@ class Company < BaseModel
     cloud && cloud.company_id == self.id ? cloud : nil
   end
 
-   def ec2
-      @ec2 ||=  AWS::EC2::Base.new(:access_key_id => self.aws_key, :secret_access_key => self.aws_secret)
-   end
+  def ec2
+    @ec2 ||= RightAws::Ec2.new(self.aws_key, self.aws_secret)
+  end
 
 
-   def self.destroy_all_companies!
-     Company.all.map(&:destroy)
-   end
+  def self.destroy_all_companies!
+    Company.all.map(&:destroy)
+  end
 end

@@ -1,0 +1,15 @@
+%table.main_table
+  %tr
+    %th Name
+    %th Status
+    %th Step
+    %th Created
+    %th Message
+  - @deployments.each do |deployment|
+    %tr
+      %td= link_to deployment.name, deployment
+      %td= deployment.status_display
+      %td= deployment.active_step
+      %td= deployment.created_at.to_s(:short)
+      %td= deployment.failure_description
+

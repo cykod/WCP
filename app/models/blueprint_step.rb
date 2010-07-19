@@ -17,8 +17,16 @@ class BlueprintStep
    step_data.save
   end
 
+  def step_class_object
+     self.step_class_name.constantize
+  end
+
   def step_class(deployment)
-    @step_class ||= self.step_class_name.constantize.new(deployment,blueprint)
+    @step_class ||= self.step_class_object.new(deployment,blueprint)
+  end
+
+  def step_name
+    self.step_class_name.constantize.step_name
   end
 
   def finished?(step_data)
@@ -43,7 +51,7 @@ class BlueprintStep
 
   def self.check_step_identifier(identifier)
     cls = self.available_step_options.detect { |st| st[1] == identifier }
-    cls ? cls[1].classify : nil
+    cls ? cls[1].camelcase : nil
   end
 
   def self.available_step_options

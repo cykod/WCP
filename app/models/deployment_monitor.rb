@@ -15,12 +15,20 @@ class DeploymentMonitor < Monitor
   end
 
   def monitor_cycle
+    Rails.logger.info "Monitoring Deployment: #{self.deployment.name}"
     if self.deployment.finished?
-       self.deployment.finish!
-       self.active = false
-       self.save
+      Rails.logger.info "Deployment Finished: #{self.deployment.name}"
+      self.deployment.finish!
+      self.active = false
+      self.save
+    elsif self.deployment.failed?
+      self.active = false
+      self.save
     elsif self.deployment.step_finished?(self.active_step)
       self.active_step = self.active_step + 1
+      Rails.logger.info "---- Step:#{self.active_step} "
+       self.deployment.finish!
+
       if self.save
         if !self.deployment.execute_step!(self.active_step)
           self.active = false

@@ -1,10 +1,13 @@
 WCP::Application.routes.draw do |map|
+  resources :machine_blueprints
+
 
 
   resources :blueprints do
     member do
       post :add_step
       get :resort_steps
+      post :delete_step
     end
 
   end
@@ -39,13 +42,18 @@ WCP::Application.routes.draw do |map|
 
   root :to => "dashboard#index" 
 
-  resources :clouds
+  resources :clouds do
+    member do
+      post :reset
+    end
+  end
   resources :deployments
-  get 'machines(.:format)' => 'machines#index'
-  get 'machines/:id(.:format)' => 'machines#show'
-  get 'machines/:id/edit' => 'machines#edit'
-  put 'machines/:id(.:format)' => 'machines#update'
-  delete 'machines/:id(.:format)' => 'machines#destroy'
+
+  resources :machines, :except => [ :new, :create ]  do
+    collection do 
+      post :cleanup
+    end
+  end
 
 
   resources :machines

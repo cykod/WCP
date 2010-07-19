@@ -44,10 +44,20 @@ dependencies:
     group: 
     - :default
     version: ">= 0"
+  right_aws: 
+    group: 
+    - :default
+    version: ">= 0"
   json: 
     group: 
     - :default
     version: = 1.2.4
+  net-ssh: 
+    group: 
+    - :default
+    version: ">= 0"
+    require: 
+    - net/ssh
   rocking_chair: 
     group: 
     - :test
@@ -129,6 +139,8 @@ specs:
     version: "0.43"
 - mattmatt-validatable: 
     version: 1.8.4
+- net-ssh: 
+    version: 2.0.23
 - nokogiri: 
     version: 1.4.2
 - thor: 
@@ -137,6 +149,10 @@ specs:
     version: 3.0.0.beta4
 - rails: 
     version: 3.0.0.beta4
+- right_http_connection: 
+    version: 1.2.4
+- right_aws: 
+    version: 2.0.0
 - simply_stored: 
     version: 0.3.4
 - rocking_chair: 
@@ -161,7 +177,7 @@ specs:
     version: 1.3.0
 - uuidtools: 
     version: 2.1.1
-hash: 6ec7eb7ec626ba61229268cf9655f9c6c05c1f9f
+hash: ae89572e21b53de3ff96f23838c8612c75f16e19
 sources: 
 - Git: 
     uri: git://github.com/langalex/couch_potato.git

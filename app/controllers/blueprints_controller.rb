@@ -64,6 +64,17 @@ class BlueprintsController < ApplicationController
     render :partial => 'blueprint_steps'
   end
 
+
+  def delete_step
+    @step = BlueprintStep.find(params[:step_id])
+    @step.destroy
+
+    @blueprint = Blueprint.find(params[:id])
+    @blueprint.resort_steps!
+
+    render :partial => 'blueprint_steps'
+  end
+
   # GET /blueprints/1/edit
   def edit
     @blueprint = Blueprint.find(params[:id])

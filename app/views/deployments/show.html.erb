@@ -1,5 +1,8 @@
 <p id="notice"><%= notice %></p>
-
+<h1><%= @deployment.name %></h1>
+<%= link_to 'Destroy', @deployment, :confirm => 'Destroy this deployment?', :method => :delete %>
+<br/>
+<br/>
 
 <%= link_to 'Edit', edit_deployment_path(@deployment) %> |
 <%= link_to 'Back', deployments_path %>

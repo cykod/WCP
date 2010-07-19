@@ -11,10 +11,11 @@ class Deployment < BaseModel
   property :active_step, :type => Fixnum, :default => -1
   property :completed_step, :type => Fixnum, :default => -1
 
-  property :deployment_options, :type => Hash, :default => {}
+  property :deployment_options_data, :type => Hash, :default => {}
   property :data, :type => Hash, :default => {}
   property :timeout_date, :type => Time
   property :status, :default => 'created'
+  property :failure_description 
 
   has_many :machines
   has_many :deployment_step_data, :dependent => :destroy
@@ -22,6 +23,8 @@ class Deployment < BaseModel
 
   validates_presence_of :blueprint
   validates_presence_of :cloud
+
+  has_options :status, [['Deploying','deploying'],['Deployed','deployed'],['Created','created'],['Failed','failed']]
 
   def add_machine(roles,blueprint,options={})
     Machine.create(
@@ -36,17 +39,32 @@ class Deployment < BaseModel
     )
   end
 
-
-  def blueprint_options
-    self.blueprint.options(self.deployment_options)
+  def name
+    begin
+      "#{self.blueprint.name} - #{self.cloud.name}"
+    rescue 
+      "Invalid Deployment"
+    end
   end
 
-  def blueprint_partial
-    self.blueprint.options_partial
+  def blueprint_options
+    self.blueprint.blueprint_options
+  end
+
+  def deployment_options=(val)
+    self.deployment_options_data = self.blueprint.options(val).to_hash
+  end
+
+  def deployment_options
+    self.blueprint.options(self.deployment_options_data)
+  end
+
+  def parameters
+    self.blueprint.parameters
   end
 
   def parameter(name)
-    self.deployment_options[name.to_sym]
+    self.deployment_options_data[name.to_sym]
   end
 
   def execute!
@@ -57,6 +75,10 @@ class Deployment < BaseModel
 
   def finished?
     self.blueprint.finished?(active_step)
+  end
+
+  def failed?
+    self.status == 'failed'
   end
 
 
@@ -88,7 +110,13 @@ class Deployment < BaseModel
         self.finish!
         return false
       else
-        self.blueprint.execute_step!(step_data(self.active_step))
+        begin
+          self.blueprint.execute_step!(step_data(self.active_step))
+        rescue StepException => e
+          self.update_attributes( :status => 'failed',
+                                 :failure_description => e.description)
+          self.cloud.force_reset
+        end
       end
     end
     true

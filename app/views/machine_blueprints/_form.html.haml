@@ -1,0 +1,10 @@
+= semantic_form_for @machine_blueprint do |f|
+  = f.semantic_errors
+  = f.inputs do
+    = f.input :name
+    = f.input :identifier
+    - if @machine_blueprint.new_record?
+      = f.input :launcher_class, :as => :select, :collection => MachineBlueprint.launcher_class_options 
+    = f.input :machine_image
+  = f.buttons do
+    = f.commit_button "Submit"

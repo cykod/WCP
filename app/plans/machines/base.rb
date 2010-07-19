@@ -13,4 +13,21 @@ class Machines::Base
   def company; machine.company; end
   def cloud; machine.cloud; end
 
+
+  def self.machine_launcher_name; "Default"; end
+  def self.machine_launcher_options; {}; end
+  def self.machine_info(name,options = {})
+    cls = class<<self;self;end
+
+    cls.send(:define_method,:machine_launcher_name) do
+      name
+    end
+
+    cls.send(:define_method,:machine_launcher_options) do
+      options
+    end
+
+  end
+  
+
 end

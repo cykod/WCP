@@ -3,7 +3,7 @@
 
 class Steps::Simple::FakeInstanceStep < Steps::Base
 
-  step_info "Fake Instance Step", :substeps => 4, :options => "Simple::FakeInstanceStep::Options"
+  step_info "Fake Instance Step", :substeps => 4, :options => "Steps::Simple::FakeInstanceStep::Options"
 
   class Options < HashModel
     attributes :monitor_call_num => 0 

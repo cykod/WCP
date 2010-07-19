@@ -1,6 +1,16 @@
 %h1= @cloud.name
 
 .right_action
+  = link_to "Reset", url_for(:action => :reset), :confirm => "Are you sure you want to reset this cloud into the normal state?",:method => :post
   = link_to "Destroy", @cloud, :confirm => "Are you sure you want to destroy this whole cloud?", :method => :delete
+  
+Current Status:
+= @cloud.status_display
+
+
+
+
+
+
 = link_to 'Edit', edit_cloud_path(@cloud) 
 = link_to 'Back', clouds_path 

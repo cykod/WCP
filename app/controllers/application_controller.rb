@@ -47,6 +47,8 @@ class ApplicationController < ActionController::Base
                         :name => "Companies" }
         @main_menu << { :url => blueprints_url,
                         :name => "Blueprints" }
+        @main_menu << { :url => machine_blueprints_url,
+                        :name => "M. Blueprints" }
       end
     else
       @main_menu = [

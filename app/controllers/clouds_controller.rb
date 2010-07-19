@@ -23,6 +23,13 @@ class CloudsController < ApplicationController
     end
   end
 
+  def reset
+    @cloud = current_company.company_cloud(params[:id])
+
+    @cloud.force_reset
+    redirect_to @cloud
+  end
+
   # GET /clouds/new
   # GET /clouds/new.xml
   def new

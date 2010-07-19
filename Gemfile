@@ -18,13 +18,17 @@ gem "sqlite3-ruby", :require => "sqlite3"
 # gem "aws-s3", :require => "aws/s3"
 #
 
+
 gem "haml"
 gem "formtastic", :git => "git://github.com/justinfrench/formtastic.git", :branch => "rails3"
+
+gem "right_aws"
 
 gem "json", "1.2.4"
 gem "amazon-ec2", :require => "AWS"
 gem "couch_potato", :git => "git://github.com/langalex/couch_potato.git"
 gem "simply_stored", :require => 'simply_stored/couch'
+gem "net-ssh", :require => 'net/ssh'
 
 group :test do 
   gem "rspec-rails", ">= 2.0.0.beta.14"

@@ -2,9 +2,11 @@
 
 class Machines::AwsAppServer < Machines::Base
 
+  machine_info "Full AWS App Server", :instance_type => "server"
+
   def launch!
-    instance = Amazon::Ec2Machine.run_instances(company.ec2,
-                                      {   :key_name => company.key_name,
+    instance = Amazon::Ec2Machine.run_instance(company.ec2,
+                                      {  :key_name => company.key_name,
                                          :security_group => cloud.options.security_group,
                                          :instance_type => machine.instance_type,
                                          :availability_zone => cloud.options.availability_zone,
@@ -22,6 +24,14 @@ class Machines::AwsAppServer < Machines::Base
 
   def check_status!
     if ec2_machine.running?
+      if machine.hostname.blank?
+        machine.update_attributes(
+            :hostname => ec2_machine.hostname,
+            :ip_address => ec2_machine.ip_address,
+            :private_ip_address => ec2_machine.private_ip_address,
+            :private_hostname => ec2_machine.private_hostname
+        )
+      end
       'active'
     elsif ec2_machine.failed?
        'failed'

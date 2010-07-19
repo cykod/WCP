@@ -20,6 +20,13 @@
       }
       );
          $('#blueprint_steps').disableSelection();
+    },
+
+    removeStep: function(step_id) {
+       if(confirm('Remove this step')) {
+        var remove_steps = { step_id: step_id };
+        $('#blueprint_steps').load('#{url_for(:action => 'delete_step')}',remove_steps);
+       }
     }
 
   }

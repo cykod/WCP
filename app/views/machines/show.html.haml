@@ -1,4 +1,9 @@
-%h1= "Machine: #{@machine.name}"
+%h1= "Machine: #{@machine.full_name}"
+
+
+.right_action
+  = link_to "Terminate", @machine, :confirm => "Are you sure you want to terminate this machine (Not recommended - terminate via deployments instead)?",:method => :delete
+
 
 = link_to 'Edit', edit_machine_path(@machine)
 = link_to 'Back', machines_path
