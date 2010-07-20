@@ -1,0 +1,4 @@
+= semantic_fields_for 'machine_blueprint[options]', @machine_blueprint.options do |f|
+  = f.inputs do
+    - @machine_blueprint.parameters.each do |param|
+      = f.input param[0], (param[1].is_a?(Hash) ? param[1] : param[1].call)

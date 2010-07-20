@@ -26,7 +26,7 @@ class Amazon::Ec2Machine
                              opts[:key_name],
                              opts[:user_data] || '',
                              'public', # addressing type
-                             opts[:instance_type],
+                             opts[:instance_size],
                              nil, # Kernel
                              nil, # Ramdisk
                              opts[:availability_zone]))

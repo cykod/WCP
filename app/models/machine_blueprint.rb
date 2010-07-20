@@ -11,16 +11,47 @@ class MachineBlueprint < BaseModel
   property :launcher_class
 
   property :instance_type
+  property :instance_size
   property :machine_image
+  property :root_user, :default => 'ubuntu'
+
+  property :options_data, :type => Hash, :default => {}
 
   before_save :set_instance_type
 
-  has_options :instance_type, [['EC2 Server','server'],
-                               ['Database Server','rds'],
-                               ['Load Balancer','balancer']]
+  validates :identifier, :format =>  { :with => /^[a-zA-Z\-_0-9]+$/ }
+  
+  has_options :instance_size, ['m1.small','m1.large','m1.xlarge','m2.xlarge','m2.2xlarge','m2.4xlarge','c1.medium','c1.xlarge', 'cc1.4xlarge' ]
+
+  has_options :instance_type, Machine.instance_type_original_options
+  
   def launcher
      @launcher ||= self.launcher_class.camelcase.constantize
   end
+
+  class Options < HashModel
+
+  end
+
+  def parameters
+    launcher.machine_parameters.uniq
+  end
+
+  def parameters_list
+    parameters.map { |elm| elm[0] }
+  end
+
+  def options(opts=nil)
+    return @options_object if @options_object && !opts
+    @options_object = Options.new(opts || self.options_data)
+    @options_object.additional_vars(self.parameters_list)
+    @options_object
+  end
+
+  def options=(val)
+    self.options_data = options(val).to_hash
+  end
+
 
   def launcher_name
     launcher.machine_launcher_name

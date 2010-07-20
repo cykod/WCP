@@ -1,7 +1,4 @@
 WCP::Application.routes.draw do |map|
-  resources :machine_blueprints
-
-
 
   resources :blueprints do
     member do
@@ -9,7 +6,6 @@ WCP::Application.routes.draw do |map|
       get :resort_steps
       post :delete_step
     end
-
   end
 
   # User / Login Routes
@@ -42,6 +38,8 @@ WCP::Application.routes.draw do |map|
 
   root :to => "dashboard#index" 
 
+  resources :machine_blueprints, :except => [ :show ]
+
   resources :clouds do
     member do
       post :reset
@@ -54,7 +52,6 @@ WCP::Application.routes.draw do |map|
       post :cleanup
     end
   end
-
 
   resources :machines
   # Sample resource route (maps HTTP verbs to controller actions automatically):

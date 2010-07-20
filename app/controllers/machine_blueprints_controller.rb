@@ -49,11 +49,10 @@ class MachineBlueprintsController < ApplicationController
 
     respond_to do |format|
       if @machine_blueprint.save
-        format.html { redirect_to(@machine_blueprint, :notice => 'Machine blueprint was successfully created.') }
-        format.xml  { render :xml => @machine_blueprint, :status => :created, :location => @machine_blueprint }
+        format.html { 
+           redirect_to(edit_machine_blueprint_url(@machine_blueprint), :notice => 'Verify Machine Parameters and Hit Submit to save.') }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @machine_blueprint.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -65,7 +64,7 @@ class MachineBlueprintsController < ApplicationController
 
     respond_to do |format|
       if @machine_blueprint.update_attributes(params[:machine_blueprint])
-        format.html { redirect_to(@machine_blueprint, :notice => 'Machine blueprint was successfully updated.') }
+        format.html { redirect_to(machine_blueprints_url, :notice => 'Machine blueprint was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

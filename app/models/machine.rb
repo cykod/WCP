@@ -16,7 +16,7 @@ class Machine < BaseModel
   property :roles, :type => Array, :default => []
   property :launcher_class
 
-  property :configuration_info, :type => Hash, :default => {}
+  property :state_data, :type => Hash, :default => {}
 
   property :instance_id
   property :machine_image
@@ -25,10 +25,12 @@ class Machine < BaseModel
   property :ip_address
   property :private_ip_address
   property :instance_type
+  property :instance_size
+  property :root_user
 
   before_create :initialization_details
 
-  has_options :instance_type, [["App Server", "ec2"],["Load Balancer","load_balancer"],["Database","rds"]]
+  has_options :instance_type, [["EC2 Server", "ec2"],["Load Balancer","load_balancer"],["Database","rds"]]
   has_options :status, [['Created','created'],['Launching','launching'],['Active','active'],['Launched','launched'],['Terminating','terminating'],['Terminated','terminated']]
 
   @@role_names = { 'web' => "Web",
@@ -41,6 +43,9 @@ class Machine < BaseModel
                    'workling' => 'Workling',
                    'cron' => 'Cron' }
 
+  def server?
+    self.instance_type == 'ec2'
+  end
 
   def roles_display
     self.roles.map { |rl| @@role_names[rl] }.compact.to_sentence
@@ -60,6 +65,8 @@ class Machine < BaseModel
     self.launcher_class = self.machine_blueprint.launcher_class
     self.machine_image = self.machine_blueprint.machine_image
     self.instance_type = self.machine_blueprint.instance_type
+    self.instance_size = self.machine_blueprint.instance_size
+    self.root_user = self.machine_blueprint.root_user
     self.status = 'created'
   end
   
@@ -78,11 +85,25 @@ class Machine < BaseModel
   end
 
   def ssh(&block)
-    ret = nil
-    Net::SSH.start(self.ip_address,'root',:key_data => [self.company.certificate]) do |ssh| 
-      ret = yield ssh
+    if block_given?
+      ret = nil
+      Net::SSH.start(self.ip_address,self.root_user,:key_data => [self.company.certificate]) do |ssh| 
+        ret = yield ssh
+      end
+      ret
+    else
+      Net::SSH.start(self.ip_address,self.root_user,:key_data => [self.company.certificate])
     end
-    ret
+  end
+
+  def multi_ssh(session)
+    session.use "#{self.root_user}@#{self.ip_address}", :key_data =>  [self.company.certificate]
+  end
+
+  def ssh_exec(cmd)
+    self.ssh do |s|
+       s.exec!(cmd)
+    end
   end
 
   def active?
@@ -98,7 +119,7 @@ class Machine < BaseModel
   end
 
   def launcher
-    @launcher ||= self.launcher_class.constantize.new(self)
+    @launcher ||= self.launcher_class.camelcase.constantize.new(self)
   end
 
   def check_status!

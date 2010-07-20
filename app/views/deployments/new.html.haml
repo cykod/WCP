@@ -4,8 +4,8 @@
   = f.inputs do
     = f.input :cloud_id, :as => :select, :collection => @clouds
     = f.input :blueprint_id, :as => :select, :collection => @blueprints, :input_html => { :onchange => '$("#deployment_form").submit();' }
-    - if @deployment.blueprint 
-      = render :partial => 'deployment_parameters'
+  - if @deployment.blueprint 
+    = render :partial => 'deployment_parameters'
   - if @deployment.blueprint
     = f.buttons do
       = f.commit_button "Deploy"

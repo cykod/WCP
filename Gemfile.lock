@@ -4,12 +4,12 @@ dependencies:
     group: 
     - :test
     version: ">= 0"
-  amazon-ec2: 
+  net-sftp: 
     group: 
     - :default
     version: ">= 0"
     require: 
-    - AWS
+    - net/sftp
   rails: 
     group: 
     - :default
@@ -26,12 +26,12 @@ dependencies:
     group: 
     - :default
     version: ">= 0"
-  sqlite3-ruby: 
+  net-ssh-multi: 
     group: 
     - :default
     version: ">= 0"
     require: 
-    - sqlite3
+    - net/ssh/multi
   couch_potato: 
     group: 
     - :default
@@ -44,20 +44,26 @@ dependencies:
     group: 
     - :default
     version: ">= 0"
-  right_aws: 
-    group: 
-    - :default
-    version: ">= 0"
-  json: 
-    group: 
-    - :default
-    version: = 1.2.4
   net-ssh: 
     group: 
     - :default
     version: ">= 0"
     require: 
     - net/ssh
+  right_aws: 
+    group: 
+    - :default
+    version: ">= 0"
+  mixlib-config: 
+    group: 
+    - :default
+    version: ">= 0"
+    require: 
+    - mixlib/config
+  json: 
+    group: 
+    - :default
+    version: = 1.2.4
   rocking_chair: 
     group: 
     - :test
@@ -68,6 +74,18 @@ dependencies:
     version: ">= 0"
     require: 
     - simply_stored/couch
+  net-scp: 
+    group: 
+    - :default
+    version: ">= 0"
+    require: 
+    - net/scp
+  mixlib-authentication: 
+    group: 
+    - :default
+    version: ">= 0"
+    require: 
+    - mixlib/authentication
 specs: 
 - rake: 
     version: 0.8.7
@@ -88,7 +106,7 @@ specs:
 - rack: 
     version: 1.1.0
 - rack-mount: 
-    version: 0.6.6
+    version: 0.6.9
 - rack-test: 
     version: 0.5.4
 - tzinfo: 
@@ -111,10 +129,6 @@ specs:
     version: 3.0.0.beta4
 - activeresource: 
     version: 3.0.0.beta4
-- xml-simple: 
-    version: 1.0.12
-- amazon-ec2: 
-    version: 0.9.15
 - bundler: 
     version: 0.9.26
 - columnize: 
@@ -126,7 +140,7 @@ specs:
 - json: 
     version: 1.2.4
 - couch_potato: 
-    version: 0.2.31
+    version: 0.2.32
     source: 0
 - diff-lcs: 
     version: 1.1.2
@@ -139,12 +153,26 @@ specs:
     version: "0.43"
 - mattmatt-validatable: 
     version: 1.8.4
+- mixlib-log: 
+    version: 1.1.0
+- mixlib-authentication: 
+    version: 1.1.2
+- mixlib-config: 
+    version: 1.1.2
 - net-ssh: 
     version: 2.0.23
+- net-scp: 
+    version: 1.0.2
+- net-sftp: 
+    version: 2.0.4
+- net-ssh-gateway: 
+    version: 1.0.1
+- net-ssh-multi: 
+    version: 1.0.1
 - nokogiri: 
     version: 1.4.2
 - thor: 
-    version: 0.13.7
+    version: 0.13.8
 - railties: 
     version: 3.0.0.beta4
 - rails: 
@@ -154,39 +182,37 @@ specs:
 - right_aws: 
     version: 2.0.0
 - simply_stored: 
-    version: 0.3.4
+    version: 0.3.6
 - rocking_chair: 
     version: 0.1.0
 - rspec-core: 
-    version: 2.0.0.beta.15
+    version: 2.0.0.beta.17
 - rspec-expectations: 
-    version: 2.0.0.beta.15
+    version: 2.0.0.beta.17
 - rspec-mocks: 
-    version: 2.0.0.beta.15
+    version: 2.0.0.beta.17
 - rspec: 
-    version: 2.0.0.beta.15
+    version: 2.0.0.beta.17
 - webrat: 
     version: 0.7.1
 - rspec-rails: 
-    version: 2.0.0.beta.15
+    version: 2.0.0.beta.17
 - ruby-debug-base: 
     version: 0.10.3
 - ruby-debug: 
     version: 0.10.3
-- sqlite3-ruby: 
-    version: 1.3.0
 - uuidtools: 
     version: 2.1.1
-hash: ae89572e21b53de3ff96f23838c8612c75f16e19
+hash: c0e228f20330d2207d24a1a4d9a4b280af24d9a4
 sources: 
 - Git: 
     uri: git://github.com/langalex/couch_potato.git
     git: git://github.com/langalex/couch_potato.git
-    ref: aae2861af0f9af7f1c3e5be892677df2c0c50d26
+    ref: 9c4349cf292cf3242f057c6c6dc88aec056f12bb
 - Git: 
     uri: git://github.com/justinfrench/formtastic.git
     branch: rails3
     git: git://github.com/justinfrench/formtastic.git
-    ref: f763772f1287760b160b2a971be8d67e6553a9fe
+    ref: 038357cae3fbe4ce9d648249a4c6d0b1f520a1f4
 - Rubygems: 
     uri: http://gemcutter.org

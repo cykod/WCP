@@ -39,6 +39,19 @@ class Deployment < BaseModel
     )
   end
 
+  def servers
+    self.machines.select { |m| m.server? }
+  end
+
+  def active_step_name
+    step = self.blueprint.steps[self.active_step] 
+    if step
+      "#{step.step_name} (#{step.substep})"
+    else 
+      "None"
+    end
+  end
+
   def name
     begin
       "#{self.blueprint.name} - #{self.cloud.name}"
@@ -102,6 +115,11 @@ class Deployment < BaseModel
     self.save
   end
 
+  # Primarily for testing
+  def force_step(step_number)
+    self.blueprint.execute_step!(step_data(step_number))
+  end
+
   def execute_step!(step_number)
     self.completed_step = step_number -1
     self.active_step = step_number
@@ -116,6 +134,10 @@ class Deployment < BaseModel
           self.update_attributes( :status => 'failed',
                                  :failure_description => e.description)
           self.cloud.force_reset
+#        rescue Exception => e
+#          self.update_attributes( :status => 'failed',
+#                                 :failure_description => e.to_s)
+#          self.cloud.force_reset
         end
       end
     end

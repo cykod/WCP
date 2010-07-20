@@ -6,7 +6,8 @@ HashModel's are used throughout webiva
 =end
 class HashModel 
   include ActiveModel::Validations
-  
+  include ModelExtension::OptionsExtension
+
   def self.defaults
     {}
   end

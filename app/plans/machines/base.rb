@@ -28,6 +28,19 @@ class Machines::Base
     end
 
   end
-  
 
+  def self.machine_parameters
+    []
+  end
+
+  def self.parameter(name,opts = {})
+    sing = class << self; self; end
+
+    current_parameters = self.machine_parameters
+    current_parameters << [ name.to_sym, opts ] 
+
+    sing.send(:define_method,:machine_parameters) do 
+      current_parameters
+    end
+  end
 end

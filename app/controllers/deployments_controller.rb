@@ -46,7 +46,7 @@ class DeploymentsController < ApplicationController
     @clouds = current_company.clouds
 
     if params[:commit] && @deployment.valid?
-      @deployment = @deployment.cloud.deploy(@deployment.blueprint,@deployment.blueprint_options)
+      @deployment = @deployment.cloud.deploy(@deployment.blueprint,@deployment.deployment_options.to_hash)
       if @deployment
        return redirect_to(@deployment, :notice => 'Deployment created and executing') 
       else

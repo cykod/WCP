@@ -25,5 +25,5 @@ while($running) do
     Rails.logger.error "Launch Monitor Error: #{e.to_s}"
   end
 
-  sleep 10 
+  sleep  5
 end

@@ -18,22 +18,30 @@ class Cloud < BaseModel
 
   has_options :status, [["Normal","normal"],["Deploying","deploying"]]
 
-  attr_accessor :reset_cloud
-
-  before_save :update_options
-  before_save :auto_force_reset
-
   class Options < HashModel
     attributes :security_group => 'default', :availability_zone => 'us-east-1a'
+
+    has_options :availability_zone, 
+       ['us-east-1a','us-east-1b','us-east-1c','us-east-1d']
   end
 
   def deployment_list(page=1)
     self.deployments.sort { |a,b| b.created_at <=> a.created_at }
   end
 
+  def cloud_machines(machine_ids)
+    (machine_ids||[]).map do |mid|
+      self.cloud_machine(mid)
+     end.compact
+  end
+
   def cloud_machine(machine_id)
     machine = Machine.find(machine_id)
     machine && machine.cloud_id == self.id ? machine : nil
+  end
+
+  def server_select_options
+    self.machines.select { |m| m.server? }.map { |m| [ m.full_name, m.id ] }
   end
 
   def deploy(blueprint, deployment_parameters)
@@ -76,20 +84,14 @@ class Cloud < BaseModel
 
   end
 
-  def options
-     @options ||= Options.new(self.options_hash)
+  def options(val=nil)
+    return @options if @options && !val
+     @options = Options.new(val || self.options_hash)
   end
 
-  protected
-
-  def update_options
-    self.options_hash = self.options.to_hash
+  def options=(val)
+     self.options_hash = self.options(val).to_hash
   end
 
-  def auto_force_reset
-    if self.reset_cloud.to_s == '1'
-      self.status = 'normal'
-    end
-  end
 
 end
