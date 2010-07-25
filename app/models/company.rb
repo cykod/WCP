@@ -29,6 +29,14 @@ class Company < BaseModel
     @ec2 ||= RightAws::Ec2.new(self.aws_key, self.aws_secret)
   end
 
+  def rds
+    @rds ||= RightAws::RdsInterface.new(self.aws_key, self.aws_secret)
+  end
+
+  def elb
+    @elb ||= RightAws::ElbInterface.new(self.aws_key, self.aws_secret)
+  end
+
 
   def self.destroy_all_companies!
     Company.all.map(&:destroy)

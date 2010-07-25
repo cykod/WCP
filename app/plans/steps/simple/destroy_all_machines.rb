@@ -2,14 +2,14 @@
 
 class Steps::Simple::DestroyAllMachines < Steps::Base
 
-  step_info "Terminate all machines"
+  step_info "Terminate machines"
 
   class Options < HashModel
 
   end
 
   def execute!(step)
-    machines = self.deployment.cloud.machines
+    machines = self.deployment.machines
 
     active_machines = machines.select { |m| m.active? }
     active_machine_count = active_machines.length

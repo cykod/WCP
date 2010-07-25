@@ -35,7 +35,11 @@ class Amazon::Ec2Machine
   def internal_state
     if !@internal_status
       info = @ec2.describe_instances([ @instance_id ])
-      @internal_status = info[0] if info
+      if !info || !info[0]
+         @internal_status = { :aws_state => 'terminated' }
+      else
+        @internal_status = info[0] if info
+      end
     else
       @internal_status
     end
@@ -52,8 +56,11 @@ class Amazon::Ec2Machine
   end
 
   def failed?
-    
     internal_state[:aws_state] == "failed"
+  end
+
+  def terminating?
+    internal_state[:aws_state] == 'terminating'
   end
 
   def terminated?

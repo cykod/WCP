@@ -1,18 +1,28 @@
 
-
 class Machines::AwsAppServer < Machines::Base
 
-  machine_info "Full AWS App Server", :instance_type => "ec2"
+  machine_info "AWS App Server", :instance_type => "ec2"
+
+  parameter :instance_size, :as => :select, :collection => ['m1.small','m1.large','m1.xlarge','m2.xlarge','m2.2xlarge','m2.4xlarge','c1.medium','c1.xlarge', 'cc1.4xlarge' ],:required => true
+
+  parameter :machine_image, :required => true
+  parameter :root_user, :required => true
+
+  def self.description(blueprint)
+    "#{blueprint.options.instance_size} - #{blueprint.options.machine_image}"
+  end
 
   def launch!
     instance = Amazon::Ec2Machine.run_instance(company.ec2,
                                       {  :key_name => company.key_name,
                                          :security_group => cloud.options.security_group,
-                                         :instance_size => machine.instance_size,
+                                         :instance_size => blueprint.options.instance_size,
                                          :availability_zone => cloud.options.availability_zone,
                                          :monitoring_enabled => true,
                                          :disable_api_termination => false,
-                                         :image_id => machine.machine_image })
+                                         :image_id => blueprint.options.machine_image })
+
+    machine.root_user = blueprint.options.root_user
     machine.instance_id = instance.instance_id
     machine.save
 
@@ -35,6 +45,8 @@ class Machines::AwsAppServer < Machines::Base
       'active'
     elsif ec2_machine.failed?
        'failed'
+    elsif ec2_machine.terminating?
+       'terminating'
     elsif ec2_machine.terminated?
       'terminated'
       else

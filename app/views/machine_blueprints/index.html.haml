@@ -8,7 +8,7 @@
     %th Created
     %th Launcher
     %th Instance Type
-    %th Machine Image
+    %th Description
     %th Destroy
   - @machine_blueprints.each do |machine_blueprint|
     %tr
@@ -17,6 +17,6 @@
       %td= machine_blueprint.created_at.to_s(:short)
       %td= machine_blueprint.launcher_name
       %td= machine_blueprint.instance_type_display
-      %td= machine_blueprint.machine_image
+      %td= machine_blueprint.launcher_description
       %td= link_to 'Destroy', machine_blueprint, :confirm => 'Are you sure?', :method => :delete
 %br/

@@ -55,5 +55,14 @@ class Steps::Base
    raise StepException, description
  end
 
+  def machine_failed!(step,machine)
+  end
+
+
+  def machine_activated!(step,machine)
+   #
+  end
+
+  def finished?(step); true; end
 
 end

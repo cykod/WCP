@@ -28,23 +28,43 @@ class Machine < BaseModel
   property :instance_size
   property :root_user
 
+  property :master_username
+  property :master_password
+
   before_create :initialization_details
 
-  has_options :instance_type, [["EC2 Server", "ec2"],["Load Balancer","load_balancer"],["Database","rds"]]
+  has_options :instance_type, [["EC2 Server", "ec2"],["Load Balancer","balancer"],["Database","rds"]]
   has_options :status, [['Created','created'],['Launching','launching'],['Active','active'],['Launched','launched'],['Terminating','terminating'],['Terminated','terminated']]
 
   @@role_names = { 'web' => "Web",
-                   'deployment' => 'Deployment',
+                   'balancer' => "Load Balancer",
+                   'migrator' => 'Migrator',
                    'master_db' => 'Master DB',
                    'domain_db' => 'Domain DB',
                    'slave_db' => 'Slave DB',
-                   'memcache' => 'Memcache',
+                   'memcache' => 'Memcached',
                    'starling' => 'Queue',
                    'workling' => 'Workling',
                    'cron' => 'Cron' }
 
   def server?
     self.instance_type == 'ec2'
+  end
+
+  def starling?
+    self.roles.include?('starling')
+  end
+
+  def master_db?
+    self.roles.include?('master_db') && self.instance_type == 'rds'
+  end
+
+  def migrator?
+    self.roles.include?('migrator') && self.server?
+  end
+
+  def load_balancer?
+    self.instance_type == 'balancer' && self.roles.include?('balancer')
   end
 
   def roles_display
@@ -59,14 +79,29 @@ class Machine < BaseModel
     end
   end
 
+  def initialize_rds_options
+    self.master_username = "Webiva" + BaseModel.generate_hash[0..8]
+    self.master_password = BaseModel.generate_hash[0..14]
+  end
+
+  def save_chef_node_information(restart=false)
+    c = ChefClient.new
+    c.save_attributes(self,{ 'wcp' => 
+                           { 'cloud' => self.cloud_id, 'deployment' => self.deployment_id,
+                             'ip_address' => self.ip_address,
+                             'hostname' => self.hostname,
+                             'roles' => self.roles,
+                             'restart' => restart,
+                             'starling_restart' => restart ? self.starling? : false
+                           }})
+
+  end
+
   protected
 
   def initialization_details
     self.launcher_class = self.machine_blueprint.launcher_class
-    self.machine_image = self.machine_blueprint.machine_image
     self.instance_type = self.machine_blueprint.instance_type
-    self.instance_size = self.machine_blueprint.instance_size
-    self.root_user = self.machine_blueprint.root_user
     self.status = 'created'
   end
   

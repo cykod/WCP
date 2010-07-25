@@ -7,10 +7,26 @@
     %th Cloud Status
     %th Created
     %th Machines
+    %th Cloud Active?
+    %th Web
+    %th Mig
+    %th DB
+    %th Mem
+    %th Queue
+    %th Work
+    %th Cron
   - @clouds.each do |cloud| 
     %tr
       %td= link_to cloud.name,cloud
       %td= cloud.status_display
       %td= cloud.created_at.to_s(:short)
       %td= cloud.machines.count
+      %td{:align => 'center'}= cloud.active? ? 'Yes' : 'No'
+      %td{:align => 'center'}= cloud.count_by_role('web')
+      %td{:align => 'center'}= cloud.count_by_role('migrator')
+      %td{:align => 'center'}= cloud.count_by_role('master_db')
+      %td{:align => 'center'}= cloud.count_by_role('memcached')
+      %td{:align => 'center'}= cloud.count_by_role('starling')
+      %td{:align => 'center'}= cloud.count_by_role('workling')
+      %td{:align => 'center'}= cloud.count_by_role('cron')
 

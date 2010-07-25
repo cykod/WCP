@@ -1,12 +1,17 @@
 - semantic_form_for @cloud do |f|
   - f.inputs do
-    = f.error_messages
+    = f.semantic_errors
     = f.input :name
   = semantic_fields_for "cloud[options]", @cloud.options do |of| 
     = f.inputs do
-      = of.error_messages
+      = of.semantic_errors
       = of.input :security_group
       = of.input :availability_zone, :as => :radio, :collection => Cloud::Options.availability_zone_select_options, |
           :hint => "Should not be changed once cloud is active"
+  = semantic_fields_for "cloud[chef_options]", @cloud.chef_options do |cf|
+    = cf.inputs do
+      = cf.semantic_errors
+      = cf.input :repository, :hint => 'Leave blank for default Webiva repository'
+      = cf.input :branch
   - f.buttons do
     = f.commit_button

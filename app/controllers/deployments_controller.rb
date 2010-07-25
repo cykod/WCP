@@ -6,12 +6,17 @@ class DeploymentsController < ApplicationController
   # GET /deployments
   # GET /deployments.xml
   def index
-    @deployments = current_cloud.deployment_list
+    @deployments = current_cloud.active_deployment_list
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @deployments }
     end
+  end
+
+  def cleanup
+    current_cloud.cleanup_deployments!
+    redirect_to :action => 'index'
   end
 
   # GET /deployments/1
@@ -45,12 +50,10 @@ class DeploymentsController < ApplicationController
     @blueprints = Blueprint.select_options
     @clouds = current_company.clouds
 
-    if params[:commit] && @deployment.valid?
-      @deployment = @deployment.cloud.deploy(@deployment.blueprint,@deployment.deployment_options.to_hash)
+    if params[:commit] && @deployment.valid? 
+      @deployment = @deployment.cloud.deploy(@deployment)
       if @deployment
        return redirect_to(@deployment, :notice => 'Deployment created and executing') 
-      else
-        return redirect_to(deployments_path)
       end
     end
     render :action => "new" 

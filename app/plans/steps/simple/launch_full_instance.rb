@@ -1,9 +1,6 @@
-
-
-
 class Steps::Simple::LaunchFullInstance < Steps::Base
 
-  step_info "Launch a full Webiva single Instance", :substeps => 1,  :options => "Steps::Simple::LaunchFullInstance::Options"
+  step_info "Launch a full Webiva single Instance", :substeps => 2,  :options => "Steps::Simple::LaunchFullInstance::Options"
 
   parameter(:app_machine_blueprint, Proc.new {  
                 { :as => :select,
@@ -18,13 +15,27 @@ class Steps::Simple::LaunchFullInstance < Steps::Base
 
 
   def execute!(step)
-    blueprint = MachineBlueprint.fetch(self.deployment.blueprint_options.app_machine_blueprint)
 
-    fail_step("Missing Blueprint") unless blueprint
-    machine = self.deployment.add_machine([:web,:memcached,:starling,:background,:updater],blueprint)
-    machine.launch!
+    if step.substep == 0
+      blueprint = MachineBlueprint.fetch(self.deployment.blueprint_options.app_machine_blueprint)
 
-    step.options.machine_id = machine.id
+      fail_step("Missing Blueprint") unless blueprint
+      machine = self.deployment.add_machine([:web,:memcache,:starling,:workling,:migrator,:cron],blueprint)
+      machine.launch!
+
+      step.options.machine_id = machine.id
+    else
+      machine = Machine.find(step.options.machine_id)
+      begin
+        machine.ssh do |ssh|
+          puts ssh.exec!('uptime')
+        end
+      rescue Net::SSH::HostKeyMismatch => e
+        puts "Remembering new key: #{e.fingerprint}"
+        e.remember_host!
+        retry
+      end
+    end
   end
 
   def finished?(step)

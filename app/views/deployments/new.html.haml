@@ -1,11 +1,14 @@
 %h1 New deployment
 
 = semantic_form_for @deployment, :html => { :id => 'deployment_form' } do |f|
+  = f.semantic_errors
   = f.inputs do
     = f.input :cloud_id, :as => :select, :collection => @clouds
     = f.input :blueprint_id, :as => :select, :collection => @blueprints, :input_html => { :onchange => '$("#deployment_form").submit();' }
   - if @deployment.blueprint 
     = render :partial => 'deployment_parameters'
+    = f.inputs do
+      = f.input :affected_machines, :as => :check_boxes, :collection => @deployment.cloud.machine_options, :hint => "Existing servers this deployment should take over"
   - if @deployment.blueprint
     = f.buttons do
       = f.commit_button "Deploy"

@@ -4,6 +4,7 @@ class BlueprintStep
   include SimplyStored::Couch
 
   belongs_to :blueprint
+  property :identity_hash
   property :position, :type => Fixnum
   property :substep, :type => Fixnum
   property :name
@@ -12,7 +13,6 @@ class BlueprintStep
 
   def initialize_step_data(step_data)
    step_data.options_class_name = self.step_options_class_name 
-   step_data.substep = self.substep
    step_data.initialized = true
    step_data.save
   end
@@ -67,7 +67,7 @@ class BlueprintStep
         end
       end
     end
-    opts
+    opts.sort { |a,b| a[0] <=> b[0] }
   end
 
 end

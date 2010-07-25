@@ -1,6 +1,6 @@
-class Steps::Simple::BootstrapChef < Steps::Base
+class Steps::Launch::BootstrapChef < Steps::Base
 
-  step_info "Bootstrap any launched servers with Chef", :substeps => 1
+  step_info "(S3) Bootstrap any launched servers with Chef", :substeps => 1
 
   class Options < HashModel
 
@@ -37,6 +37,12 @@ cookbook_path "/tmp/chef-solo/cookbooks"
 
       end
 
+      sftp.file.open('environment', 'w') do |f|
+        f.puts(<<-EOF)
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/var/lib/gems/1.8/bin"
+        EOF
+      end
+
       sftp.upload!(Server.validation_pem_file,'validation.pem')
     end
 
@@ -46,11 +52,16 @@ cookbook_path "/tmp/chef-solo/cookbooks"
       server.multi_ssh(session)
     end
 
+    # Boot strap, but then don't run chef-client automatically
     cmd = 'sudo apt-get update'
     cmd += ' && sudo apt-get --yes install ruby ruby1.8-dev libopenssl-ruby1.8 rdoc build-essential wget rubygems'
     cmd += ' && sudo gem install chef --no-rdoc --no-ri'
+    
     cmd += " && sudo /var/lib/gems/1.8/bin/chef-solo -c ~/chef/solo.rb -j ~/chef/chef.json -r http://s3.amazonaws.com/chef-solo/bootstrap-latest.tar.gz"
+    cmd += ' && sudo mv environment /etc/'
+    cmd += ' && echo "alias sudo=\'sudo env PATH=\\$PATH\'" >> ~/.bashrc'
     cmd += ' && sudo mv validation.pem /etc/chef/'
+    cmd += ' && sudo /etc/init.d/chef-client stop'
     cmd += ' && sudo /var/lib/gems/1.8/bin/chef-client'
     cmd += ' && sudo rm /etc/chef/validation.pem'
     session.exec(cmd)
@@ -79,11 +90,4 @@ cookbook_path "/tmp/chef-solo/cookbooks"
   end
 
 
-  def machine_failed!(step,machine)
-  end
-
-
-  def machine_activated!(step,machine)
-   #
-  end
 end

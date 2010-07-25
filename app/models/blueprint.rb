@@ -60,17 +60,23 @@ class Blueprint < BaseModel
     self.reload
     cls = step_class_name.constantize
 
+    original_blueprint_step_hash = nil
 
     next_position = self.steps[-1] ? self.steps[-1].position + 1 : 0
     substeps = cls.step_info_details[:substeps]
     (0..substeps-1).each do |substep|
-      BlueprintStep.create(:name => name,
+      step = BlueprintStep.create(:name => name,
                             :position => next_position,
+                            :identity_hash => original_blueprint_step_hash,
                             :substep => substep,
                             :blueprint_id => self.id,
                             :step_class_name => step_class_name,
                             :step_options_class_name => cls.step_info_details[:options])
 
+      if original_blueprint_step_hash.blank?
+        original_blueprint_step_hash = step.id
+        step.update_attributes(:identity_hash => original_blueprint_step_hash)
+      end
       next_position += 1
     end
     self.reload

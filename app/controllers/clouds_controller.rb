@@ -53,6 +53,7 @@ class CloudsController < ApplicationController
 
     respond_to do |format|
       if @cloud.valid? &&  @cloud.save
+        @cloud.save_cloud_databag
         format.html { redirect_to(@cloud, :notice => 'Cloud was successfully created.') }
         format.xml  { render :xml => @cloud, :status => :created, :location => @cloud }
       else
@@ -70,6 +71,7 @@ class CloudsController < ApplicationController
 
     respond_to do |format|
       if @cloud.valid? && @cloud.save
+        @cloud.save_cloud_databag
         format.html { redirect_to(@cloud, :notice => 'Cloud was successfully updated.') }
         format.xml  { head :ok }
       else

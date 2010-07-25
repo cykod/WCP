@@ -45,7 +45,11 @@ WCP::Application.routes.draw do |map|
       post :reset
     end
   end
-  resources :deployments
+  resources :deployments do
+    collection do
+      post :cleanup
+    end
+  end
 
   resources :machines, :except => [ :new, :create ]  do
     collection do 

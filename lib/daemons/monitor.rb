@@ -13,17 +13,17 @@ end
 
 
 while($running) do
-  begin
+  #begin
     DeploymentMonitor.monitor_deployments
-  rescue Exception => e
-    Rails.logger.error "Monitor Error: #{e.to_s}"
-  end
+  #rescue Exception => e
+  #  Rails.logger.error "Monitor Error: #{e.to_s}"
+  #end
 
-  begin
+  #begin
     LaunchMonitor.monitor_launches
-  rescue Exception => e
-    Rails.logger.error "Launch Monitor Error: #{e.to_s}"
-  end
+  #rescue Exception => e
+  #  Rails.logger.error "Launch Monitor Error: #{e.to_s}"
+  #end
 
   sleep  5
 end

@@ -2,6 +2,7 @@
 
 .action_bar 
   = link_to "Launch a new Deployment", new_deployment_path
+  = link_to "Cleanup Failed and Deployed", { :action => 'cleanup' },:method => :post
 
 %h2 Previous Deployments
 - if @deployments.length > 0

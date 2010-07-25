@@ -3,15 +3,10 @@
   = f.inputs do
     = f.input :name
     = f.input :identifier
-    = f.input :machine_image
   - if @machine_blueprint.new_record?
     = f.inputs do
       = f.input :launcher_class, :as => :select, :collection => MachineBlueprint.launcher_class_options 
   - else
-    = f.inputs do 
-      - if @machine_blueprint.instance_type != 'balancer'
-        = f.input :root_user
-        = f.input :instance_size, :as => :select,:collection => MachineBlueprint.instance_size_select_options 
     = render :partial => 'parameters'
   = f.buttons do
     = f.commit_button "Submit"

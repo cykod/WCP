@@ -28,4 +28,9 @@ class BaseModel
     [["-- Select #{name} --",nil]] + self.select_options
   end
  
+  # Generates a random hexdigest hash
+  def self.generate_hash
+     Digest::SHA1.hexdigest(Time.now.to_i.to_s + rand(1e100).to_s)
+  end
+
  end

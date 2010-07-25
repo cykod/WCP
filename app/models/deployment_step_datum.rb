@@ -6,12 +6,13 @@ class DeploymentStepDatum
   
   property :data, :type => Hash, :default => { }
 
-  property :step, :type => Fixnum
-  property :substep, :type => Fixnum
+  property :blueprint_identity_hash
   property :initialized, :type => :boolean, :default => false
   property :options_class_name
 
-  view :by_deployment_id_and_step, :key => [:deployment_id, :step]
+  attr_accessor :step,:substep
+
+  view :by_deployment_id_and_blueprint_identity_hash, :key => [:deployment_id, :blueprint_identity_hash]
 
   def options
     @options ||= options_class_name.constantize.new(self.data)

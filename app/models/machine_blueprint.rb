@@ -11,18 +11,17 @@ class MachineBlueprint < BaseModel
   property :launcher_class
 
   property :instance_type
-  property :instance_size
-  property :machine_image
-  property :root_user, :default => 'ubuntu'
+  property :login_user, :default => 'ubuntu'
 
   property :options_data, :type => Hash, :default => {}
 
   before_save :set_instance_type
 
+  has_options :instance_type, [["EC2 Server", "ec2"],["Load Balancer","balancer"],["Database","rds"]]
+
+  validates :name, :presence => true
   validates :identifier, :format =>  { :with => /^[a-zA-Z\-_0-9]+$/ }
   
-  has_options :instance_size, ['m1.small','m1.large','m1.xlarge','m2.xlarge','m2.2xlarge','m2.4xlarge','c1.medium','c1.xlarge', 'cc1.4xlarge' ]
-
   has_options :instance_type, Machine.instance_type_original_options
   
   def launcher
@@ -57,16 +56,32 @@ class MachineBlueprint < BaseModel
     launcher.machine_launcher_name
   end
 
+  def launcher_description 
+    launcher.description(self)
+  end
+
   def launcher_instance_type
-    launcher.machine_launcher_options[:instance_type] || 'server'
+    launcher.machine_launcher_options[:instance_type] || 'ec2'
   end
    
   def self.fetch(identifier)
     self.find_by_identifier(identifier)
   end
   
-  def self.select_options
-    self.all.map { |b| [ b.name,b.identifier ] }
+  def self.select_options(elements=nil)
+    (elements||self.all).map { |b| [ b.name,b.identifier ] }
+  end
+
+  def self.rds_select_options
+    self.select_options(self.all.select { |b| b.instance_type == 'rds' })
+  end
+
+  def self.ec2_select_options
+    self.select_options(self.all.select { |b| b.instance_type == 'ec2' })
+  end
+
+  def self.elb_select_options
+    self.select_options(self.all.select { |b| b.instance_type == 'balancer' })
   end
 
  def self.machine_directories

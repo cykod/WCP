@@ -17,12 +17,19 @@ class Deployment < BaseModel
   property :status, :default => 'created'
   property :failure_description 
 
+  property :noted, :type => :boolean, :default => nil
+
   has_many :machines
   has_many :deployment_step_data, :dependent => :destroy
   has_many :deployment_monitors, :dependent => :destroy
 
   validates_presence_of :blueprint
   validates_presence_of :cloud
+
+  validate :can_deploy, :on => :create
+  attr_accessor :skip_cloud_check
+
+  attr_accessor :affected_machines
 
   has_options :status, [['Deploying','deploying'],['Deployed','deployed'],['Created','created'],['Failed','failed']]
 
@@ -31,12 +38,25 @@ class Deployment < BaseModel
         { 
           :step => self.active_step,
           :deployment => self,
-          :roles => roles, 
+          :roles => roles.map(&:to_s), 
           :machine_blueprint => blueprint, 
           :company => self.company,
           :cloud => cloud
         }.merge(options)
     )
+  end
+
+  def can_deploy
+    if !skip_cloud_check && self.cloud && !self.cloud.can_deploy?
+     self.errors.add(:cloud,"Cloud is not ready to deploy")
+    end
+  end
+
+  def takeover_machines!(machine_ids)
+    victims = self.cloud.cloud_machines(machine_ids) 
+    victims.each do |v|
+      v.update_attributes(:deployment_id => self.id)
+    end
   end
 
   def servers
@@ -90,6 +110,10 @@ class Deployment < BaseModel
     self.blueprint.finished?(active_step)
   end
 
+  def deployed?
+    self.status == 'deployed'
+  end
+
   def failed?
     self.status == 'failed'
   end
@@ -101,12 +125,16 @@ class Deployment < BaseModel
 
 
   def step_data(step_number)
-     step = DeploymentStepDatum.find_by_deployment_id_and_step(self.id,step_number) 
-     unless step
-       step = DeploymentStepDatum.new(:deployment => self,:step => step_number)
-       self.blueprint.initialize_step(step)
-     end
-     step
+    blueprint_step = self.blueprint.steps[step_number]
+    identity_hash = blueprint_step.identity_hash
+
+    step = DeploymentStepDatum.find_by_deployment_id_and_blueprint_identity_hash(self.id,identity_hash) 
+    unless step
+      step = DeploymentStepDatum.new(:deployment_id => self.id,:blueprint_identity_hash => identity_hash)
+    end
+    step.step = blueprint_step.position-1
+    step.substep = blueprint_step.substep
+    self.blueprint.initialize_step(step)
   end
 
   def finish!
@@ -117,7 +145,8 @@ class Deployment < BaseModel
 
   # Primarily for testing
   def force_step(step_number)
-    self.blueprint.execute_step!(step_data(step_number))
+    execute_step!(step_number)
+    step_finished?(step_number)
   end
 
   def execute_step!(step_number)

@@ -9,7 +9,7 @@
     %tr
       %td= link_to deployment.name, deployment
       %td= deployment.status_display
-      %td= deployment.active_step
+      %td= deployment.active_step+1
       %td= deployment.created_at.to_s(:short)
       %td= deployment.failure_description
 
