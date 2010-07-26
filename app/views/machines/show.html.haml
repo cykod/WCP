@@ -4,6 +4,21 @@
 .right_action
   = link_to "Terminate", @machine, :confirm => "Are you sure you want to terminate this machine (Not recommended - terminate via deployments instead)?",:method => :delete
 
+%br/
+%br/
+%ul.info_list
+  %li
+    Hostname:
+    = @machine.hostname 
+  %li
+    IP Address:
+    = @machine.ip_address
+  %li 
+    Status:
+    = @machine.status_display
 
+%br/
+%br/
+  
 = link_to 'Edit', edit_machine_path(@machine)
 = link_to 'Back', machines_path

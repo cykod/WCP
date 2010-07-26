@@ -63,6 +63,14 @@ class Deployment < BaseModel
     self.machines.select { |m| m.server? }
   end
 
+  def migrator
+    self.machines.select { |m| m.active? }.detect { |m| m.migrator? } 
+  end
+
+  def web_servers
+    self.servers.select { |m| m.roles.include?('web') } 
+  end
+
   def active_step_name
     step = self.blueprint.steps[self.active_step] 
     if step

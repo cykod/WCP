@@ -1,6 +1,6 @@
 
 
-class Amazon::LoadBalancerMachine 
+class Amazon::LoadBalancerInterface 
 
   attr_reader :instance_id, :elb
 
@@ -17,7 +17,7 @@ class Amazon::LoadBalancerMachine
 
 
  def self.create_balancer(elb,load_balancer_name,opts={})
-   Amazon::LoadBalancerMachine.new(elb,
+   Amazon::LoadBalancerInterface.new(elb,
                          elb.create_load_balancer(
                                    load_balancer_name,
                                    [ opts[:availability_zone] ],
@@ -25,10 +25,18 @@ class Amazon::LoadBalancerMachine
                                      { :protocol => :tcp,  :load_balancer_port => 443, :instance_port => 443 } ]))
  end
 
+ def configure_health_check(health_check)
+   @elb.configure_health_check(@instance_id,health_check)
+ end
+
  def internal_state
    if !@internal_status
      info = nil
-     info = @elb.describe_load_balancers(@instance_id) 
+     begin 
+       info = @elb.describe_load_balancers(@instance_id) 
+     rescue RightAws::AwsError
+       info = nil
+     end
      if !info || !info[0]
        @internal_status = { :terminated => 'terminated' }
      else
@@ -54,7 +62,7 @@ class Amazon::LoadBalancerMachine
  def hostname; internal_state[:dns_name]; end
 
  def terminate!
-   @elb.delete_load_balancer(@internal_id)
+   @elb.delete_load_balancer(@instance_id)
  end
 
 end

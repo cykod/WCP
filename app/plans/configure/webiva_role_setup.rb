@@ -24,8 +24,9 @@ class Configure::WebivaRoleSetup < Configure::Base
 
 
   def generate_run_list
-    recipes = ['apache2','mysql','memcached','git','imagemagick','imagemagick::rmagick','build-essential',
-               'libopenssl-ruby','imagesize','rake','libxslt','zip','passenger_apache2','memcache-ruby',
+    recipes = ['apache2','mysql::client','memcached','git','imagemagick','imagemagick::rmagick','build-essential',
+               'libopenssl-ruby','imagesize','rake','libxslt','zip','passenger_apache2',
+               'passenger_apache2::mod_rails','memcache-ruby','postfix',
                'apache2::mod_xsendfile', 'apache2::mod_upload_progress']
 
     recipes.map { |r| "recipe[#{r}]" }

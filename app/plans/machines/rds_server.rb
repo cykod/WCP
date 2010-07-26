@@ -20,7 +20,7 @@ class Machines::RdsServer < Machines::Base
   def launch!
     machine.initialize_rds_options
 
-    instance = Amazon::RdsMachine.run_instance(
+    instance = Amazon::RdsInterface.run_instance(
                    company.rds,
                    'webiva-' + machine.id,
                    machine.master_username,
@@ -64,6 +64,6 @@ class Machines::RdsServer < Machines::Base
   protected
 
   def rds_machine
-    @rds_machine ||= Amazon::RdsMachine.new(company.rds,self.machine.instance_id)
+    @rds_machine ||= Amazon::RdsInterface.new(company.rds,self.machine.instance_id)
   end
 end

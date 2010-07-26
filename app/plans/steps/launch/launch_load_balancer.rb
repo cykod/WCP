@@ -1,7 +1,7 @@
 
 class Steps::Launch::LaunchLoadBalancer < Steps::Base
 
-  step_info "(B1) Launch a load balancer", :substeps => 1
+  step_info "(B1) Launch a load balancer", :substeps => 2 
 
   parameter(:balancer_machine_blueprint, Proc.new {  
                 { :as => :select,
@@ -14,16 +14,28 @@ class Steps::Launch::LaunchLoadBalancer < Steps::Base
 
 
   def execute!(step)
-    machine_blueprint = MachineBlueprint.fetch(blueprint.blueprint_options.balancer_machine_blueprint)
 
-    fail_step("Missing Load Balancer Machine") unless machine_blueprint
+    if step.substep == 0
+      machine_blueprint = MachineBlueprint.fetch(blueprint.blueprint_options.balancer_machine_blueprint)
 
-    fail_step('Existing Load balancer') if cloud.load_balancer
+      fail_step("Missing Load Balancer Machine") unless machine_blueprint
 
-    machine = self.deployment.add_machine([:balancer],machine_blueprint)
-    machine.launch!
+      fail_step('Existing Load balancer') if cloud.load_balancer
 
-    step.options.machine_id = machine.id
+      machine = self.deployment.add_machine([:balancer],machine_blueprint)
+      machine.launch!
+
+      step.options.machine_id = machine.id
+    else
+      machine = Machine.find(step.options.machine_id)
+      load_balancer = Amazon::LoadBalancerInterface.new(company.elb,machine.instance_id)
+      load_balancer.configure_health_check( { :healthy_threshold => 5,
+                                              :unhealthy_threshold => 2,
+                                              :target => "TCP:80",
+                                              :timeout => 10,
+                                              :interval => 31})
+    end
+
   end
 
   def finished?(step)

@@ -39,7 +39,8 @@ class Steps::Launch::WriteServerConfigFiles < Steps::Base
       'adapter' => 'mysql',
       'database' => 'webiva',
       'host' => master_db.hostname,
-      'socket' => '/var/run/mysqld/mysqld.sock'
+      'socket' => '/var/run/mysqld/mysqld.sock',
+      'pool' => 8
     }
 
     cms_yaml_data = {
@@ -70,7 +71,9 @@ class Steps::Launch::WriteServerConfigFiles < Steps::Base
        end
 
        sftp.file.open("/home/webiva/shared/config/defaults.yml","w") do |f|
-         f.puts(YAML.dump(defaults_yaml_data))
+         f.puts(YAML.dump(defaults_yaml_data.merge(
+               'starling' => "#{server.private_hostname}:15151"
+         ))
        end
 
        sftp.file.open("/home/webiva/shared/config/cms.yml","w") do |f|
@@ -88,7 +91,7 @@ class Steps::Launch::WriteServerConfigFiles < Steps::Base
          
        end
 
-       ssh.exec!("cd current; script/update_server_info.rb")
+       ssh.exec!("cd /home/webiva/current; ./script/update_server_info.rb")
 
     end
 

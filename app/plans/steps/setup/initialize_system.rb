@@ -19,12 +19,12 @@ class Steps::Setup::InitializeSystem < Steps::Base
 
      opts = deployment.deployment_options
 
-     cmd =  " cd current "
-     cmd =  " && rake cms:migrate_system_db"
-     cmd += " && rake cms:initialize_system CLIENT='#{opts.client_name}' DOMAIN='#{opts.initial_domain}' USERNAME='#{opts.admin_username}' ADMIN_PASSWORD='#{opts.admin_password}'"
-     cmd += " && rake cms:create_domain_db DOMAIN_ID=1"
+     cmd =  " cd /home/webiva/current "
+     cmd +=  " && sudo -u webiva rake cms:migrate_system_db"
+     cmd += " && sudo -u webiva rake cms:initialize_system CLIENT='#{opts.client_name}' DOMAIN='#{opts.initial_domain}' USERNAME='#{opts.admin_username}' PASSWORD='#{opts.admin_password}'"
+     cmd += " && sudo -u webiva rake cms:create_domain_db DOMAIN_ID=1"
 
-     ssh.exec!(cmd)
+     puts ssh.exec!(cmd)
      ssh.close
   end
 

@@ -13,7 +13,8 @@
     %th Status
   - @machines.each do |machine|
     %tr
-      %td= link_to machine.full_name,machine
+      %td
+        = link_to machine.full_name,machine
       %td= machine.instance_type_display
       %td= machine.ip_address
       %td= machine.roles_display

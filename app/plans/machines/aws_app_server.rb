@@ -13,7 +13,7 @@ class Machines::AwsAppServer < Machines::Base
   end
 
   def launch!
-    instance = Amazon::Ec2Machine.run_instance(company.ec2,
+    instance = Amazon::Ec2Interface.run_instance(company.ec2,
                                       {  :key_name => company.key_name,
                                          :security_group => cloud.options.security_group,
                                          :instance_size => blueprint.options.instance_size,
@@ -57,7 +57,7 @@ class Machines::AwsAppServer < Machines::Base
   protected
 
   def ec2_machine
-    @ec2_machine ||=  Amazon::Ec2Machine.new(company.ec2,self.machine.instance_id)
+    @ec2_machine ||=  Amazon::Ec2Interface.new(company.ec2,self.machine.instance_id)
   end
 end
 

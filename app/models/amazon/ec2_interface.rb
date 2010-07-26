@@ -1,7 +1,7 @@
 
 
 
-class Amazon::Ec2Machine 
+class Amazon::Ec2Interface
 
   attr_reader :instance_id, :ec2
 
@@ -17,7 +17,7 @@ class Amazon::Ec2Machine
   end
 
   def self.run_instance(ec2,opts={})
-    Amazon::Ec2Machine.new(ec2,
+    Amazon::Ec2Interface.new(ec2,
                            ec2.run_instances(
                              opts[:image_id],
                              1,

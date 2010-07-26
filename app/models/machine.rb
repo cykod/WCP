@@ -51,21 +51,13 @@ class Machine < BaseModel
     self.instance_type == 'ec2'
   end
 
-  def starling?
-    self.roles.include?('starling')
-  end
-
-  def master_db?
-    self.roles.include?('master_db') && self.instance_type == 'rds'
-  end
-
-  def migrator?
-    self.roles.include?('migrator') && self.server?
-  end
-
-  def load_balancer?
-    self.instance_type == 'balancer' && self.roles.include?('balancer')
-  end
+  def memcache?; self.roles.include?('memcache'); end
+  def starling?; self.roles.include?('starling'); end
+  def master_db?; self.roles.include?('master_db') && self.instance_type == 'rds'; end
+  def migrator?; self.roles.include?('migrator') && self.server?; end
+  def web_server?; self.roles.include?('web'); end
+  def workling_server?; self.roles.include?('workling'); end
+  def load_balancer?; self.instance_type == 'balancer' && self.roles.include?('balancer'); end
 
   def roles_display
     self.roles.map { |rl| @@role_names[rl] }.compact.to_sentence
@@ -164,11 +156,13 @@ class Machine < BaseModel
 
 
   def terminate!
-    self.status = 'terminating'
-    if self.save
-      launcher.terminate!
+    if self.active?
+      self.status = 'terminating'
+      if self.save
+        launcher.terminate!
+      end
+      monitor_launch!
     end
-    monitor_launch!
   end
 
   private 

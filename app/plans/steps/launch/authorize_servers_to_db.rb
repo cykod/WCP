@@ -11,7 +11,7 @@ class Steps::Launch::AuthorizeServersToDb < Steps::Base
 
     fail_step('Missing Master Database') unless db_machine
  
-    rds_machine = Amazon::RdsMachine.new(company.rds,db_machine.instance_id)
+    rds_machine = Amazon::RdsInterface.new(company.rds,db_machine.instance_id)
     machines = deployment.servers
 
     machines.each do |m|
@@ -21,7 +21,7 @@ class Steps::Launch::AuthorizeServersToDb < Steps::Base
 
   def finished?(step)
     db_machine = cloud.master_db
-    rds_machine = Amazon::RdsMachine.new(company.rds,db_machine.instance_id)
+    rds_machine = Amazon::RdsInterface.new(company.rds,db_machine.instance_id)
     rds_machine.ip_address_authorization_complete?(cloud.options.security_group)
   end
 

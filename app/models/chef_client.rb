@@ -45,7 +45,13 @@ class ChefClient
 
       session.exec("sudo /var/lib/gems/1.8/bin/chef-client")
       session.loop
+      puts "Executed Chef Client"
     end
+  end
+
+  def exec_chef_client(ssh)
+    ssh.exec!("sudo /var/lib/gems/1.8/bin/chef-client")
+
   end
 
   def find_role(name)
@@ -75,6 +81,10 @@ class ChefClient
 
   def save_role(role)
     @client.put_rest("roles/#{role['name']}",role)
+  end
+
+  def delete_node(machine)
+    @client.delete_rest("nodes/#{machine.private_hostname}")
   end
 
 end

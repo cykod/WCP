@@ -12,7 +12,7 @@ class Machines::LoadBalancer < Machines::Base
 
   def launch!
     balancer_name =  'webiva-' + machine.id.to_s[0..16]
-    instance = Amazon::LoadBalancerMachine.create_balancer(company.elb,
+    instance = Amazon::LoadBalancerInterface.create_balancer(company.elb,
                                                            balancer_name,
                                                            :availability_zone => cloud.options.availability_zone)
 
@@ -41,6 +41,6 @@ class Machines::LoadBalancer < Machines::Base
   protected
 
   def elb_machine
-    @dlb_machine ||= Amazon::LoadBalancerMachine.new(company.elb,self.machine.instance_id)
+    @dlb_machine ||= Amazon::LoadBalancerInterface.new(company.elb,self.machine.instance_id)
   end
 end

@@ -12,11 +12,22 @@ class Steps::Launch::BootstrapChef < Steps::Base
 
     fail_step("No servers") unless server_list.length > 0 
 
+    server_list.each do |machine|
+      begin
+        machine.ssh do |ssh|
+          puts ssh.exec!('uptime')
+        end
+      rescue Net::SSH::HostKeyMismatch => e
+        puts "Remembering new key: #{e.fingerprint}"
+        e.remember_host!
+        retry
+      end
+    end
 
     server_list.each do |server|
       sftp = server.ssh.sftp
 
-      sftp.mkdir!("chef")
+      sftp.mkdir!("chef") rescue Net::SFTP::StatusException
 
       sftp.file.open('chef/solo.rb','w') do |f|
         f.puts(<<-EOF)
@@ -59,7 +70,7 @@ PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/v
     
     cmd += " && sudo /var/lib/gems/1.8/bin/chef-solo -c ~/chef/solo.rb -j ~/chef/chef.json -r http://s3.amazonaws.com/chef-solo/bootstrap-latest.tar.gz"
     cmd += ' && sudo mv environment /etc/'
-    cmd += ' && echo "alias sudo=\'sudo env PATH=\\$PATH\'" >> ~/.bashrc'
+#    cmd += ' && echo "alias sudo=\'sudo env PATH=\\$PATH\'" >> ~/.bashrc'
     cmd += ' && sudo mv validation.pem /etc/chef/'
     cmd += ' && sudo /etc/init.d/chef-client stop'
     cmd += ' && sudo /var/lib/gems/1.8/bin/chef-client'

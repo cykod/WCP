@@ -171,6 +171,7 @@ class Cloud < BaseModel
   def migrator; machine_by_role('migrator'); end
 
   # Return lists of machines
+  def web_servers; machines_by_role('web'); end
   def queue_servers; machines_by_role('starling'); end
   def memcache_servers; machines_by_role('memcache'); end
 

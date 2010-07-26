@@ -1,7 +1,7 @@
 
 
 
-class Amazon::RdsMachine
+class Amazon::RdsInterface
 
   attr_reader :instance_id, :rds
 
@@ -17,7 +17,7 @@ class Amazon::RdsMachine
   end
 
   def self.run_instance(rds,aws_id,master_username,master_password,opts={})
-    Amazon::RdsMachine.new(rds,
+    Amazon::RdsInterface.new(rds,
                            rds.create_db_instance(
                              aws_id,
                              master_username,
