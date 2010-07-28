@@ -34,7 +34,7 @@ class Cloud < BaseModel
       self.modules_list.strip.split("\n").map(&:strip).reject(&:blank?).map { |elm|
         md,branch = elm.split(",")
         branch ||= "origin/master"
-        if !elm =~ /\:\/\//
+        if !(md =~ /git\@/)
           name = md.to_s.downcase
           md = "git://github.com/cykod/Webiva-#{md}.git"
           [ name , md, branch ]
