@@ -1,29 +1,33 @@
-
+require 'yaml'
 
 class Server < BaseModel
+
+  def self.info_hash
+    @@info_hash ||= YAML.load_file(Rails.root.join("config","config.yml"))
+  end
   
 
   def self.external_server_url
-    "http://cykodcore.cykod.com:4000"
+    info_hash['external_server_url']
   end
 
   def self.validation_pem_file
-    "/etc/chef/public_validation.pem"
+    info_hash['validation_pem_file'] 
   end
    
 
   def self.local_server_url
-    "http://localhost:4000"
+    info_hash['local_server_url']
   end
 
 
   def self.authorized_client_user
-    "pascal"
+    info_hash['authorized_client_user']
   end
 
 
   def self.authorized_client_pem_file
-    "/home/pascal/.chef/pascal.pem"
+    info_hash['authorized_client_pem_file']
   end
 
 end
