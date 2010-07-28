@@ -1,4 +1,6 @@
 %h1 Listing companies
+.action_links
+  = link_to 'New Company', new_company_path
 %table.main_table
   %tr
     %th Name
@@ -10,4 +12,3 @@
       %td= link_to 'Edit', edit_company_path(company)
       %td= link_to 'Destroy', company, :confirm => 'Are you sure?', :method => :delete
 %br/
-= link_to 'New Company', new_company_path

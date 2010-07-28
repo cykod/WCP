@@ -8,10 +8,12 @@
     = javascript_include_tag :defaults
     = csrf_meta_tag
   %body
-    #header
-      %h1 Webiva Cloud Platform
+    #header_wrapper 
+      #header
+        %h1 Webiva Cloud Platform
+        #links= top_links
+    #menu_wrapper
       #menu= render :partial => '/common/menu'
-      #links= top_links
     #container
       - if notice
         %p.notice= notice 
