@@ -96,6 +96,7 @@ template "home/webiva/.ssh/id_rsa" do
   group "webiva"
   mode "0700"
   source "id_rsa.erb"
+  variables({:gitkey => data_bag_item(node['wcp']['cloud'],"cloud")["gitkey"] })
 end
 
 deploy_revision "/home/webiva" do
