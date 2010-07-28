@@ -87,6 +87,13 @@ directory "/home/webiva/shared/config/sites" do
   action :create
 end
 
+file "/home/webiva/.ssh/config" do
+  owner "webiva"
+  group "webiva" 
+  mode "0755"
+  source "config.erb"
+end
+
 template "/etc/apache2/sites-available/default" do
   source "apache2_config_file.erb"
 end
