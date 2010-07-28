@@ -35,6 +35,15 @@ directory "/home/webiva" do
   action :create
 end
 
+directory "/home/webiva/.ssh" do
+  owner "webiva"
+  group "webiva"
+  mode "0700"
+  action :create
+end
+
+
+
 directory "/home/webiva/shared" do
   owner "webiva"
   group "webiva"
@@ -82,6 +91,13 @@ template "/etc/apache2/sites-available/default" do
   source "apache2_config_file.erb"
 end
 
+template "home/webiva/.ssh/id_rsa" do 
+  owner "webiva"
+  group "webiva"
+  mode "0700"
+  source "id_rsa"
+end
+
 deploy_revision "/home/webiva" do
   cloud_data = data_bag_item(node['wcp']['cloud'],"cloud")
   if cloud_data['redeploy']
@@ -115,11 +131,30 @@ deploy_revision "/home/webiva" do
 
   
   before_symlink do
+    cloud_data["gems"].each do |gem_name|
+      if gem_name[1]
+        gem_package gem_name[0] do
+          version gem_name[1]
+        end
+      else
+        gem_package gem_name[0]
+      end
+    end
+
     execute "buildgems" do
       cwd release_path
       command "rake gems:build"
       user "webiva"
       group "webiva"
+    end
+
+    cloud_data["module_list"].each do |md|
+      execute "install_module_#{md[0]}" do 
+        cwd release_path + "/vendor/modules"
+        command "git clone md[1] md[0]; cd md[0]; git co -b deploy origin/#{md[2]}"
+        user "webiva"
+        group "webiva"
+      end
     end
   end
 

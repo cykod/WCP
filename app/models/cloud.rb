@@ -23,13 +23,41 @@ class Cloud < BaseModel
 
   class Options < HashModel
     attributes :security_group => 'default', :availability_zone => 'us-east-1a'
-
     has_options :availability_zone, 
        ['us-east-1a','us-east-1b','us-east-1c','us-east-1d']
   end
 
   class ChefOptions < HashModel
-    attributes :repository => nil, :branch => 'HEAD', :redeploy => false
+    attributes :repository => nil, :branch => 'HEAD', :redeploy => false, :gems => '', :modules_list => '', :gitkey => ''
+
+    def module_array
+      self.modules_list.strip.split("\n").map(&:strip).reject(&:blank?).map { |elm|
+        md,branch = elm.split(",")
+        branch ||= "origin/master"
+        if !elm =~ /\:\/\//
+          name = md.to_s.downcase
+          md = "git://github.com/cykod/Webiva-#{md}.git"
+          [ name , md, branch ]
+        else
+          md =~ /webiva\-([a-zA-Z0-9_]+)$/
+          name = $1
+          [ name, md, branch ]
+        end
+      }
+    end
+
+    def gems_array
+        self.gems.strip.split("\n").map(&:strip).reject(&:blank?).map { |elm|
+          elm,version = elm.split(",")
+          [ elm, version ]
+        }
+    end
+
+    def cloud_hash
+      self.to_hash.merge(:module_list => self.module_array,
+                         :gems => self.gems_array
+                        )
+    end
   end
 
   class ConfigOptions < HashModel
@@ -65,7 +93,7 @@ class Cloud < BaseModel
 
   def save_cloud_databag(opts=nil)
     client = ChefClient.new 
-    client.save_databag(self,'cloud',(opts || self.chef_options).to_hash)
+    client.save_databag(self,'cloud',(opts || self.chef_options).cloud_hash)
   end
 
   def force_redeploy

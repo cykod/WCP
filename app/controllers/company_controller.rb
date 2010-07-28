@@ -9,7 +9,7 @@ class CompanyController < ApplicationController
   def update
     return redirect_to company_url unless params[:company]
     @company = myself.company
-    @company.attributes = params[:company].slice(:name, :aws_key, :aws_secret, :key_name, :certificate)
+    @company.attributes = params[:company].slice(:name, :aws_key, :aws_secret, :key_name, :certificate, :gitkey)
 
     if @company.valid? && @company.save
       flash[:notice] = "Company information updated"

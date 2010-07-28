@@ -13,5 +13,8 @@
       = cf.semantic_errors
       = cf.input :repository, :hint => 'Leave blank for default Webiva repository'
       = cf.input :branch
+      = cf.input :gems, :as => :text
+      = cf.input :modules_list, :as => :text
+      = cf.input :gitkey, :as => :text
   - f.buttons do
     = f.commit_button
