@@ -1,0 +1,5 @@
+external_server_url: http://cykodcore.cykod.com:4000
+validation_pem_file: /etc/chef/public_validation.pem
+local_server_url: http://localhost:4000
+authorized_client_user: webiva
+authorized_client_pem_file: /var/webiva/.chef/webiva.pem

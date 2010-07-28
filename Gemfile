@@ -27,7 +27,7 @@ gem "formtastic", :git => "git://github.com/justinfrench/formtastic.git", :branc
 
 gem "right_aws"
 
-gem "json", "1.2.4"
+gem "json", "1.1.6"
 # gem "amazon-ec2", :require => "AWS"
 gem "couch_potato", :git => "git://github.com/langalex/couch_potato.git"
 gem "simply_stored", :require => 'simply_stored/couch'
