@@ -87,7 +87,7 @@ directory "/home/webiva/shared/config/sites" do
   action :create
 end
 
-file "/home/webiva/.ssh/config" do
+template "/home/webiva/.ssh/config" do
   owner "webiva"
   group "webiva" 
   mode "0755"
