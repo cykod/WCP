@@ -63,7 +63,7 @@ dependencies:
   json: 
     group: 
     - :default
-    version: = 1.2.4
+    version: = 1.1.6
   rocking_chair: 
     group: 
     - :test
@@ -138,7 +138,7 @@ specs:
 - couchrest: 
     version: "0.37"
 - json: 
-    version: 1.2.4
+    version: 1.1.6
 - couch_potato: 
     version: 0.2.32
     source: 0
@@ -203,7 +203,7 @@ specs:
     version: 0.10.3
 - uuidtools: 
     version: 2.1.1
-hash: c0e228f20330d2207d24a1a4d9a4b280af24d9a4
+hash: 15ccd624d39568a60a9e8b42fed4c17ffdd50b9d
 sources: 
 - Git: 
     uri: git://github.com/langalex/couch_potato.git
