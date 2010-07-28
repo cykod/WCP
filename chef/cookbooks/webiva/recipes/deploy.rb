@@ -95,7 +95,7 @@ template "home/webiva/.ssh/id_rsa" do
   owner "webiva"
   group "webiva"
   mode "0700"
-  source "id_rsa"
+  source "id_rsa.erb"
 end
 
 deploy_revision "/home/webiva" do
