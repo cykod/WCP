@@ -1,0 +1,44 @@
+{
+  "recommendations": {
+
+  },
+  "maintainer": "Opscode, Inc.",
+  "description": "Installs zsh",
+  "suggestions": {
+
+  },
+  "maintainer_email": "cookbooks@opscode.com",
+  "attributes": {
+
+  },
+  "conflicting": {
+
+  },
+  "dependencies": {
+
+  },
+  "providing": {
+
+  },
+  "platforms": {
+    "debian": [
+
+    ],
+    "ubuntu": [
+
+    ]
+  },
+  "version": "0.7.1",
+  "recipes": {
+    "zsh": "Installs zsh"
+  },
+  "replacing": {
+
+  },
+  "license": "Apache 2.0",
+  "long_description": "",
+  "name": "zsh",
+  "groupings": {
+
+  }
+}

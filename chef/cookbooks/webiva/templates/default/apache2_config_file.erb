@@ -1,0 +1,39 @@
+ <VirtualHost *:80>
+   ServerName mywebiva.com
+   ServerAlias www.mywebiva.com
+   DocumentRoot /home/webiva/current/public
+
+   PassengerDefaultUser webiva 
+
+   RailsEnv production 
+
+
+   # We don't want any user uploaded scripts to be executed in the public directory
+   # This should be the public/system directory of your webiva install
+   <Directory "/home/webiva/current/public/system">
+         Options FollowSymLinks
+         AllowOverride Limit
+         Order allow,deny
+         Allow from all
+         <IfModule mod_php5.c>
+          php_admin_flag engine off
+        </IfModule>
+        AddType text/plain .html .htm .shtml .php .php3 .phtml .phtm .pl
+   </Directory>
+
+   XSendFile on
+   XSendFileAllowAbove on
+
+   <Location />
+   # enable tracking uploads in /
+   TrackUploads On
+   </Location>
+
+   <Location /website/file/progress>
+   # enable upload progress reports in /website/file/progress
+   ReportUploads On
+   </Location>
+
+    
+
+</VirtualHost>
