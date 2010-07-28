@@ -73,7 +73,7 @@ class Steps::Launch::WriteServerConfigFiles < Steps::Base
        sftp.file.open("/home/webiva/shared/config/defaults.yml","w") do |f|
          f.puts(YAML.dump(defaults_yaml_data.merge(
                'starling' => "#{server.private_hostname}:15151"
-         ))
+         )))
        end
 
        sftp.file.open("/home/webiva/shared/config/cms.yml","w") do |f|
