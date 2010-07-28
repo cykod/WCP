@@ -1,0 +1,16 @@
+
+set up the public validation pem file to copy over
+
+
+get knife installed
+
+Create the wcp database
+
+create the primary users and company
+
+cd chef
+./upload.ch
+
+rake wcp:configure
+
+
