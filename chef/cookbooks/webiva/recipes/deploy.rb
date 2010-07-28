@@ -159,7 +159,7 @@ deploy_revision "/home/webiva" do
     cloud_data["module_list"].each do |md|
       execute "install_module_#{md[0]}" do 
         cwd release_path + "/vendor/modules"
-        command "git clone #{md[1]} #{md[0]}; cd #{md[0]}; git co -b deploy origin/#{md[2]}"
+        command "git clone #{md[1]} #{md[0]}; cd #{md[0]}; git checkout -b deploy origin/#{md[2]}"
         user "webiva"
         group "webiva"
       end
