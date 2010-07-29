@@ -22,11 +22,14 @@ class Steps::Launch::LaunchMasterRdsInstance < Steps::Base
 
       fail_step("Missing RDS Machine Blueprint") unless machine_blueprint
 
-      fail_step('Existing RDS Server') if cloud.master_db
 
-      machine = self.deployment.add_machine([:master_db],machine_blueprint)
-      machine.launch!
-      step.options.machine_id = machine.id
+      if !cloud.master_db
+        machine = self.deployment.add_machine([:master_db],machine_blueprint)
+        machine.launch!
+        step.options.machine_id = machine.id
+      else
+        step.options.machine_id = cloud.master_db.id
+      end
     end
   end
 
