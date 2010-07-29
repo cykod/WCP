@@ -102,7 +102,7 @@ class Steps::Launch::WriteServerConfigFiles < Steps::Base
       fail_step("No servers") unless servers.length > 0
       servers.each do |server|
         server.ssh do |ssh|
-          ssh.exec!("cd /home/webiva/current; sudo -u webiva ./script/update_server_info.rb")
+          puts ssh.exec!("cd /home/webiva/current; sudo -u webiva ./script/update_server_info.rb")
         end
       end
 

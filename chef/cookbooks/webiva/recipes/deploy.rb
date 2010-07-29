@@ -76,7 +76,7 @@ end
 directory "/home/webiva/shared/system" do
   owner "webiva"
   group "webiva"
-  mode "0775"
+  mode "0777"
   action :create
 end
 
@@ -106,7 +106,7 @@ template "home/webiva/.ssh/id_rsa" do
   variables({:gitkey => data_bag_item(node['wcp']['cloud'],"cloud")["gitkey"] })
 end
 
-deploy_revision "/home/webiva" do
+deploy "/home/webiva" do
   cloud_data = data_bag_item(node['wcp']['cloud'],"cloud")
   if cloud_data['redeploy']
     action :force_deploy

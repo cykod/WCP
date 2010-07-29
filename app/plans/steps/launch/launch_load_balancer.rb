@@ -20,12 +20,14 @@ class Steps::Launch::LaunchLoadBalancer < Steps::Base
 
       fail_step("Missing Load Balancer Machine") unless machine_blueprint
 
-      fail_step('Existing Load balancer') if cloud.load_balancer
-
-      machine = self.deployment.add_machine([:balancer],machine_blueprint)
-      machine.launch!
-
-      step.options.machine_id = machine.id
+      if cloud.load_balancer 
+        # Let this use it's existing loadbalancer if we have one
+        step.options.machine_id = cloud.load_balancer.id
+      else
+        machine = self.deployment.add_machine([:balancer],machine_blueprint)
+        machine.launch!
+        step.options.machine_id = machine.id
+      end
     else
       machine = Machine.find(step.options.machine_id)
       load_balancer = Amazon::LoadBalancerInterface.new(company.elb,machine.instance_id)
