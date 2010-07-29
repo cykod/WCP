@@ -10,6 +10,8 @@ class DeploymentMonitor < Monitor
   property :active_step, :type => Fixnum
   property :active, :type => :boolean, :default => true
 
+  view :by_active, :key => :active
+
   def self.run_monitor!(deployment,step)
     self.create(:deployment => deployment, :active_step => step)
   end

@@ -7,6 +7,7 @@ class LaunchMonitor < Monitor
   belongs_to :machine
 
   property :active, :type => :boolean, :default => true
+  view :by_active, :key => :active
 
   def self.run_monitor!(machine)
     self.create(:machine => machine)
