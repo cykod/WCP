@@ -1,0 +1,19 @@
+%h1= @deployment.name
+
+.right_action
+  = link_to 'Destroy', @deployment, :confirm => 'Destroy this deployment?', :method => :delete
+
+.clear{:style => 'clear:both;'} 
+
+%ul#blueprint_steps
+  - @deployment.blueprint.steps.each_with_index do |step,index|
+    %li.line_item{:id => "#blueprint_step_#{step.id}"}
+      - if @deployment.active_step > index
+        %span.step_finished= "##{step.position} #{step.step_name} (#{step.substep})"
+      - elsif @deployment.active_step == index
+        %span.step_active= "##{step.position} #{step.step_name}  (#{step.substep})"
+      - else
+        %span.step_wiating= "##{step.position} #{step.step_name}  (#{step.substep})"
+   
+
+= link_to 'Back', deployments_path

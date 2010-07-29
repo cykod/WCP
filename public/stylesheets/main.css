@@ -140,3 +140,8 @@ li.line_item { height:20px; padding:3px; border:1px solid #CCCCCC; margin:3px; 0
 li.line_item .blueprint_name { display:block; float:left; width:260px; text-align:left; font-weight:bold; }
 li.line_item .blueprint_descripiont { display:block; float:left; width:300px; text-align:right; }
 li.line_item a { float:right; }
+
+
+li.line_item .step_finished { font-style:italic; }
+li.line_item .step_active { font-weight:bold; }
+li.line_item .step_finished { }
