@@ -149,9 +149,9 @@ deploy "/home/webiva" do
       end
     end
 
-    execute "buildgems" do
+    execute "killgems" do
       cwd release_path
-      command "rake gems:build"
+      command "rm -rf vendor/gems"
       user "webiva"
       group "webiva"
     end
