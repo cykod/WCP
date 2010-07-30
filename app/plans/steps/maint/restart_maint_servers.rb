@@ -1,7 +1,7 @@
 
-class Steps::Maint::RestartAllServers < Steps::Base
+class Steps::Maint::RestartMainServers < Steps::Base
 
-  step_info "(M2) Restart All Web and Workling Servers"
+  step_info "(M2) Restart Deployment Web and Workling Servers"
 
   parameter :restart_apache, :as => :boolean, :hint => 'Restart Apache as well?'
 
@@ -9,7 +9,7 @@ class Steps::Maint::RestartAllServers < Steps::Base
   end
 
   def execute!(step)
-    machines = cloud.servers.select(&:active?)
+    machines = deployment.servers.select(&:active?)
 
     machines.each do |machine|
 
