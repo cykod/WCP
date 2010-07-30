@@ -68,7 +68,7 @@ PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/v
     cmd += ' && sudo apt-get --yes install ruby ruby1.8-dev libopenssl-ruby1.8 rdoc build-essential wget rubygems'
     cmd += ' && sudo gem install chef --no-rdoc --no-ri'
     
-    cmd += " && sudo /var/lib/gems/1.8/bin/chef-solo -c ~/chef/solo.rb -j ~/chef/chef.json -r http://s3.amazonaws.com/chef-solo/bootstrap-latest.tar.gz"
+    cmd += " && sudo /var/lib/gems/1.8/bin/chef-solo -c ~/chef/solo.rb -j ~/chef/chef.json -r http://s3.amazonaws.com/webiva/chef-bootstrap-webiva.tar.gz"
     cmd += ' && sudo mv environment /etc/'
 #    cmd += ' && echo "alias sudo=\'sudo env PATH=\\$PATH\'" >> ~/.bashrc'
     cmd += ' && sudo mv validation.pem /etc/chef/'
