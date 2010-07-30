@@ -27,7 +27,7 @@ class Steps::Maint::RedeployServers < Steps::Base
       migrator.ssh do |ssh|
         puts client.exec_chef_client(ssh).to_s
 
-        cmd = " cd /home/webiva/current; "
+        cmd = " cd /home/webiva/current "
         cmd += " && rake cms:migrate_system_db "
         cmd += " && rake cms:migrate_domain_dbs "
         cmd += " && rake cms:migrate_domain_components "
