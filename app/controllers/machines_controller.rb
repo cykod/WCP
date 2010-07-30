@@ -37,7 +37,12 @@ class MachinesController < ApplicationController
 
   def destroy
     @machine = Machine.find(params[:id])
-    @machine.terminate!
+    @machine.check_status!
+    if @machine.active?
+      @machine.terminate!
+    else
+      @machine.destroy
+    end
 
     redirect_to :action => 'index'
   end

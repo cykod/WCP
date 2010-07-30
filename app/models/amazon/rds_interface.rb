@@ -16,6 +16,19 @@ class Amazon::RdsInterface
     end
   end
 
+  def self.restore_instance(rds,aws_id,snapshot_aws_id,opts={})
+    Amazon::RdsInterface.new(rds,
+                             rds.restore_db_instance_from_db_snapshot(
+                               snapshot_aws_id,
+                               aws_id,
+                               opts)
+                            )
+  end
+
+  def snapshot(name)
+    @rds.create_db_snapshot(name,@instance_id)
+  end
+
   def self.run_instance(rds,aws_id,master_username,master_password,opts={})
     Amazon::RdsInterface.new(rds,
                            rds.create_db_instance(
@@ -63,9 +76,14 @@ class Amazon::RdsInterface
      rescue RightAws::AwsError
        @internal_status = { :status => 'deleted' }
      end
-    else
-      @internal_status
-    end
+     @internal_status ||= {}
+   end
+
+   @internal_status
+  end
+
+  def master_username
+    internal_status[:master_username]
   end
 
   def hostname

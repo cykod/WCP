@@ -12,16 +12,16 @@ class Steps::Terminate::DeauthorizeServersFromDb < Steps::Base
   def execute!(step)
     db_machine = cloud.master_db
 
-    fail_step('Missing Master Database') unless db_machine
- 
-    rds_machine = Amazon::RdsInterface.new(company.rds,db_machine.instance_id)
-    machines = deployment.servers
-    
-    machines.each do |m|
-      m.ssh do |ssh|
-        ssh.exec!("cd /home/webiva/current; script/remove_server_info.rb")
+    if db_machine
+      rds_machine = Amazon::RdsInterface.new(company.rds,db_machine.instance_id)
+      machines = deployment.servers
+
+      machines.each do |m|
+        m.ssh do |ssh|
+          ssh.exec!("cd /home/webiva/current; script/remove_server_info.rb")
+        end
+        rds_machine.deauthorize_ip_address(cloud.options.security_group,m.private_ip_address)
       end
-      rds_machine.deauthorize_ip_address(cloud.options.security_group,m.private_ip_address)
     end
   end
 

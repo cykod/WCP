@@ -11,12 +11,13 @@ class Steps::Terminate::RemoveFromLoadBalancer < Steps::Base
   def execute!(step)
     balancer = cloud.load_balancer
 
-    fail_step("Missing Load Balancer") unless balancer
 
-    balancer_machine = Amazon::LoadBalancerInterface.new(company.elb,balancer.instance_id)
+    if balancer
+      balancer_machine = Amazon::LoadBalancerInterface.new(company.elb,balancer.instance_id)
+      servers = deployment.web_servers
+      balancer_machine.deregister_instances(servers.map(&:instance_id))
+    end
 
-    servers = deployment.web_servers
-    balancer_machine.deregister_instances(servers.map(&:instance_id))
   end
 
 

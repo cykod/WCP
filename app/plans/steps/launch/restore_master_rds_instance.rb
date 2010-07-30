@@ -1,14 +1,15 @@
 
-class Steps::Launch::LaunchMasterRdsInstance < Steps::Base
+class Steps::Launch::RestoreMasterRdsInstance < Steps::Base
 
-  step_info "(D1) Launch the Master database instance", :substeps => 2
+  step_info "(D1-Restore) Restore an RDS instance from a snapshot", :substeps => 2
 
   deployment_parameter(:rds_machine_blueprint, Proc.new {  
                 { :as => :select,
-                  :collection => MachineBlueprint.rds_server_select_options
+                  :collection => MachineBlueprint.rds_restore_select_options
                 } })
 
-  deployment_parameter(:master_password)
+  deployment_parameter(:snapshot_name)
+  deployment_parameter(:master_password, :hint => 'Must match the password from the original RDS server setup')
 
   class Options < HashModel
     attributes :machine_id => nil

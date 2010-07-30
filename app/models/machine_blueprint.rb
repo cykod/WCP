@@ -76,6 +76,14 @@ class MachineBlueprint < BaseModel
     self.select_options(self.all.select { |b| b.instance_type == 'rds' })
   end
 
+  def self.rds_server_select_options
+    self.select_options(self.all.select { |b| b.launcher.to_s == "Machines::RdsServer" })
+  end
+
+  def self.rds_restore_select_options
+    self.select_options(self.all.select { |b| b.launcher.to_s == "Machines::RdsServerSnapshot" })
+  end
+
   def self.ec2_select_options
     self.select_options(self.all.select { |b| b.instance_type == 'ec2' })
   end

@@ -167,7 +167,7 @@ class Cloud < BaseModel
       count_by_role('master_db') == 1 &&
       count_by_role('memcache') > 0 &&
       count_by_role('workling') > 0 &&
-      count_by_role('starling') == 1
+      count_by_role('starling') > 0
   end
 
   def refresh_machine_status!

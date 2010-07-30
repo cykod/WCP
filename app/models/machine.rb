@@ -71,9 +71,9 @@ class Machine < BaseModel
     end
   end
 
-  def initialize_rds_options
-    self.master_username = "Webiva" + BaseModel.generate_hash[0..8]
-    self.master_password = BaseModel.generate_hash[0..14]
+  def initialize_rds_options(pw,username=nil)
+    self.master_username = username || "Webiva" + BaseModel.generate_hash[0..8]
+    self.master_password = pw
   end
 
   def save_chef_node_information(restart=false)

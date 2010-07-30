@@ -1,5 +1,5 @@
 
-class Steps::Maint::RestartMainServers < Steps::Base
+class Steps::Maint::RestartMaintServers < Steps::Base
 
   step_info "(M2) Restart Deployment Web and Workling Servers"
 
