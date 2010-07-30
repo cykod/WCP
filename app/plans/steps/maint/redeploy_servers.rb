@@ -28,9 +28,9 @@ class Steps::Maint::RedeployServers < Steps::Base
         puts client.exec_chef_client(ssh).to_s
 
         cmd = " cd /home/webiva/current "
-        cmd += " && rake cms:migrate_system_db "
-        cmd += " && rake cms:migrate_domain_dbs "
-        cmd += " && rake cms:migrate_domain_components "
+        cmd += " && RAILS_ENV=production sudo -u webiva rake cms:migrate_system_db "
+        cmd += " && RAILS_ENV=production sudo -u webiva rake cms:migrate_domain_dbs "
+        cmd += " && RAILS_ENV=production sudo -u webiva rake cms:migrate_domain_components "
 
         puts ssh.exec!(cmd).to_s
       end
