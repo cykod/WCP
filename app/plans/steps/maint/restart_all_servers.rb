@@ -27,7 +27,7 @@ class Steps::Maint::RestartAllServers < Steps::Base
           cmd += " && sudo apache2ctl restart"
         end
 
-        puts "Server #{machine.ip_address} Restart: " + ssh.exec!(cmd)
+        puts "Server #{machine.ip_address} Restart: " + ssh.exec!(cmd).to_s
       end
     end
   end
