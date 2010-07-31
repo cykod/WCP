@@ -100,7 +100,7 @@ class Cloud < BaseModel
 
   def chef_options(val=nil)
     return @chef_options if @chef_options && !val
-    @chef_options = ChefOptions.new(val  ? self.chef_deatils.merge(val) : self.chef_details)
+    @chef_options = ChefOptions.new(val  ? self.chef_details.merge(val) : self.chef_details)
   end
 
   def chef_options=(val)
