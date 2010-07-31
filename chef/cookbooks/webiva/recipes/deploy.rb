@@ -135,7 +135,7 @@ end
 
 template "/etc/apache2/sites-available/default" do
   source "apache2_config_file.erb"
-  variables({:ssl =>  cloud_data['private_key_value'].to_s != ''})
+  variables({:ssl =>  cloud_data['ssl_private_key_value'].to_s != ''})
 end
 
 cron "webiva_cron" do
