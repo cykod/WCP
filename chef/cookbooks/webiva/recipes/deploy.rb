@@ -104,7 +104,7 @@ end
 cloud_data = data_bag_item(node['wcp']['cloud'],"cloud")
 
 if cloud_data['ssl_private_key_value'].to_s != ''
-  include_recipe 'apache2::mod_ssl" 
+  include_recipe "apache2::mod_ssl" 
 
 
   template "/home/webiva/ssl/webiva.key" do
