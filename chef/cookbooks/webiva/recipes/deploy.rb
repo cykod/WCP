@@ -122,6 +122,15 @@ if cloud_data['private_key_value'].to_s != '')
     variables({:certificate => cloud_data["certificate_value"]})
   end
 
+  cookbook_file "/home/webiva/ssl/gd_bundle.crt" do
+    source "gd_bundle.crt"
+    owner "webiva"
+    group "webiva"
+    mode "0700"
+    action :create
+
+  end
+
 end
 
 template "/etc/apache2/sites-available/default" do
