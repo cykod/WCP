@@ -28,21 +28,21 @@ class Cloud < BaseModel
   end
 
   class ChefOptions < HashModel
-    attributes :repository => nil, :branch => 'HEAD', :redeploy => false, :gems => '', :modules_list => '', :gitkey => '', :private_key_value => '',:certificate_value => ''
+    attributes :repository => nil, :branch => 'HEAD', :redeploy => false, :gems => '', :modules_list => '', :gitkey => '', :ssl_private_key_value => '',:certificate_value => ''
 
     def certificate=(val)
-      self.certificate_value = val unless val.strip.blank?
+      @certificate_value = val unless val.strip.blank?
     end
 
     def certificate; nil; end
     def has_certificate?; !self.certificate_value.blank?; end
 
     def private_key=(val)
-      self.private_key_value = val unless val.strip.blank?
+      @ssl_private_key_value = val unless val.strip.blank?
     end
 
     def private_key; nil; end
-    def has_private_key?; !self.private_key_value.blank?; end
+    def has_private_key?; !self.ssl_private_key_value.blank?; end
 
 
 
