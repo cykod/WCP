@@ -94,16 +94,55 @@ template "/home/webiva/.ssh/config" do
   source "config.erb"
 end
 
+directory "/home/webiva/ssl" do
+  owner "webiva"
+  group "webiva"
+  mode "0700"
+  action :create 
+end
+
+cloud_data = data_bag_item(node['wcp']['cloud'],"cloud")
+
+if cloud_data['private_key_value'].to_s != '')
+  template "/home/webiva/ssl/webiva.key" do
+    owner "webiva"
+    group "webiva"
+    mode "0700"
+    action :create
+    source "webiva.key.erb"
+    variables({:certificate => cloud_data["private_key_value"]})
+  end
+
+  template "/home/webiva/ssl/webiva.crt" do
+    owner "webiva"
+    group "webiva"
+    mode "0700"
+    action :create
+    source "webiva.crt.erb"
+    variables({:certificate => cloud_data["certificate_value"]})
+  end
+
+end
+
 template "/etc/apache2/sites-available/default" do
   source "apache2_config_file.erb"
+  variables({:ssl =>  cloud_data['private_key_value'].to_s != ''})
 end
+
+cron "webiva_cron" do
+  minute 10
+  user "webiva"
+  command "cd /home/webiva/current; RAILS_ENV=production rake cms:domain_cron"
+  only_if { node['wcp']['roles'].include?('cron') }
+end
+
 
 template "home/webiva/.ssh/id_rsa" do 
   owner "webiva"
   group "webiva"
   mode "0700"
   source "id_rsa.erb"
-  variables({:gitkey => data_bag_item(node['wcp']['cloud'],"cloud")["gitkey"] })
+  variables({:gitkey => cloud_data["gitkey"] })
 end
 
 deploy "/home/webiva" do

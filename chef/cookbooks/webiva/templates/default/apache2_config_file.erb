@@ -1,5 +1,5 @@
  <VirtualHost *:80>
-   ServerName mywebiva.com
+   ServerName webiva.com
    ServerAlias www.mywebiva.com
    DocumentRoot /home/webiva/current/public
 
@@ -38,9 +38,58 @@
    LogLevel info
    ErrorLog /home/webiva/current/log/webiva-error.log
    CustomLog /home/webiva/current/log/webiva-access.log combined
-   
-
-
-    
-
 </VirtualHost>
+
+<% if @ssl -%>
+ <VirtualHost *:443>
+   ServerName webiva.com
+   ServerAlias www.webiva.com
+   DocumentRoot /home/webiva/current/public
+
+   PassengerDefaultUser webiva 
+
+   RailsEnv production 
+
+   PassengerMaxPoolSize 25
+
+   # We don't want any user uploaded scripts to be executed in the public directory
+   # This should be the public/system directory of your webiva install
+   <Directory "/home/webiva/current/public/system">
+         Options FollowSymLinks
+         AllowOverride Limit
+         Order allow,deny
+         Allow from all
+         <IfModule mod_php5.c>
+          php_admin_flag engine off
+        </IfModule>
+        AddType text/plain .html .htm .shtml .php .php3 .phtml .phtm .pl
+   </Directory>
+
+   XSendFile on
+   XSendFileAllowAbove on
+
+   <Location />
+   # enable tracking uploads in /
+   TrackUploads On
+   </Location>
+
+   <Location /website/file/progress>
+   # enable upload progress reports in /website/file/progress
+   ReportUploads On
+   </Location>
+
+   LogLevel info
+   ErrorLog /home/webiva/current/log/webiva-error.log
+   CustomLog /home/webiva/current/log/webiva-access.log combined
+
+   SSLEngine on
+   SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
+   BrowserMatch ".*MSIE.*" \
+          nokeepalive ssl-unclean-shutdown \
+          downgrade-1.0 force-response-1.0
+
+   SSLCertificateFile /home/webiva/ssl/webiva.crt
+   SSLCertificateKeyFile /home/webiva/ssl/webiva.key
+   SSLCertificateChainFile /home/webiva/ssl/gd_bundle.crt
+</VirtualHost>
+<% end -%>

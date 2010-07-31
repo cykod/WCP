@@ -1,7 +1,7 @@
 
 class Steps::Maint::RedeployServers < Steps::Base
 
-  step_info "(R1) Rerun the deploy task and migrate" , :substeps => 2
+  step_info "(R1) Rerun the deploy task and migrate" , :substeps => 3 
 
   class Options < HashModel
   end
