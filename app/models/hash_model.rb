@@ -120,7 +120,7 @@ class HashModel
     end
     @passed_hash = sym_hsh
     @hsh = self.defaults.merge(sym_hsh)
-    defaults.each do |def,value|
+    defaults.each do |key,value|
       self.send("#{key.to_s}=",value) 
     end
     @hsh.each do |key,value|
