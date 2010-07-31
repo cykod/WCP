@@ -31,14 +31,14 @@ class Cloud < BaseModel
     attributes :repository => nil, :branch => 'HEAD', :redeploy => false, :gems => '', :modules_list => '', :gitkey => '', :private_key_value => '',:certificate_value => ''
 
     def certificate=(val)
-      self.certificate_value = val if !val.strip.blank?
+      self.certificate_value = val unless val.strip.blank?
     end
 
     def certificate; nil; end
     def has_certificate?; !self.certificate_value.blank?; end
 
     def private_key=(val)
-      self.private_key_value = val if !val.strip.blank?
+      self.private_key_value = val unless val.strip.blank?
     end
 
     def private_key; nil; end
@@ -100,7 +100,7 @@ class Cloud < BaseModel
 
   def chef_options(val=nil)
     return @chef_options if @chef_options && !val
-    @chef_options = ChefOptions.new(val || self.chef_details)
+    @chef_options = ChefOptions.new(val  ? self.chef_deatils.merge(val) : self.chef_details)
   end
 
   def chef_options=(val)
