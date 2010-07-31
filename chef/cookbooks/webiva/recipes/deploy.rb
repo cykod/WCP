@@ -103,14 +103,14 @@ end
 
 cloud_data = data_bag_item(node['wcp']['cloud'],"cloud")
 
-if cloud_data['private_key_value'].to_s != ''
+if cloud_data['ssl_private_key_value'].to_s != ''
   template "/home/webiva/ssl/webiva.key" do
     owner "webiva"
     group "webiva"
     mode "0700"
     action :create
     source "webiva.key.erb"
-    variables({:certificate => cloud_data["private_key_value"]})
+    variables({:private_key => cloud_data["ssl_private_key_value"]})
   end
 
   template "/home/webiva/ssl/webiva.crt" do
