@@ -1,5 +1,5 @@
 
-class Steps::Maint::RestartAllWorklingServers < Steps::Base
+class Steps::Maint::RestartWorklingServers < Steps::Base
 
   step_info "(M2) Restart All Workling Servers in cloud"
 
