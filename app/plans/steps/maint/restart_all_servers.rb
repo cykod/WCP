@@ -20,7 +20,8 @@ class Steps::Maint::RestartAllServers < Steps::Base
         end
 
         if machine.workling_server?
-          cmd += " && sudo -u webiva ./script/workling_client restart"
+          cmd += " && sudo -u webiva ./script/workling_client stop"
+          cmd += " && sudo -u webiva ./script/workling_client start"
         end
 
         if deployment.blueprint_options.restart_apache.to_i == 1
