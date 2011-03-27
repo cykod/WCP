@@ -1,6 +1,7 @@
 
 class Deployment < BaseModel
-  include SimplyStored::Couch
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
   belongs_to :company
   belongs_to :cloud
@@ -8,16 +9,16 @@ class Deployment < BaseModel
 
   attr_accessor :create_execute
 
-  property :active_step, :type => Fixnum, :default => -1
-  property :completed_step, :type => Fixnum, :default => -1
+  field :active_step, :type => Fixnum, :default => -1
+  field :completed_step, :type => Fixnum, :default => -1
 
-  property :deployment_options_data, :type => Hash, :default => {}
-  property :data, :type => Hash, :default => {}
-  property :timeout_date, :type => Time
-  property :status, :default => 'created'
-  property :failure_description 
+  field :deployment_options_data, :type => Hash, :default => {}
+  field :data, :type => Hash, :default => {}
+  field :timeout_date, :type => Time
+  field :status, :default => 'created'
+  field :failure_description 
 
-  property :noted, :type => :boolean, :default => nil
+  field :noted, :type => Boolean, :default => nil
 
   has_many :machines
   has_many :deployment_step_data, :dependent => :destroy
@@ -136,7 +137,7 @@ class Deployment < BaseModel
     blueprint_step = self.blueprint.steps[step_number]
     identity_hash = blueprint_step.identity_hash
 
-    step = DeploymentStepDatum.find_by_deployment_id_and_blueprint_identity_hash(self.id,identity_hash) 
+    step = DeploymentStepDatum.where(:deployment_id => self.id,:blueprint_identity_hash => identity_hash)
     unless step
       step = DeploymentStepDatum.new(:deployment_id => self.id,:blueprint_identity_hash => identity_hash)
     end

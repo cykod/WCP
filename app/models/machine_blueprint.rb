@@ -1,19 +1,20 @@
 
 
 class MachineBlueprint < BaseModel
-  include SimplyStored::Couch
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
   has_many :machines
 
-  property :name
-  property :identifier
+  field :name
+  field :identifier
 
-  property :launcher_class
+  field :launcher_class
 
-  property :instance_type
-  property :login_user, :default => 'ubuntu'
+  field :instance_type
+  field :login_user, :default => 'ubuntu'
 
-  property :options_data, :type => Hash, :default => {}
+  field :options_data, :type => Hash, :default => {}
 
   before_save :set_instance_type
 
@@ -40,15 +41,15 @@ class MachineBlueprint < BaseModel
     parameters.map { |elm| elm[0] }
   end
 
-  def options(opts=nil)
+  def config(opts=nil)
     return @options_object if @options_object && !opts
     @options_object = Options.new(opts || self.options_data)
     @options_object.additional_vars(self.parameters_list)
     @options_object
   end
 
-  def options=(val)
-    self.options_data = options(val).to_hash
+  def config=(val)
+    self.options_data = blueprint_options(val).to_hash
   end
 
 
@@ -65,7 +66,7 @@ class MachineBlueprint < BaseModel
   end
    
   def self.fetch(identifier)
-    self.find_by_identifier(identifier)
+    self.where(:identifier => identifier).first
   end
   
   def self.select_options(elements=nil)

@@ -1,8 +1,9 @@
 class Blueprint < BaseModel
-  include SimplyStored::Couch
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
-  property :name
-  property :blueprint_options_data, :type => Hash, :default => {}
+  field :name
+  field :blueprint_options_data, :type => Hash, :default => {}
 
   validates_presence_of :name
 
@@ -49,7 +50,7 @@ class Blueprint < BaseModel
      opts
   end
 
-  def options(opts)
+  def config(opts)
     opts = Options.new(opts)
     opts.additional_vars(self.parameters_list)
     opts

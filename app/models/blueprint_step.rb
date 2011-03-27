@@ -1,15 +1,16 @@
 
 
 class BlueprintStep
-  include SimplyStored::Couch
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
   belongs_to :blueprint
-  property :identity_hash
-  property :position, :type => Fixnum
-  property :substep, :type => Fixnum
-  property :name
-  property :step_class_name
-  property :step_options_class_name
+  field :identity_hash
+  field :position, :type => Fixnum
+  field :substep, :type => Fixnum
+  field :name
+  field :step_class_name
+  field :step_options_class_name
 
   def initialize_step_data(step_data)
    step_data.options_class_name = self.step_options_class_name 

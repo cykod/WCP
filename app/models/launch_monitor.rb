@@ -1,13 +1,13 @@
 
 
 class LaunchMonitor < Monitor
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
-  include SimplyStored::Couch
 
   belongs_to :machine
 
-  property :active, :type => :boolean, :default => true
-  view :by_active, :key => :active
+  field :active, :type => Boolean, :default => true
 
   def self.run_monitor!(machine)
     self.create(:machine => machine)
@@ -37,7 +37,7 @@ class LaunchMonitor < Monitor
 
 
   def self.monitor_launches 
-    LaunchMonitor.find_all_by_active(true).each do |monitor|
+    LaunchMonitor.where(:action => true).each do |monitor|
       monitor.monitor_cycle
     end
   end

@@ -2,15 +2,14 @@
 
 
 class DeploymentMonitor < Monitor
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
-  include SimplyStored::Couch
 
   belongs_to :deployment
 
-  property :active_step, :type => Fixnum
-  property :active, :type => :boolean, :default => true
-
-  view :by_active, :key => :active
+  field :active_step, :type => Fixnum
+  field :active, :type => Boolean, :default => true
 
   def self.run_monitor!(deployment,step)
     self.create(:deployment => deployment, :active_step => step)
@@ -52,7 +51,7 @@ class DeploymentMonitor < Monitor
 
 
   def self.monitor_deployments
-    DeploymentMonitor.find_all_by_active(true).each do |monitor|
+    DeploymentMonitor.where(:active => true).each do |monitor|
       monitor.monitor_cycle
     end
   end

@@ -1,6 +1,8 @@
 class CloudsController < ApplicationController
   current_tab "Clouds"
 
+  before_filter :ensure_current_company
+
   # GET /clouds
   # GET /clouds.xml
   def index

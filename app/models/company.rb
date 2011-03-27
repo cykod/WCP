@@ -1,13 +1,14 @@
 
 class Company < BaseModel
-   include SimplyStored::Couch
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
-   property :name
-   property :active,:type => :boolean, :default => true
-   property :aws_key
-   property :key_name
-   property :aws_secret
-   property :certificate, :type => String
+   field :name
+   field :active,:type => Boolean, :default => true
+   field :aws_key
+   field :key_name
+   field :aws_secret
+   field :certificate, :type => String
 
    validates_presence_of :name
 

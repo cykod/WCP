@@ -3,15 +3,17 @@
 
 
 class User < BaseModel
-  include SimplyStored::Couch
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
   belongs_to :company
 
   attr_accessor :password, :password_confirmation, :account_edit
 
-  property :email
-  property :encrypted_password
-  property :salt
-  property :admin, :type => :boolean, :default => false
+  field :email
+  field :encrypted_password
+  field :salt
+  field :admin, :type => Boolean, :default => false
 
   before_save :generate_salt
   before_save :encrypt_password
@@ -19,16 +21,13 @@ class User < BaseModel
   validates_presence_of :email
   validates_confirmation_of :password, :if => Proc.new { |u| u.account_edit && !u.password.blank? }
     
-  view :by_email, :key => :email
-  
-
   def logged_in?
     !self.id.blank?
   end
 
 
   def self.authenticate(email,password)
-    user = self.find_by_email(email)
+    user = self.where(:email => email).first
     if user && user.password_matches?(password) && (user.admin? || (user.company && user.company.active?))
       user
     else

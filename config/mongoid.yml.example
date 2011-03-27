@@ -1,0 +1,23 @@
+defaults: &defaults
+  host: localhost
+  raise_not_found_error: false
+  allow_dynamic_fields: false
+  # slaves:
+  #   - host: slave1.local
+  #     port: 27018
+  #   - host: slave2.local
+  #     port: 27019
+
+development:
+  <<: *defaults
+  database: wcp_development
+
+test:
+  <<: *defaults
+  database: wcp_test
+
+# set these environment variables on your prod server
+production:
+  <<: *defaults
+  database: wcp_production
+

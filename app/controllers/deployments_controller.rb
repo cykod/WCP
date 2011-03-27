@@ -1,5 +1,6 @@
 class DeploymentsController < ApplicationController
 
+  before_filter :ensure_current_cloud
 
   current_tab "Deployments"
 

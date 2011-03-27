@@ -1,6 +1,7 @@
 class MachinesController < ApplicationController
 
   current_tab "Machines"
+  before_filter :ensure_current_cloud
   
   # GET /machines
   # GET /machines.xml

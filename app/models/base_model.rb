@@ -2,7 +2,6 @@
 
 class BaseModel
 
-
   include ActiveModel::Conversion
   include ModelExtension::OptionsExtension
 

@@ -1,29 +1,28 @@
 
 class DeploymentStepDatum
-  include SimplyStored::Couch
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
   belongs_to :deployment
   
-  property :data, :type => Hash, :default => { }
+  field :data, :type => Hash, :default => { }
 
-  property :blueprint_identity_hash
-  property :initialized, :type => :boolean, :default => false
-  property :options_class_name
+  field :blueprint_identity_hash
+  field :initialized, :type => Boolean, :default => false
+  field :options_class_name
 
   attr_accessor :step,:substep
 
-  view :by_deployment_id_and_blueprint_identity_hash, :key => [:deployment_id, :blueprint_identity_hash]
-
-  def options
-    @options ||= options_class_name.constantize.new(self.data)
+  def config 
+    @config ||= options_class_name.constantize.new(self.data)
   end
 
-  def update_options
-    self.data = options.to_hash
+  def update_config
+    self.data = config.to_hash
   end
 
-  def save_options
-    self.update_options
+  def save_config
+    self.update_config
     self.save
   end
 end

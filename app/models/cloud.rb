@@ -2,22 +2,23 @@
 
 
 class Cloud < BaseModel
-  include SimplyStored::Couch
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
   belongs_to :company
 
-  property :name
+  field :name
   validates_presence_of :name
 
   has_many :machines
   has_many :deployments
 
-  property :options_hash, :type => Hash, :default => {}
-  property :chef_details, :type => Hash, :default => {}
-  property :config_details, :type => Hash, :default => {}
-  property :status, :default => 'normal' 
-  property :active, :type => :boolean, :default => false
-  property :current_deployment_id
+  field :options_hash, :type => Hash, :default => {}
+  field :chef_details, :type => Hash, :default => {}
+  field :config_details, :type => Hash, :default => {}
+  field :status, :default => 'normal' 
+  field :active, :type => Boolean, :default => false
+  field :current_deployment_id
 
   has_options :status, [["Normal","normal"],["Deploying","deploying"]]
 
@@ -125,7 +126,7 @@ class Cloud < BaseModel
   end
 
   def active_deployment_list(page=1)
-    deps = Deployment.find_all_by_cloud_id_and_noted(self.id,nil)
+    deps = Deployment.where(:cloud_id => self.id, :noted => nil).all
     deps.sort { |a,b| b.created_at <=> a.created_at }
   end
 
@@ -262,13 +263,13 @@ class Cloud < BaseModel
 
   end
 
-  def options(val=nil)
-    return @options if @options && !val
-     @options = Options.new(val || self.options_hash)
+  def config(val=nil)
+    return @config if @config && !val
+     @config = Options.new(val || self.options_hash)
   end
 
-  def options=(val)
-     self.options_hash = self.options(val).to_hash
+  def config=(val)
+     self.options_hash = self.config(val).to_hash
   end
 
 

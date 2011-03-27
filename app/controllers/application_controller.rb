@@ -21,8 +21,22 @@ class ApplicationController < ActionController::Base
     myself.company
   end
 
+  def ensure_current_company
+    if !current_company
+      redirect_to :controller => 'company'
+    end
+  end
+
+
+
   def current_cloud
-    current_company.clouds[0]
+    current_company.clouds[0] if current_company
+  end
+
+  def ensure_current_cloud
+    if !current_cloud
+      redirect_to :controller => 'company'
+    end
   end
 
 

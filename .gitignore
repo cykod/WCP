@@ -5,3 +5,4 @@ log/*.pid
 log/*.output
 tmp/**/*
 config/config.yml
+config/mongoid.yml

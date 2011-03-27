@@ -2,7 +2,9 @@
 # ssh webiva@cykodcore.cykod.com -R 4000:127.0.0.1:4000
 
 class Machine < BaseModel
-  include SimplyStored::Couch
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
 
   belongs_to :cloud
   belongs_to :deployment
@@ -10,26 +12,26 @@ class Machine < BaseModel
   belongs_to :machine_blueprint
   has_many :launch_monitors, :dependent => :destroy
 
-  property :name
-  property :step, :type => Fixnum
-  property :status 
-  property :roles, :type => Array, :default => []
-  property :launcher_class
+  field :name
+  field :step, :type => Fixnum
+  field :status 
+  field :roles, :type => Array, :default => []
+  field :launcher_class
 
-  property :state_data, :type => Hash, :default => {}
+  field :state_data, :type => Hash, :default => {}
 
-  property :instance_id
-  property :machine_image
-  property :private_hostname
-  property :hostname
-  property :ip_address
-  property :private_ip_address
-  property :instance_type
-  property :instance_size
-  property :root_user
+  field :instance_id
+  field :machine_image
+  field :private_hostname
+  field :hostname
+  field :ip_address
+  field :private_ip_address
+  field :instance_type
+  field :instance_size
+  field :root_user
 
-  property :master_username
-  property :master_password
+  field :master_username
+  field :master_password
 
   before_create :initialization_details
 

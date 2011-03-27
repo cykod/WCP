@@ -14,7 +14,7 @@ class Machines::RdsServer < Machines::RdsServerSnapshot
 
 
   def self.description(blueprint)
-    "#{blueprint.options.instance_class} - #{blueprint.options.instance_storage||5}GB"
+    "#{blueprint.config.instance_class} - #{blueprint.config.instance_storage||5}GB"
   end
 
   def launch!
