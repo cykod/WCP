@@ -49,7 +49,7 @@ class MachineBlueprint < BaseModel
   end
 
   def config=(val)
-    self.options_data = blueprint_options(val).to_hash
+    self.options_data = config(val).to_hash
   end
 
 

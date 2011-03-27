@@ -20,7 +20,7 @@ class Steps::Terminate::DeauthorizeServersFromDb < Steps::Base
         m.ssh do |ssh|
           ssh.exec!("cd /home/webiva/current; script/remove_server_info.rb")
         end
-        rds_machine.deauthorize_ip_address(cloud.options.security_group,m.private_ip_address)
+        rds_machine.deauthorize_ip_address(cloud.config.security_group,m.private_ip_address)
       end
     end
   end

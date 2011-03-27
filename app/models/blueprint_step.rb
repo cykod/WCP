@@ -31,19 +31,19 @@ class BlueprintStep
   end
 
   def finished?(step_data)
-    returning(self.step_class(step_data.deployment).finished?(step_data)) { step_data.save_options }
+    returning(self.step_class(step_data.deployment).finished?(step_data)) { step_data.save_config }
   end
 
   def execute!(step_data)
-    returning(self.step_class(step_data.deployment).execute!(step_data)) { step_data.save_options}
+    returning(self.step_class(step_data.deployment).execute!(step_data)) { step_data.save_config}
   end
 
   def machine_failed!(step_data)
-    returning(self.step_class(step_data.deployment).machine_failed!(step_data,machine)) { step_data.save_options }
+    returning(self.step_class(step_data.deployment).machine_failed!(step_data,machine)) { step_data.save_config }
   end
 
   def machine_activated!(step_data,machine)
-    returning(self.step_class(step_data.deployment).machine_activated!(step_data,machine)) { step_data.save_options }
+    returning(self.step_class(step_data.deployment).machine_activated!(step_data,machine)) { step_data.save_config }
   end
 
   def self.steps_directories

@@ -94,11 +94,11 @@ class Deployment < BaseModel
   end
 
   def deployment_options=(val)
-    self.deployment_options_data = self.blueprint.options(val).to_hash
+    self.deployment_options_data = self.blueprint.config(val).to_hash
   end
 
   def deployment_options
-    self.blueprint.options(self.deployment_options_data)
+    self.blueprint.config(self.deployment_options_data)
   end
 
   def parameters
@@ -137,7 +137,7 @@ class Deployment < BaseModel
     blueprint_step = self.blueprint.steps[step_number]
     identity_hash = blueprint_step.identity_hash
 
-    step = DeploymentStepDatum.where(:deployment_id => self.id,:blueprint_identity_hash => identity_hash)
+    step = DeploymentStepDatum.where(:deployment_id => self.id,:blueprint_identity_hash => identity_hash).first
     unless step
       step = DeploymentStepDatum.new(:deployment_id => self.id,:blueprint_identity_hash => identity_hash)
     end

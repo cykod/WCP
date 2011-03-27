@@ -2,7 +2,7 @@
   - f.inputs do
     = f.semantic_errors
     = f.input :name
-  = semantic_fields_for "cloud[options]", @cloud.options do |of| 
+  = semantic_fields_for "cloud[config]", @cloud.config do |of| 
     = f.inputs do
       = of.semantic_errors
       = of.input :security_group

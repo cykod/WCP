@@ -38,9 +38,9 @@ class Steps::Launch::LaunchServerInstances < Steps::Base
         machine
       end
 
-      step.options.machine_ids = machines.map(&:id)
+      step.config.machine_ids = machines.map(&:id)
     else
-      step.options.machine_ids.each do |machine_id|
+      step.config.machine_ids.each do |machine_id|
         machine = Machine.find(machine_id)
         begin
           machine.ssh do |ssh|
@@ -57,7 +57,7 @@ class Steps::Launch::LaunchServerInstances < Steps::Base
 
   def finished?(step)
     if step.substep == 0
-      step.options.machine_ids.inject(true) do |state,machine_id|
+      step.config.machine_ids.inject(true) do |state,machine_id|
         machine = Machine.find(machine_id)
         state = false if !machine.active?
         state
@@ -69,7 +69,7 @@ class Steps::Launch::LaunchServerInstances < Steps::Base
 
 
   def machine_failed!(step,machine)
-    machine = Machine.find(step.options.machine_id) 
+    machine = Machine.find(step.config.machine_id) 
     machine.terminate!
   end
 

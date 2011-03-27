@@ -28,9 +28,9 @@ class Steps::Launch::LaunchMasterRdsInstance < Steps::Base
       if !cloud.master_db
         machine = self.deployment.add_machine([:master_db],machine_blueprint)
         machine.launch!
-        step.options.machine_id = machine.id
+        step.config.machine_id = machine.id
       else
-        step.options.machine_id = cloud.master_db.id
+        step.config.machine_id = cloud.master_db.id
       end
     end
   end
@@ -40,13 +40,13 @@ class Steps::Launch::LaunchMasterRdsInstance < Steps::Base
       # Noop - wait to check if active in the second step
       true
     else
-      machine = Machine.find(step.options.machine_id) 
+      machine = Machine.find(step.config.machine_id) 
       machine.active?
     end
   end
 
   def machine_failed!(step,machine)
-    machine = Machine.find(step.options.machine_id) 
+    machine = Machine.find(step.config.machine_id) 
     machine.terminate!
   end
 

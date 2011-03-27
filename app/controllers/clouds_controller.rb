@@ -26,7 +26,7 @@ class CloudsController < ApplicationController
   end
 
   def reset
-    @cloud = current_company.company_cloud(params[:id])
+    @cloud = current_company.company_cloud(params[:cloud_id])
 
     @cloud.force_reset
     redirect_to @cloud

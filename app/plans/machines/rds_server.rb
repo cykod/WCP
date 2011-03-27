@@ -27,9 +27,9 @@ class Machines::RdsServer < Machines::RdsServerSnapshot
                    machine.master_password,
                    {
                       :instance_size => machine.instance_size,
-                      :db_security_groups => [ cloud.options.security_group ],
-                      :availability_zone => cloud.options.availability_zone,
-                      :allocated_storage => (blueprint.options.instance_storage || 5).to_i
+                      :db_security_groups => [ cloud.config.security_group ],
+                      :availability_zone => cloud.config.availability_zone,
+                      :allocated_storage => (blueprint.config.instance_storage || 5).to_i
                     })
     machine.instance_id = instance.instance_id
     machine.save

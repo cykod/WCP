@@ -9,20 +9,20 @@ class Machines::AwsAppServer < Machines::Base
   parameter :root_user, :required => true
 
   def self.description(blueprint)
-    "#{blueprint.options.instance_size} - #{blueprint.options.machine_image}"
+    "#{blueprint.config.instance_size} - #{blueprint.config.machine_image}"
   end
 
   def launch!
     instance = Amazon::Ec2Interface.run_instance(company.ec2,
                                       {  :key_name => company.key_name,
-                                         :security_group => cloud.options.security_group,
-                                         :instance_size => blueprint.options.instance_size,
-                                         :availability_zone => cloud.options.availability_zone,
+                                         :security_group => cloud.config.security_group,
+                                         :instance_size => blueprint.config.instance_size,
+                                         :availability_zone => cloud.config.availability_zone,
                                          :monitoring_enabled => true,
                                          :disable_api_termination => false,
-                                         :image_id => blueprint.options.machine_image })
+                                         :image_id => blueprint.config.machine_image })
 
-    machine.root_user = blueprint.options.root_user
+    machine.root_user = blueprint.config.root_user
     machine.instance_id = instance.instance_id
     machine.save
 

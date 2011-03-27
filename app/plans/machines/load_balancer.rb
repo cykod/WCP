@@ -14,7 +14,7 @@ class Machines::LoadBalancer < Machines::Base
     balancer_name =  'webiva-' + machine.id.to_s[0..16]
     instance = Amazon::LoadBalancerInterface.create_balancer(company.elb,
                                                            balancer_name,
-                                                           :availability_zone => cloud.options.availability_zone)
+                                                           :availability_zone => cloud.config.availability_zone)
 
     machine.instance_id = balancer_name
     machine.save

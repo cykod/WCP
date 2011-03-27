@@ -6,7 +6,7 @@
       if(step_class=='' || name=='') {
         alert('Please enter a name and a step class');
       } else {
-        $("#blueprint_steps").load('#{url_for(:action => 'add_step')}',{name:name,step_class:step_class})
+        $("#blueprint_steps").load('#{blueprint_add_step_url(@blueprint)}',{name:name,step_class:step_class})
       }
     },
 
@@ -14,7 +14,7 @@
       $('#blueprint_steps').sortable({
         update : function () { 
           var order = $('#blueprint_steps').sortable('serialize', { key: 'step_id[]' }); 
-          $("#blueprint_steps").load('#{url_for(:action => 'resort_steps')}',order);
+          $("#blueprint_steps").load('#{blueprint_resort_steps_url(@blueprint)}',order);
         } 
 
       }
@@ -25,7 +25,7 @@
     removeStep: function(step_id) {
        if(confirm('Remove this step')) {
         var remove_steps = { step_id: step_id };
-        $('#blueprint_steps').load('#{url_for(:action => 'delete_step')}',remove_steps);
+        $('#blueprint_steps').load('#{blueprint_delete_step_url(@blueprint)}',remove_steps);
        }
     }
 

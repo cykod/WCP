@@ -23,9 +23,9 @@ class Steps::Simple::LaunchFullInstance < Steps::Base
       machine = self.deployment.add_machine([:web,:memcache,:starling,:workling,:migrator,:cron],blueprint)
       machine.launch!
 
-      step.options.machine_id = machine.id
+      step.config.machine_id = machine.id
     else
-      machine = Machine.find(step.options.machine_id)
+      machine = Machine.find(step.config.machine_id)
       begin
         machine.ssh do |ssh|
           puts ssh.exec!('uptime')
@@ -39,13 +39,13 @@ class Steps::Simple::LaunchFullInstance < Steps::Base
   end
 
   def finished?(step)
-     machine = Machine.find(step.options.machine_id) 
+     machine = Machine.find(step.config.machine_id) 
      machine.active?
   end
 
 
   def machine_failed!(step,machine)
-    machine = Machine.find(step.options.machine_id) 
+    machine = Machine.find(step.config.machine_id) 
     machine.terminate!
   end
 

@@ -37,7 +37,7 @@ class BlueprintsController < ApplicationController
 
 
   def add_step
-    @blueprint = Blueprint.find(params[:id])
+    @blueprint = Blueprint.find(params[:blueprint_id])
 
     if full_class = BlueprintStep.check_step_identifier(params[:step_class])
       @blueprint.add_step(params[:name],full_class)

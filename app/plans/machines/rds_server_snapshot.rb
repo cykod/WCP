@@ -15,8 +15,8 @@ class Machines::RdsServerSnapshot < Machines::Base
                    'webiva-' + machine.id,
                    machine.deployment.deployment_options.snapshot_name,
                    {
-                      :db_security_groups => [ cloud.options.security_group ],
-                      :availability_zone => cloud.options.availability_zone,
+                      :db_security_groups => [ cloud.config.security_group ],
+                      :availability_zone => cloud.config.availability_zone,
                     })
     machine.initialize_rds_options(machine.deployment.deployment_options.master_password,instance.master_username)
     machine.instance_id = instance.instance_id

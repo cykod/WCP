@@ -34,13 +34,13 @@ class Steps::Launch::AssociateElasticIps < Steps::Base
     # Associate with addresses
     machines.each_with_index do |machine,idx|
       company.ec2.associate_address(machine.instance_id,ips[idx])
-      step.options.modified_machines[machine.id] = ips[idx]
+      step.config.modified_machines[machine.id] = ips[idx]
     end
   end
 
   def finished?(step)
      all_updated = true
-     step.options.modified_machines.each do |machine_id,ip_adr|
+     step.config.modified_machines.each do |machine_id,ip_adr|
        m = Machine.find(machine_id)
 
        m.hostname = nil # clear out the hostname so we update the machine info

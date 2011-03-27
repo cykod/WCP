@@ -138,7 +138,7 @@ class Cloud < BaseModel
 
   def cloud_machines(machine_ids)
     (machine_ids||[]).map do |mid|
-      self.cloud_machine(mid)
+      self.cloud_machine(mid) unless mid.blank?
      end.compact
   end
 
@@ -224,14 +224,14 @@ class Cloud < BaseModel
     if self.status == 'normal'
       self.status = 'deploying'
       if self.save
-        deployment = Deployment.create(
-            :blueprint => input_deployment.blueprint, 
-            :deployment_options => input_deployment.deployment_options.to_hash,
+        deployment = Deployment.new(
+            :blueprint_id => input_deployment.blueprint_id, 
             :cloud => self,
             :company => self.company,
             :skip_cloud_check => true)
+        deployment.deployment_options = input_deployment.deployment_options.to_hash
         self.current_deployment_id = deployment.id
-        if deployment.valid? && self.save
+        if deployment.save && self.save
           deployment.takeover_machines!(input_deployment.affected_machines)
           deployment.execute! 
         end

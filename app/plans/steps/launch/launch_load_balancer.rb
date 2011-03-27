@@ -22,14 +22,14 @@ class Steps::Launch::LaunchLoadBalancer < Steps::Base
 
       if cloud.load_balancer 
         # Let this use it's existing loadbalancer if we have one
-        step.options.machine_id = cloud.load_balancer.id
+        step.config.machine_id = cloud.load_balancer.id
       else
         machine = self.deployment.add_machine([:balancer],machine_blueprint)
         machine.launch!
-        step.options.machine_id = machine.id
+        step.config.machine_id = machine.id
       end
     else
-      machine = Machine.find(step.options.machine_id)
+      machine = Machine.find(step.config.machine_id)
       load_balancer = Amazon::LoadBalancerInterface.new(company.elb,machine.instance_id)
       load_balancer.configure_health_check( { :healthy_threshold => 5,
                                               :unhealthy_threshold => 2,
@@ -41,12 +41,12 @@ class Steps::Launch::LaunchLoadBalancer < Steps::Base
   end
 
   def finished?(step)
-    machine = Machine.find(step.options.machine_id)
+    machine = Machine.find(step.config.machine_id)
     machine.active?
   end
 
   def machine_failed!(step,machine)
-    machine = Machine.find(step.options.machine_id) 
+    machine = Machine.find(step.config.machine_id) 
     machine.terminate!
   end
 
