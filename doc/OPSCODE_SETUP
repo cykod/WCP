@@ -1,0 +1,31 @@
+Create the CouchDB
+
+(see config file)
+
+
+
+Download the user key
+
+Create an organization
+
+Download the knife set-up files and org validator pem
+
+
+copy all of these to: 
+
+~/.chef/
+
+set up your config/config.yml file using the values in your config:
+
+- authorized_client_user is actually your account name
+- authorized_client_pem_file is the account key
+- validation pem is the organization key
+
+external_server_url: https://api.opscode.com/organizations/cykod
+validation_pem_file: /home/pascal/.chef/cykod-validator.pem
+local_server_url: https://api.opscode.com/organizations/cykod
+authorized_client_user: cykod
+authorized_client_pem_file: /home/pascal/.chef/cykod-opscode.pem
+
+
+Go to chef and run upload to upload all the cookbooks
