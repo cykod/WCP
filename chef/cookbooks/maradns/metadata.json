@@ -1,63 +1,70 @@
 {
-    "providing": {
-    },
-    "attributes": {
-      "maradns": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
+  "conflicting": {
 
-        ],
-        "type": "hash",
-        "recipes": [
+  },
+  "long_description": "",
+  "description": "Installs and configures maradns",
+  "providing": {
 
-        ],
-        "description": "Hash of MaraDNS attributes",
-        "display_name": "MaraDNS"
-      },
-      "maradns/recursive_acl": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
-
-        ],
-        "default": "",
-        "type": "string",
-        "recipes": [
-
-        ],
-        "description": "Sets the recursive_acl setting in mararc.erb",
-        "display_name": "MaraDNS Recursive ACL"
-      }
-    },
-    "replacing": {
-    },
-    "dependencies": {
-    },
-    "groupings": {
-    },
-    "recommendations": {
-    },
-    "platforms": {
-      "debian": [
+  },
+  "maintainer": "Opscode, Inc.",
+  "attributes": {
+    "maradns": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
 
       ],
-      "ubuntu": [
+      "type": "hash",
+      "recipes": [
 
-      ]
+      ],
+      "display_name": "MaraDNS",
+      "description": "Hash of MaraDNS attributes"
     },
-    "license": "Apache 2.0",
-    "version": "0.8.1",
-    "maintainer": "Opscode, Inc.",
-    "suggestions": {
-    },
-    "recipes": {
-      "maradns": "Installs and configures maradns"
-    },
-    "maintainer_email": "cookbooks@opscode.com",
-    "name": "maradns",
-    "conflicting": {
-    },
-    "description": "Installs and configures maradns",
-    "long_description": ""
+    "maradns\/recursive_acl": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
+
+      ],
+      "default": "",
+      "type": "string",
+      "recipes": [
+
+      ],
+      "display_name": "MaraDNS Recursive ACL",
+      "description": "Sets the recursive_acl setting in mararc.erb"
+    }
+  },
+  "replacing": {
+
+  },
+  "dependencies": {
+
+  },
+  "maintainer_email": "cookbooks@opscode.com",
+  "groupings": {
+
+  },
+  "recommendations": {
+
+  },
+  "platforms": {
+    "debian": [
+
+    ],
+    "ubuntu": [
+
+    ]
+  },
+  "version": "0.8.1",
+  "license": "Apache 2.0",
+  "name": "maradns",
+  "suggestions": {
+
+  },
+  "recipes": {
+    "maradns": "Installs and configures maradns"
   }
+}

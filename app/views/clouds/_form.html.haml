@@ -16,7 +16,7 @@
       = cf.input :gems, :as => :text
       = cf.input :modules_list, :as => :text
       = cf.input :gitkey, :as => :text
-      = cf.input :private_key, :as => :text, :hint =>( @cloud.chef_options.has_private_key? ? 'Not Shown for security reasons' : '' )
-      = cf.input :certificate, :as => :text, :hint => ( @cloud.chef_options.has_certificate? ? 'Not shown for security reasons' : '' )
+      = cf.input :private_key, :as => :text, :label => 'Private Key for SSL Certificate', :hint =>( @cloud.chef_options.has_private_key? ? 'Not Shown for security reasons' : '' )
+      = cf.input :certificate, :as => :text, :label => 'Certificate for SSL Certificate', :hint => ( @cloud.chef_options.has_certificate? ? 'Not shown for security reasons' : '' )
   - f.buttons do
     = f.commit_button

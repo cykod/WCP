@@ -1,218 +1,178 @@
---- 
-dependencies: 
-  ruby-debug: 
-    group: 
-    - :test
-    version: ">= 0"
-  net-sftp: 
-    group: 
-    - :default
-    version: ">= 0"
-    require: 
-    - net/sftp
-  rails: 
-    group: 
-    - :default
-    version: = 3.0.0.beta4
-  ZenTest: 
-    group: 
-    - :test
-    version: ">= 0"
-  uuidtools: 
-    group: 
-    - :test
-    version: ">= 0"
-  haml: 
-    group: 
-    - :default
-    version: ">= 0"
-  net-ssh-multi: 
-    group: 
-    - :default
-    version: ">= 0"
-    require: 
-    - net/ssh/multi
-  couch_potato: 
-    group: 
-    - :default
-    version: ">= 0"
-  rspec-rails: 
-    group: 
-    - :test
-    version: ">= 2.0.0.beta.14"
-  formtastic: 
-    group: 
-    - :default
-    version: ">= 0"
-  net-ssh: 
-    group: 
-    - :default
-    version: ">= 0"
-    require: 
-    - net/ssh
-  right_aws: 
-    group: 
-    - :default
-    version: ">= 0"
-  mixlib-config: 
-    group: 
-    - :default
-    version: ">= 0"
-    require: 
-    - mixlib/config
-  json: 
-    group: 
-    - :default
-    version: = 1.1.6
-  rocking_chair: 
-    group: 
-    - :test
-    version: ">= 0"
-  simply_stored: 
-    group: 
-    - :default
-    version: ">= 0"
-    require: 
-    - simply_stored/couch
-  net-scp: 
-    group: 
-    - :default
-    version: ">= 0"
-    require: 
-    - net/scp
-  mixlib-authentication: 
-    group: 
-    - :default
-    version: ">= 0"
-    require: 
-    - mixlib/authentication
-specs: 
-- rake: 
-    version: 0.8.7
-- ZenTest: 
-    version: 4.3.3
-- abstract: 
-    version: 1.0.0
-- activesupport: 
-    version: 3.0.0.beta4
-- builder: 
-    version: 2.1.2
-- i18n: 
-    version: 0.4.1
-- activemodel: 
-    version: 3.0.0.beta4
-- erubis: 
-    version: 2.6.6
-- rack: 
-    version: 1.1.0
-- rack-mount: 
-    version: 0.6.9
-- rack-test: 
-    version: 0.5.4
-- tzinfo: 
-    version: 0.3.22
-- actionpack: 
-    version: 3.0.0.beta4
-- mime-types: 
-    version: "1.16"
-- polyglot: 
-    version: 0.3.1
-- treetop: 
-    version: 1.4.8
-- mail: 
-    version: 2.2.5
-- actionmailer: 
-    version: 3.0.0.beta4
-- arel: 
-    version: 0.4.0
-- activerecord: 
-    version: 3.0.0.beta4
-- activeresource: 
-    version: 3.0.0.beta4
-- bundler: 
-    version: 0.9.26
-- columnize: 
-    version: 0.3.1
-- rest-client: 
-    version: 1.6.0
-- couchrest: 
-    version: "0.37"
-- json: 
-    version: 1.1.6
-- couch_potato: 
-    version: 0.2.32
-    source: 0
-- diff-lcs: 
-    version: 1.1.2
-- formtastic: 
-    version: 1.0.0.beta
-    source: 1
-- haml: 
-    version: 3.0.13
-- linecache: 
-    version: "0.43"
-- mattmatt-validatable: 
-    version: 1.8.4
-- mixlib-log: 
-    version: 1.1.0
-- mixlib-authentication: 
-    version: 1.1.2
-- mixlib-config: 
-    version: 1.1.2
-- net-ssh: 
-    version: 2.0.23
-- net-scp: 
-    version: 1.0.2
-- net-sftp: 
-    version: 2.0.4
-- net-ssh-gateway: 
-    version: 1.0.1
-- net-ssh-multi: 
-    version: 1.0.1
-- nokogiri: 
-    version: 1.4.2
-- thor: 
-    version: 0.13.8
-- railties: 
-    version: 3.0.0.beta4
-- rails: 
-    version: 3.0.0.beta4
-- right_http_connection: 
-    version: 1.2.4
-- right_aws: 
-    version: 2.0.0
-- simply_stored: 
-    version: 0.3.6
-- rocking_chair: 
-    version: 0.1.0
-- rspec-core: 
-    version: 2.0.0.beta.17
-- rspec-expectations: 
-    version: 2.0.0.beta.17
-- rspec-mocks: 
-    version: 2.0.0.beta.17
-- rspec: 
-    version: 2.0.0.beta.17
-- webrat: 
-    version: 0.7.1
-- rspec-rails: 
-    version: 2.0.0.beta.17
-- ruby-debug-base: 
-    version: 0.10.3
-- ruby-debug: 
-    version: 0.10.3
-- uuidtools: 
-    version: 2.1.1
-hash: 15ccd624d39568a60a9e8b42fed4c17ffdd50b9d
-sources: 
-- Git: 
-    uri: git://github.com/langalex/couch_potato.git
-    git: git://github.com/langalex/couch_potato.git
-    ref: 9c4349cf292cf3242f057c6c6dc88aec056f12bb
-- Git: 
-    uri: git://github.com/justinfrench/formtastic.git
-    branch: rails3
-    git: git://github.com/justinfrench/formtastic.git
-    ref: 038357cae3fbe4ce9d648249a4c6d0b1f520a1f4
-- Rubygems: 
-    uri: http://gemcutter.org
+GEM
+  remote: http://rubygems.org/
+  specs:
+    ZenTest (4.5.0)
+    abstract (1.0.0)
+    actionmailer (3.0.5)
+      actionpack (= 3.0.5)
+      mail (~> 2.2.15)
+    actionpack (3.0.5)
+      activemodel (= 3.0.5)
+      activesupport (= 3.0.5)
+      builder (~> 2.1.2)
+      erubis (~> 2.6.6)
+      i18n (~> 0.4)
+      rack (~> 1.2.1)
+      rack-mount (~> 0.6.13)
+      rack-test (~> 0.5.7)
+      tzinfo (~> 0.3.23)
+    activemodel (3.0.5)
+      activesupport (= 3.0.5)
+      builder (~> 2.1.2)
+      i18n (~> 0.4)
+    activerecord (3.0.5)
+      activemodel (= 3.0.5)
+      activesupport (= 3.0.5)
+      arel (~> 2.0.2)
+      tzinfo (~> 0.3.23)
+    activeresource (3.0.5)
+      activemodel (= 3.0.5)
+      activesupport (= 3.0.5)
+    activesupport (3.0.5)
+    arel (2.0.9)
+    builder (2.1.2)
+    bunny (0.6.0)
+    chef (0.9.8)
+      bunny (>= 0.6.0)
+      erubis
+      extlib
+      highline
+      json (<= 1.4.2)
+      mixlib-authentication (>= 1.1.0)
+      mixlib-cli (>= 1.1.0)
+      mixlib-config (>= 1.1.0)
+      mixlib-log (>= 1.1.0)
+      moneta
+      ohai (>= 0.5.6)
+      rest-client (>= 1.0.4, <= 1.5.1)
+      uuidtools
+    columnize (0.3.2)
+    couch_potato (0.3.0)
+      couchrest (>= 0.24)
+      json
+    couchrest (0.37)
+      mime-types (>= 1.15)
+      rest-client (>= 0.5)
+    diff-lcs (1.1.2)
+    erubis (2.6.6)
+      abstract (>= 1.0.0)
+    extlib (0.9.15)
+    formtastic (1.2.3)
+      actionpack (>= 2.3.7)
+      activesupport (>= 2.3.7)
+      i18n (~> 0.4)
+    haml (3.0.25)
+    highline (1.6.1)
+    i18n (0.5.0)
+    json (1.1.6)
+    linecache (0.43)
+    mail (2.2.15)
+      activesupport (>= 2.3.6)
+      i18n (>= 0.4.0)
+      mime-types (~> 1.16)
+      treetop (~> 1.4.8)
+    mattmatt-validatable (1.8.4)
+    mime-types (1.16)
+    mixlib-authentication (1.1.4)
+      mixlib-log
+    mixlib-cli (1.2.0)
+    mixlib-config (1.1.2)
+    mixlib-log (1.3.0)
+    moneta (0.6.0)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.1.3)
+    net-ssh-gateway (1.0.1)
+      net-ssh (>= 1.99.1)
+    net-ssh-multi (1.0.1)
+      net-ssh (>= 1.99.2)
+      net-ssh-gateway (>= 0.99.0)
+    ohai (0.5.6)
+      extlib
+      json (<= 1.4.2)
+      mixlib-cli
+      mixlib-config
+      mixlib-log
+      systemu
+    polyglot (0.3.1)
+    rack (1.2.2)
+    rack-mount (0.6.14)
+      rack (>= 1.0.0)
+    rack-test (0.5.7)
+      rack (>= 1.0)
+    rails (3.0.5)
+      actionmailer (= 3.0.5)
+      actionpack (= 3.0.5)
+      activerecord (= 3.0.5)
+      activeresource (= 3.0.5)
+      activesupport (= 3.0.5)
+      bundler (~> 1.0)
+      railties (= 3.0.5)
+    railties (3.0.5)
+      actionpack (= 3.0.5)
+      activesupport (= 3.0.5)
+      rake (>= 0.8.7)
+      thor (~> 0.14.4)
+    rake (0.8.7)
+    rest-client (1.5.1)
+      mime-types (>= 1.16)
+    right_aws (2.0.0)
+      right_http_connection (>= 1.2.1)
+    right_http_connection (1.2.4)
+    rocking_chair (0.2.1)
+      simply_stored (>= 0.1.12)
+    rspec (2.5.0)
+      rspec-core (~> 2.5.0)
+      rspec-expectations (~> 2.5.0)
+      rspec-mocks (~> 2.5.0)
+    rspec-core (2.5.1)
+    rspec-expectations (2.5.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.5.0)
+    rspec-rails (2.5.0)
+      actionpack (~> 3.0)
+      activesupport (~> 3.0)
+      railties (~> 3.0)
+      rspec (~> 2.5.0)
+    ruby-debug (0.10.4)
+      columnize (>= 0.1)
+      ruby-debug-base (~> 0.10.4.0)
+    ruby-debug-base (0.10.4)
+      linecache (>= 0.3)
+    simply_stored (0.5.1)
+      activesupport
+      couch_potato (>= 0.2.15)
+      mattmatt-validatable
+      rest-client (>= 1.4.2)
+    systemu (1.2.0)
+    thor (0.14.6)
+    treetop (1.4.9)
+      polyglot (>= 0.3.1)
+    tzinfo (0.3.25)
+    uuidtools (2.1.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ZenTest
+  chef
+  couch_potato
+  formtastic
+  haml
+  json (= 1.1.6)
+  mixlib-authentication
+  mixlib-config
+  net-scp
+  net-sftp
+  net-ssh
+  net-ssh-multi
+  rails (= 3.0.5)
+  right_aws
+  rocking_chair
+  rspec-rails (>= 2.0.0.beta.14)
+  ruby-debug
+  simply_stored
+  uuidtools

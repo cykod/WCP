@@ -1,71 +1,78 @@
 {
-    "recommendations": {
-    },
-    "attributes": {
-      "quick_start/deep_thought": {
-        "required": "optional",
-        "calculated": false,
-        "choice": [
+  "conflicting": {
 
-        ],
-        "default": "If a tree falls in the forest...",
-        "type": "string",
-        "recipes": [
+  },
+  "long_description": "",
+  "description": "Example cookbook for quick_start wiki document",
+  "providing": {
 
-        ],
-        "description": "A deep thought",
-        "display_name": "Quick Start Deep Thought"
-      }
-    },
-    "maintainer": "Opscode, Inc.",
-    "suggestions": {
-    },
-    "dependencies": {
-    },
-    "maintainer_email": "cookbooks@opscode.com",
-    "conflicting": {
-    },
-    "platforms": {
-      "openbsd": [
+  },
+  "maintainer": "Opscode, Inc.",
+  "attributes": {
+    "quick_start\/deep_thought": {
+      "required": "optional",
+      "calculated": false,
+      "choice": [
 
       ],
-      "debian": [
+      "default": "If a tree falls in the forest...",
+      "type": "string",
+      "recipes": [
 
       ],
-      "solaris": [
+      "display_name": "Quick Start Deep Thought",
+      "description": "A deep thought"
+    }
+  },
+  "replacing": {
 
-      ],
-      "centos": [
+  },
+  "dependencies": {
 
-      ],
-      "fedora": [
+  },
+  "maintainer_email": "cookbooks@opscode.com",
+  "groupings": {
 
-      ],
-      "macosx": [
+  },
+  "recommendations": {
 
-      ],
-      "freebsd": [
+  },
+  "platforms": {
+    "openbsd": [
 
-      ],
-      "ubuntu": [
+    ],
+    "debian": [
 
-      ],
-      "redhat": [
+    ],
+    "solaris": [
 
-      ]
-    },
-    "license": "Apache 2.0",
-    "version": "0.8.0",
-    "providing": {
-    },
-    "recipes": {
-      "quick_start": "Quick start example cookbook"
-    },
-    "replacing": {
-    },
-    "name": "quick_start",
-    "description": "Example cookbook for quick_start wiki document",
-    "groupings": {
-    },
-    "long_description": ""
+    ],
+    "centos": [
+
+    ],
+    "fedora": [
+
+    ],
+    "macosx": [
+
+    ],
+    "freebsd": [
+
+    ],
+    "ubuntu": [
+
+    ],
+    "redhat": [
+
+    ]
+  },
+  "version": "0.8.0",
+  "license": "Apache 2.0",
+  "name": "quick_start",
+  "suggestions": {
+
+  },
+  "recipes": {
+    "quick_start": "Quick start example cookbook"
   }
+}

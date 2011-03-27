@@ -46,6 +46,9 @@ module WCP
       :key    => '_WCP_session',
       :secret => '0009af6dffcbb006b899c255587ef2bdf6a7df04c28f58663c64bb1321c2c0bc16f004f2d69f2290292a31a280d265215e3d7ee86355cfe6a63177c89f6fad79'
     }
+
+      config.action_view.javascript_expansions[:defaults] = ['jquery.min', 'rails', 'jquery-ui-1.8.2.custom.min']
+
     
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters << :password

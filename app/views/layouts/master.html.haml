@@ -7,6 +7,12 @@
     = stylesheet_link_tag 'jquery-ui-1.8.2.custom.css'
     = javascript_include_tag :defaults
     = csrf_meta_tag
+    :javascript
+      $.ajaxSetup({
+        headers: {
+          "X-CSRF-Token": $("meta[name='csrf-token']").attr('content')
+        }
+      });
   %body
     #header_wrapper 
       #header

@@ -1,48 +1,56 @@
 {
-    "recommendations": {
-    },
-    "attributes": {
-    },
-    "maintainer": "Opscode, Inc.",
-    "suggestions": {
-    },
-    "dependencies": {
-    },
-    "maintainer_email": "cookbooks@opscode.com",
-    "conflicting": {
-    },
-    "platforms": {
-      "debian": [
+  "conflicting": {
 
-      ],
-      "fedora": [
+  },
+  "long_description": "",
+  "description": "Installs xml",
+  "providing": {
 
-      ],
-      "centos": [
+  },
+  "maintainer": "Opscode, Inc.",
+  "attributes": {
 
-      ],
-      "ubuntu": [
+  },
+  "replacing": {
 
-      ],
-      "suse": [
+  },
+  "dependencies": {
 
-      ],
-      "redhat": [
+  },
+  "maintainer_email": "cookbooks@opscode.com",
+  "groupings": {
 
-      ]
-    },
-    "license": "Apache 2.0",
-    "version": "0.1.1",
-    "providing": {
-    },
-    "recipes": {
-      "xml": "Installs libxml development packages"
-    },
-    "replacing": {
-    },
-    "name": "xml",
-    "description": "Installs xml",
-    "groupings": {
-    },
-    "long_description": ""
+  },
+  "recommendations": {
+
+  },
+  "platforms": {
+    "debian": [
+
+    ],
+    "fedora": [
+
+    ],
+    "centos": [
+
+    ],
+    "ubuntu": [
+
+    ],
+    "suse": [
+
+    ],
+    "redhat": [
+
+    ]
+  },
+  "version": "0.1.1",
+  "license": "Apache 2.0",
+  "name": "xml",
+  "suggestions": {
+
+  },
+  "recipes": {
+    "xml": "Installs libxml development packages"
   }
+}

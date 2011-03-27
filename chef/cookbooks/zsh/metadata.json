@@ -1,23 +1,27 @@
 {
-  "recommendations": {
+  "conflicting": {
+
+  },
+  "long_description": "",
+  "description": "Installs zsh",
+  "providing": {
 
   },
   "maintainer": "Opscode, Inc.",
-  "description": "Installs zsh",
-  "suggestions": {
-
-  },
-  "maintainer_email": "cookbooks@opscode.com",
   "attributes": {
 
   },
-  "conflicting": {
+  "replacing": {
 
   },
   "dependencies": {
 
   },
-  "providing": {
+  "maintainer_email": "cookbooks@opscode.com",
+  "groupings": {
+
+  },
+  "recommendations": {
 
   },
   "platforms": {
@@ -29,16 +33,12 @@
     ]
   },
   "version": "0.7.1",
+  "license": "Apache 2.0",
+  "name": "zsh",
+  "suggestions": {
+
+  },
   "recipes": {
     "zsh": "Installs zsh"
-  },
-  "replacing": {
-
-  },
-  "license": "Apache 2.0",
-  "long_description": "",
-  "name": "zsh",
-  "groupings": {
-
   }
 }

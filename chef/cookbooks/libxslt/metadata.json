@@ -1,39 +1,39 @@
 {
-  "recommendations": {
+  "conflicting": {
+
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+  "description": "Installs\/Configures libxslt",
+  "providing": {
 
   },
   "maintainer": "Opscode, Inc.",
-  "description": "Installs\/Configures libxslt",
-  "suggestions": {
-
-  },
-  "maintainer_email": "cookbooks@opscode.com",
   "attributes": {
 
   },
-  "conflicting": {
+  "replacing": {
 
   },
   "dependencies": {
 
   },
-  "providing": {
+  "maintainer_email": "cookbooks@opscode.com",
+  "groupings": {
+
+  },
+  "recommendations": {
 
   },
   "platforms": {
 
   },
   "version": "0.1.0",
-  "recipes": {
-
-  },
-  "replacing": {
-
-  },
   "license": "Apache 2.0",
-  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
   "name": "libxslt",
-  "groupings": {
+  "suggestions": {
+
+  },
+  "recipes": {
 
   }
 }

@@ -1,36 +1,44 @@
 {
-    "recommendations": {
-    },
-    "attributes": {
-    },
-    "maintainer": "Opscode, Inc.",
-    "suggestions": {
-    },
-    "dependencies": {
-    },
-    "maintainer_email": "cookbooks@opscode.com",
-    "conflicting": {
-    },
-    "platforms": {
-      "debian": [
+  "conflicting": {
 
-      ],
-      "ubuntu": [
+  },
+  "long_description": "",
+  "description": "Installs python packages",
+  "providing": {
 
-      ]
-    },
-    "license": "Apache 2.0",
-    "version": "0.7.0",
-    "providing": {
-    },
-    "recipes": {
-      "python": "Installs python and common python module packages"
-    },
-    "replacing": {
-    },
-    "name": "python",
-    "description": "Installs python packages",
-    "groupings": {
-    },
-    "long_description": ""
+  },
+  "maintainer": "Opscode, Inc.",
+  "attributes": {
+
+  },
+  "replacing": {
+
+  },
+  "dependencies": {
+
+  },
+  "maintainer_email": "cookbooks@opscode.com",
+  "groupings": {
+
+  },
+  "recommendations": {
+
+  },
+  "platforms": {
+    "debian": [
+
+    ],
+    "ubuntu": [
+
+    ]
+  },
+  "version": "0.7.0",
+  "license": "Apache 2.0",
+  "name": "python",
+  "suggestions": {
+
+  },
+  "recipes": {
+    "python": "Installs python and common python module packages"
   }
+}
