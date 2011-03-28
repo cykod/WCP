@@ -1,13 +1,12 @@
 require 'spec_helper'
 
 describe MachinesController do
-  reset_models :users, :companies, :clouds, :machines, :machine_blueprints
   before { mock_user } 
 
   render_views
 
   let(:cloud) { @myself.company.add_cloud("Test Cloud") }
-  let(:machine_blueprint) { MachineBlueprint.create(:launcher_class => 'FakeClass', :machine_image => '12343', :instance_type => 'ec2'  ) }
+  let(:machine_blueprint) { MachineBlueprint.create(:launcher_class => 'FakeClass', :instance_type => 'ec2'  ) }
 
   before do 
     controller.stub(:current_cloud) { cloud }

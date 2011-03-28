@@ -22,7 +22,7 @@ class User < BaseModel
   validates_confirmation_of :password, :if => Proc.new { |u| u.account_edit && !u.password.blank? }
     
   def logged_in?
-    !self.id.blank?
+    !self.new_record?
   end
 
 

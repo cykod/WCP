@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CloudsController do
 
-  before { reset_clouds; reset_and_mock_user } 
+  before { mock_user } 
 
   let(:mock_cloud) { Cloud.new(:name => 'Test Cloud',:company_id => @myself.company_id) }
   let(:created_cloud) { Cloud.create(:name => 'Test Cloud',:company_id => @myself.company_id) }
@@ -40,6 +40,9 @@ describe CloudsController do
 
     describe "with valid params" do
       it "assigns a newly created cloud as @cloud" do
+        @cloud = Cloud.new({:name => "Test Name" })
+        Cloud.should_receive(:new).and_return(@cloud)
+        @cloud.should_receive(:save_cloud_databag).and_return(true)
         post :create, :cloud => {:name => "Test Name" }
         cloud = Cloud.first
         response.should redirect_to(cloud_url(cloud))
@@ -59,8 +62,12 @@ describe CloudsController do
 
     describe "with valid params" do
       it "updates the requested cloud" do
-        put :update, :id => created_cloud.id, :cloud => {'name' => 'My Test Cloud Name' }
-        created_cloud.reload
+        @company.should_receive(:company_cloud).with(created_cloud.id.to_s).and_return(created_cloud)
+
+        created_cloud.should_receive(:save_cloud_databag)
+        put :update, :id => created_cloud.id.to_s, :cloud => {'name' => 'My Test Cloud Name' }
+
+        created_cloud.reload()
         created_cloud.name.should == 'My Test Cloud Name'
         response.should redirect_to(cloud_url(created_cloud))
       end

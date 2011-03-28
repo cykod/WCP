@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe User do
-  before { reset_users }
   subject { User.new(:email=> 'testerama@tester.com' ,:password => 'tester', :company => Company.create(:name => 'Tester')) }
 
   it "new user should be invalid" do

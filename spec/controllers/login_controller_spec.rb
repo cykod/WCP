@@ -17,7 +17,6 @@ describe LoginController do
     end
 
     it "should redirect a valid login" do
-      reset_users
       User.create(:email => 'testerama@webiva.com', :password => 'something', :company => Company.create(:name => 'tester'))
       post 'login', :user => { :email => 'testerama@webiva.com', :password => 'something' }
       response.should redirect_to(dashboard_url)
@@ -26,7 +25,7 @@ describe LoginController do
 
   describe "Logout" do
     it "should let a user login and redirect to login" do
-      reset_and_mock_user
+      mock_user
       post 'logout'
       response.should redirect_to(login_url)
       session[:user_id].should be_nil

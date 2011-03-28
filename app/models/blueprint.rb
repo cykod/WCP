@@ -75,7 +75,7 @@ class Blueprint < BaseModel
                             :step_options_class_name => cls.step_info_details[:options])
 
       if original_blueprint_step_hash.blank?
-        original_blueprint_step_hash = step.id.to_s
+        original_blueprint_step_hash = "STEP#{step.id.to_s}"
         step.update_attributes(:identity_hash => original_blueprint_step_hash)
       end
       next_position += 1

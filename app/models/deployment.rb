@@ -21,6 +21,7 @@ class Deployment < BaseModel
   field :noted, :type => Boolean, :default => nil
 
   has_many :machines
+  has_many :deployment_logs, :dependent => :desetroy
   has_many :deployment_step_data, :dependent => :destroy
   has_many :deployment_monitors, :dependent => :destroy
 
@@ -52,6 +53,22 @@ class Deployment < BaseModel
      self.errors.add(:cloud,"Cloud is not ready to deploy")
     end
   end
+
+  def log(msg)
+    @log ||= []
+    @log << msg
+  end
+
+  def write_log
+    if(@log && @log.length > 0) 
+      log_msgs = self.deployment_logs.create(:messages => @log)
+      @log = []
+      log_msgs
+    else
+      nil
+    end
+  end
+
 
   def takeover_machines!(machine_ids)
     victims = self.cloud.cloud_machines(machine_ids) 
@@ -137,13 +154,15 @@ class Deployment < BaseModel
     blueprint_step = self.blueprint.steps[step_number]
     identity_hash = blueprint_step.identity_hash
 
-    step = DeploymentStepDatum.where(:deployment_id => self.id,:blueprint_identity_hash => identity_hash).first
+    step = self.deployment_step_data.where(:blueprint_identity_hash => identity_hash).first
     unless step
-      step = DeploymentStepDatum.new(:deployment_id => self.id,:blueprint_identity_hash => identity_hash)
+      step = self.deployment_step_data.build(:blueprint_identity_hash => identity_hash)
     end
     step.step = blueprint_step.position-1
     step.substep = blueprint_step.substep
     self.blueprint.initialize_step(step)
+    step.deployment = self
+    step
   end
 
   def finish!
@@ -168,7 +187,9 @@ class Deployment < BaseModel
       else
         begin
           self.blueprint.execute_step!(step_data(self.active_step))
+          self.write_log
         rescue StepException => e
+          self.write_log
           self.update_attributes( :status => 'failed',
                                  :failure_description => e.description)
           self.cloud.force_reset

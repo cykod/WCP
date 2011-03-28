@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CompanyController do
 
-  before { reset_and_mock_user }
+  before { mock_user }
 
   describe "view company page" do
     it "should be successful" do
@@ -16,7 +16,7 @@ describe CompanyController do
       post 'update',  :company => { :name => 'New Name' }
       @myself.company.reload
       @myself.company.name.should == 'New Name'
-      response.should redirect_to(company_url)
+      response.should redirect_to(company_config_url)
     end
   end
 

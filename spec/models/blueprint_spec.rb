@@ -1,18 +1,16 @@
-
 require 'spec_helper'
 
-describe DeploymentBlueprint do
+describe Blueprint do
 
   it "should be able to create and deploy a simple blue print" do
-    company = Company.create(:name => 'Testerama')
-    cloud = company.add_cloud(:name => "Test Cloud")
+    cloud = mock_cloud
 
+    blueprint = Blueprint.create(:name => "Fake Deployment")
+    blueprint.add_step("Test Deployment","Steps::Testing::DummyStep")
 
-    blueprint = DeploymentBlueprint.create(:name => "Fake Deployment",)
-    blueprint.add_step("Test Deployment","Simple::FakeInstanceStep")
+    input_deployment = Deployment.new(:blueprint => blueprint)
 
-    cloud.deploy(blueprint,{})
-    
+    output_deployment = cloud.deploy(input_deployment)
     
   end
 end

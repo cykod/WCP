@@ -4,16 +4,13 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(Rails)
 require 'rspec/rails'
 
-require 'rocking_chair'
-
-
 
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
-Rspec.configure do |config|
+RSpec.configure do |config|
   # == Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -25,11 +22,13 @@ Rspec.configure do |config|
 
 
   config.before(:suite) do
-    #RockingChair.enable
+  end
+
+  config.after(:each) do
+    Mongoid.master.collections.select { |c| c.name != 'system.indexes' }.each(&:drop)
   end
 
   config.before(:each) do
-    # RockingChair::Server.reset
   end
 
   # If you'd prefer not to run each of your examples within a transaction,
@@ -42,36 +41,19 @@ module RSpec
  module Core 
   class ExampleGroup
 
-    def self.reset_models(*tables)
-      callback = lambda do 
-        tables.each do |table|
-          table.to_s.classify.constantize.all.map(&:destroy)
-        end
-      end
-      before(:each,&callback)
-    end
-
-
-
     def mock_user(email='tester@webiva.com',options = {})
-      company = Company.create(:name => 'Super test company')
-      @myself = user = User.create({:email => email,:password=>'tester',:company => company}.merge(options))
-      controller.should_receive(:myself).at_least(1).and_return(user)
+      @company = Company.create(:name => 'Super test company')
+      @myself = user = User.create({:email => email,:password=>'tester',:company => @company}.merge(options))
+      controller.stub!(:myself).and_return(user)
+      @company.reload
+      controller.stub!(:current_company).and_return(@company)
     end
 
-    def reset_users
-      User.all.map(&:destroy)
-      Company.all.map(&:destroy)
+    def mock_cloud(name = 'Test Cloud', company_name = "Test Company")
+      @company = Company.create(:name => company_name) 
+      @cloud = @company.add_cloud(name)
     end
 
-    def reset_clouds
-      Cloud.all.map(&:destroy)
-    end
-
-    def reset_and_mock_user(email='tester@webiva.com',options={})
-      reset_users
-      mock_user(email,options)
-    end
   end
  end
 end

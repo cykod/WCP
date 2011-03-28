@@ -21,6 +21,10 @@ class Steps::Base
     end
  end
 
+ def log(msg)
+   self.deployment.log(msg)
+ end
+
  def self.blueprint_parameters
    []
  end

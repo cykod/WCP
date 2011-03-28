@@ -3,7 +3,7 @@ require 'spec_helper'
 describe AccountController do
   render_views
 
-  before { reset_and_mock_user }
+  before { mock_user }
 
   describe "GET 'index'" do
     it "should be successful" do

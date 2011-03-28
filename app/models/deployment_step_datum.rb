@@ -24,5 +24,6 @@ class DeploymentStepDatum
   def save_config
     self.update_config
     self.save
+    @config = nil
   end
 end
