@@ -145,3 +145,13 @@ li.line_item a { float:right; }
 li.line_item .step_finished { font-style:italic; }
 li.line_item .step_active { font-weight:bold; }
 li.line_item .step_finished { }
+
+
+.deployment-log {
+  padding:5px;
+  margin-top:20px;
+  border:1px solid #CCCCCC;
+}
+
+.deployment-log .log-at { font-weight:bold; padding-top:10px; }
+.deployment-log .log-item { padding-left:10px; }

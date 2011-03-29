@@ -1,7 +1,7 @@
 
 class Steps::Testing::DummyMultiSubStep < Steps::Base
 
-  step_info "Noop Step that doesn't actually do anything", :substeps => 2
+  step_info "(Z) Noop Step that doesn't actually do anything", :substeps => 2
 
   class Options < HashModel
 

@@ -37,22 +37,6 @@ class ChefClient
     end
   end
 
-  def run_chef_client(machine_list)
-    Net::SSH::Multi.start do |session|
-      machine_list.each do |server|
-        server.multi_ssh(session)
-      end
-
-      session.exec("sudo /var/lib/gems/1.8/bin/chef-client")
-      session.loop
-      puts "Executed Chef Client"
-    end
-  end
-
-  def exec_chef_client(ssh)
-    ssh.exec!("sudo /var/lib/gems/1.8/bin/chef-client")
-
-  end
 
   def find_role(name)
     begin

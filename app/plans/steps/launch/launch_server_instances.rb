@@ -13,7 +13,7 @@ class Steps::Launch::LaunchServerInstances < Steps::Base
 
 
   class Options < HashModel
-    attributes :machine_ids => [ ]
+    attributes :machine_ids => [ ], :activated_machines => {}, :sshed_machines => {}
   end
 
 
@@ -35,23 +35,11 @@ class Steps::Launch::LaunchServerInstances < Steps::Base
       machines = server_roles.map do |server_role_set|
         machine = self.deployment.add_machine(server_role_set,machine_blueprint)
         machine.launch!
+        log("Launching Machine #{machine.full_name} with roles [#{server_role_set.join(", ") }]")
         machine
       end
 
-      step.config.machine_ids = machines.map(&:id)
-    else
-      step.config.machine_ids.each do |machine_id|
-        machine = Machine.find(machine_id)
-        begin
-          machine.ssh do |ssh|
-            puts ssh.exec!('uptime')
-          end
-        rescue Net::SSH::HostKeyMismatch => e
-          puts "Remembering new key: #{e.fingerprint}"
-          e.remember_host!
-          retry
-        end
-      end
+      step.config.machine_ids = machines.map(&:id).map(&:to_s)
     end
   end
 
@@ -59,11 +47,34 @@ class Steps::Launch::LaunchServerInstances < Steps::Base
     if step.substep == 0
       step.config.machine_ids.inject(true) do |state,machine_id|
         machine = Machine.find(machine_id)
+        if(machine.active? && !step.config.activated_machines[machine_id]) 
+          log("Machine Activated: #{machine.full_name}")
+          step.config.activated_machines[machine_id] = true
+        end
         state = false if !machine.active?
         state
       end
     else
-      true
+      step.config.machine_ids.each do |machine_id|
+        machine = Machine.find(machine_id)
+        begin
+          machine.ssh do |ssh|
+            puts ssh.exec!('uptime')
+          end
+          if(machine.active? && !step.config.sshed_machines[machine.id.to_s]) 
+            log("SSH'd in successfully to: #{machine.full_name}")
+            step.config.sshed_machines[machine.id.to_s] = true
+          end
+        rescue Net::SSH::HostKeyMismatch => e
+          log "KeyMismatch Remembering new key: #{e.fingerprint}"
+          e.remember_host!
+          retry
+        rescue Exception => e
+          log("Exception SSHing to machine #{machine.name}: #{e.to_s} (Don't worry, this just takes a second)")
+          return false
+        end
+      end
+      return true
     end
   end
 

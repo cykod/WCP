@@ -25,19 +25,19 @@ class Steps::Maint::RedeployServers < Steps::Base
       client = ChefClient.new
 
       migrator.ssh do |ssh|
-        puts client.exec_chef_client(ssh).to_s
+        deployment.ssh_chef_client(ssh)
 
         cmd = " cd /home/webiva/current "
         cmd += " && RAILS_ENV=production sudo -u webiva rake cms:migrate_system_db "
         cmd += " && RAILS_ENV=production sudo -u webiva rake cms:migrate_domain_dbs "
         cmd += " && RAILS_ENV=production sudo -u webiva rake cms:migrate_domain_components "
 
-        puts ssh.exec!(cmd).to_s
+        deployment.ssh_log_exec(ssh,cmd)
       end
 
       machine_list = machines.select { |m| !m.migrator? }
 
-      client.run_chef_client(machine_list) 
+      deployment.run_chef_client(machine_list) 
 
       deployment.cloud.unforce_redeploy
     end

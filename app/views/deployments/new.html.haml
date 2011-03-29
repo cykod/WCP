@@ -5,11 +5,11 @@
   = f.inputs do
     = f.input :cloud_id, :as => :select, :collection => @clouds
     = f.input :blueprint_id, :as => :select, :collection => @blueprints, :input_html => { :onchange => '$("#deployment_form").submit();' }
-  - if @deployment.blueprint 
+  - if @deployment.blueprint  && @deployment.cloud
     = render :partial => 'deployment_parameters'
     = f.inputs do
       = f.input :affected_machines, :as => :check_boxes, :collection => @deployment.cloud.machine_options, :hint => "Existing servers this deployment should take over"
-  - if @deployment.blueprint
+  - if @deployment.blueprint && @deployment.cloud
     = f.buttons do
       = f.commit_button "Deploy"
 = link_to 'Back', deployments_path 

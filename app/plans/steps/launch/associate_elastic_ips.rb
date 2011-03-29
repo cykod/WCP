@@ -34,7 +34,8 @@ class Steps::Launch::AssociateElasticIps < Steps::Base
     # Associate with addresses
     machines.each_with_index do |machine,idx|
       company.ec2.associate_address(machine.instance_id,ips[idx])
-      step.config.modified_machines[machine.id] = ips[idx]
+      step.config.modified_machines[machine.id.to_s] = ips[idx]
+      log("Assigning ip address #{ips[idx]} to #{machine.full_name}")
     end
   end
 

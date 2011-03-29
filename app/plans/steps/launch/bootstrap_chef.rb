@@ -22,6 +22,7 @@ class Steps::Launch::BootstrapChef < Steps::Base
         e.remember_host!
         retry
       end
+      log("Chef bootstrapping Machine #{machine.full_name}")
     end
 
     server_list.each do |server|
@@ -40,7 +41,8 @@ cookbook_path "/tmp/chef-solo/cookbooks"
         f.puts(<<-EOF)
 {
   "chef": {
-    "server_url": "#{Server.external_server_url}"
+    "server_url": "#{Server.external_server_url}",
+    "validation_client_name": "#{Server.authorized_client_user}"
   },
   "run_list": [ "recipe[chef::bootstrap_client]" ]
 }
@@ -54,40 +56,36 @@ PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/v
         EOF
       end
 
-      sftp.upload!(Server.validation_pem_file,'validation.pem')
+      sftp.upload!(Server.authorized_client_pem_file,'validation.pem')
     end
 
-    session = Net::SSH::Multi.start 
-
-    server_list.each do |server|
-      server.multi_ssh(session)
-    end
-
-    # Boot strap, but then don't run chef-client automatically
-    cmd = 'sudo apt-get update'
-    cmd += ' && sudo apt-get --yes install ruby ruby1.8-dev libopenssl-ruby1.8 rdoc build-essential wget rubygems'
-    cmd += ' && sudo gem install chef --no-rdoc --no-ri'
-    
-    cmd += " && sudo /var/lib/gems/1.8/bin/chef-solo -c ~/chef/solo.rb -j ~/chef/chef.json -r http://s3.amazonaws.com/webiva/chef-bootstrap-webiva.tar.gz"
-    cmd += ' && sudo mv environment /etc/'
+   
 #    cmd += ' && echo "alias sudo=\'sudo env PATH=\\$PATH\'" >> ~/.bashrc'
-    cmd += ' && sudo mv validation.pem /etc/chef/'
-    cmd += ' && sudo /etc/init.d/chef-client stop'
-    cmd += ' && sudo /var/lib/gems/1.8/bin/chef-client'
-    cmd += ' && sudo rm /etc/chef/validation.pem'
-    session.exec(cmd)
-    session.loop
-    session.close 
+    # Boot strap, but then don't run chef-client automatically
+    cmd = <<-EOF
+    sudo apt-get update 
+    && sudo apt-get --yes install ruby ruby1.8-dev libopenssl-ruby1.8 rdoc build-essential wget rubygems \
+    && sudo gem install chef --no-rdoc --no-ri \
+    && sudo /var/lib/gems/1.8/bin/chef-solo -c ~/chef/solo.rb -j ~/chef/chef.json -r http://s3.amazonaws.com/webiva/chef-bootstrap-webiva.tar.gz \
+    && sudo mv environment /etc/ \
+    && sudo mv validation.pem /etc/chef/ \
+    && sudo /etc/init.d/chef-client stop \
+    && sudo /var/lib/gems/1.8/bin/chef-client \
+    && sudo rm /etc/chef/validation.pem 
+    EOF
 
+    log("Bootstrapping")
+
+    deployment.multi_ssh(server_list,cmd)
+    
+ 
+    log("Bootstrapping Complete - registering nodes")
     server_list.each do |server|
       server.state_data['chef_bootstrapped'] = true
       server.save
-
       server.save_chef_node_information
     end
-
-
-
+    log("Nodes Registered - all done!")
   end
 
   def finished?(step)

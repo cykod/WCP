@@ -18,10 +18,10 @@ class Deployment < BaseModel
   field :status, :default => 'created'
   field :failure_description 
 
-  field :noted, :type => Boolean, :default => nil
+  field :noted, :type => Boolean, :default => false
 
   has_many :machines
-  has_many :deployment_logs, :dependent => :desetroy
+  has_many :deployment_logs, :dependent => :destroy
   has_many :deployment_step_data, :dependent => :destroy
   has_many :deployment_monitors, :dependent => :destroy
 
@@ -59,6 +59,10 @@ class Deployment < BaseModel
     @log << msg
   end
 
+  def display_log
+    self.deployment_logs.desc(:created_at)
+  end
+
   def write_log
     if(@log && @log.length > 0) 
       log_msgs = self.deployment_logs.create(:messages => @log)
@@ -70,11 +74,50 @@ class Deployment < BaseModel
   end
 
 
+  def multi_ssh(servers,cmd)
+    session = Net::SSH::Multi.start 
+
+    servers.each do |server|
+      server.multi_ssh(session)
+    end
+
+    log_cnt = 0
+
+    session.exec(cmd) do |ch,stream,data|
+      log("[#{ch[:host]} : #{stream}] #{data}")
+      log_cnt += 1
+      write_log if(log_cnt % 10 == 0) 
+    end
+    write_log
+
+    session.loop
+    session.close 
+  end
+
+  def ssh_chef_client(ssh)
+      ssh_log_exec(ssh,"sudo /var/lib/gems/1.8/bin/chef-client")
+  end
+
+  def ssh_log_exec(ssh,cmd) 
+    log_cnt = 0
+    ssh.exec(cmd) do |ch,stream,data|
+      log("[#{ch[:host]} : #{stream}] #{data}")
+      log_cnt += 1
+      write_log if(log_cnt % 10 == 0) 
+    end
+    write_log
+  end
+
+  def run_chef_client(servers)
+    multi_ssh(servers,"sudo /var/lib/gems/1.8/bin/chef-client")
+  end
+
   def takeover_machines!(machine_ids)
     victims = self.cloud.cloud_machines(machine_ids) 
     victims.each do |v|
       v.update_attributes(:deployment_id => self.id)
     end
+    self.reload
   end
 
   def servers
@@ -158,7 +201,7 @@ class Deployment < BaseModel
     unless step
       step = self.deployment_step_data.build(:blueprint_identity_hash => identity_hash)
     end
-    step.step = blueprint_step.position-1
+    step.step = blueprint_step.position
     step.substep = blueprint_step.substep
     self.blueprint.initialize_step(step)
     step.deployment = self
@@ -178,7 +221,7 @@ class Deployment < BaseModel
   end
 
   def execute_step!(step_number)
-    self.completed_step = step_number -1
+    self.completed_step = step_number - 1
     self.active_step = step_number
     if self.save
       if self.finished?
@@ -186,7 +229,9 @@ class Deployment < BaseModel
         return false
       else
         begin
+          self.log("Executing Step: #{step_number}")
           self.blueprint.execute_step!(step_data(self.active_step))
+          self.log("Executed Step: #{step_number}")
           self.write_log
         rescue StepException => e
           self.write_log

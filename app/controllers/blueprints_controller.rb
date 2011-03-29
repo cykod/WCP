@@ -50,13 +50,13 @@ class BlueprintsController < ApplicationController
 
 
   def resort_steps
-    @blueprint = Blueprint.find(params[:id])
+    @blueprint = Blueprint.find(params[:blueprint_id])
 
     @steps = @blueprint.blueprint_steps
 
     (params['step_id']||[]).each_with_index do |step_id,position|
-       step = @steps.detect { |s| s.id == step_id} 
-       step.update_attributes(:position => position+1) if step
+       step = @steps.detect { |s| s.id.to_s == step_id} 
+       step.update_attributes(:position => position) if step
     end
 
     @blueprint.reload

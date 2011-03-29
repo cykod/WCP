@@ -37,7 +37,7 @@ class LaunchMonitor < Monitor
 
 
   def self.monitor_launches 
-    LaunchMonitor.where(:action => true).each do |monitor|
+    LaunchMonitor.where(:active => true).each do |monitor|
       monitor.monitor_cycle
     end
   end

@@ -126,8 +126,7 @@ class Cloud < BaseModel
   end
 
   def active_deployment_list(page=1)
-    deps = Deployment.where(:cloud_id => self.id, :noted => nil).all
-    deps.sort { |a,b| b.created_at <=> a.created_at }
+    deps = self.deployments.where(:noted => false).desc(:created_at)
   end
 
   def cleanup_deployments!

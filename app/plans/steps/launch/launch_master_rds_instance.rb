@@ -28,6 +28,7 @@ class Steps::Launch::LaunchMasterRdsInstance < Steps::Base
       if !cloud.master_db
         machine = self.deployment.add_machine([:master_db],machine_blueprint)
         machine.launch!
+        log "Launching new DB server from blueprint #{machine_blueprint.name}"
         step.config.machine_id = machine.id
       else
         step.config.machine_id = cloud.master_db.id
@@ -41,7 +42,10 @@ class Steps::Launch::LaunchMasterRdsInstance < Steps::Base
       true
     else
       machine = Machine.find(step.config.machine_id) 
-      machine.active?
+      if(machine.active?)
+        log "RDS Service Activated"
+        true
+      end
     end
   end
 

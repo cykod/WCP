@@ -46,6 +46,7 @@ class DeploymentMonitor < Monitor
         end
       end
     end
+    self.deployment.write_log
     self.reload
   end
 

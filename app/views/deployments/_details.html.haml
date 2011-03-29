@@ -1,0 +1,27 @@
+
+%ul#blueprint_steps
+  - @deployment.blueprint.steps.each_with_index do |step,index|
+    %li.line_item{:id => "#blueprint_step_#{step.id}"}
+      - if @deployment.active_step > index
+        %span.step_finished= "##{step.position} #{step.step_name} (#{step.substep})"
+      - elsif @deployment.active_step == index
+        %span.step_active= "##{step.position} #{step.step_name}  (#{step.substep})"
+      - else
+        %span.step_wiating= "##{step.position} #{step.step_name}  (#{step.substep})"
+  - if @deployment.finished?
+    %li.line_item
+      Deployment Complete
+   
+.deployment-log
+  - @deployment.display_log.each do |log|
+    .log-at= log.created_at.to_s(:short)
+    - log.messages.each do |message|
+      .log-item
+        = message
+
+= link_to 'Back', deployments_path
+
+- if @deployment.finished? && request.xhr?
+  :javascript
+    clearInterval(loadTimer);
+

@@ -1,6 +1,6 @@
 class Steps::Launch::DeployWebivaServers < Steps::Base
 
-  step_info "(S5) Deploy the webiva code base", :substeps => 2
+  step_info "(S6) Deploy the webiva code base", :substeps => 2
 
   class Options < HashModel
 
@@ -14,10 +14,11 @@ class Steps::Launch::DeployWebivaServers < Steps::Base
     if step.substep == 0
       cloud.force_redeploy
       machine_list.each do |machine|
+        log "Adding Webiva::Deploy recipe to #{machine.full_name}"
         client.add_to_run_list(machine,"recipe[webiva::deploy]")
       end
     else
-      client.run_chef_client(machine_list) 
+      deployment.run_chef_client(machine_list) 
       cloud.unforce_redeploy
     end
 

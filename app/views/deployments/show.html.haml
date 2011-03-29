@@ -5,15 +5,18 @@
 
 .clear{:style => 'clear:both;'} 
 
-%ul#blueprint_steps
-  - @deployment.blueprint.steps.each_with_index do |step,index|
-    %li.line_item{:id => "#blueprint_step_#{step.id}"}
-      - if @deployment.active_step > index
-        %span.step_finished= "##{step.position} #{step.step_name} (#{step.substep})"
-      - elsif @deployment.active_step == index
-        %span.step_active= "##{step.position} #{step.step_name}  (#{step.substep})"
-      - else
-        %span.step_wiating= "##{step.position} #{step.step_name}  (#{step.substep})"
-   
+#deployment-details
+  =render :partial => 'details'
 
-= link_to 'Back', deployments_path
+
+- if !@deployment.finished?
+  :javascript
+    var loadTimer = null;
+    $(function() {
+      loadTimer = setInterval(function() {
+        $("#deployment-details").load("#{deployment_url(@deployment)}",
+            function(response,status) {
+              if(status == 'error') clearInterval(loadTimer);
+            });
+      },4000);
+    });

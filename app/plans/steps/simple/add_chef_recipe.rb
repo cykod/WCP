@@ -31,9 +31,7 @@ class Steps::Simple::AddChefRecipe < Steps::Base
         client.add_to_run_list(machine,recipes)
       end
     elsif step.substep == 1 
-      if machine_list.length > 0
-        client.run_chef_client(machine_list)
-      end
+      deployment.run_chef_client(machine_list)
     end
   end
 

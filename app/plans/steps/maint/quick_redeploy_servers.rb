@@ -14,8 +14,8 @@ class Steps::Maint::QuickRedeployServers < Steps::Base
       machines = deployment.servers
       deployment.cloud.force_redeploy
 
-      client = ChefClient.new
-      client.run_chef_client(machines) 
+      log "Quick Redeploy"
+      deployment.run_chef_client(machines) 
 
       deployment.cloud.unforce_redeploy
     end

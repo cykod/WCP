@@ -1,6 +1,6 @@
 class Steps::Launch::ConfigureServers < Steps::Base
 
-  step_info "(S4) Configure: add webiva_app_server role and deploy with chef", :substeps => 2
+  step_info "(S5) Configure: add webiva_app_server role and deploy with chef", :substeps => 2
 
   class Options < HashModel
 
@@ -12,11 +12,12 @@ class Steps::Launch::ConfigureServers < Steps::Base
     client = ChefClient.new
     if step.substep == 0
       machine_list.each do |machine|
+        log "Adding webiva_app_server role to #{machine.full_name}"
         client.add_to_run_list(machine,"role[webiva_app_server]")
       end
     else
-      result = client.run_chef_client(machine_list) 
-      puts "####" + result.to_s
+      log "Running Check client"
+      deployment.run_chef_client(machine_list) 
     end
   end
 

@@ -23,7 +23,9 @@ class Steps::Launch::LaunchLoadBalancer < Steps::Base
       if cloud.load_balancer 
         # Let this use it's existing loadbalancer if we have one
         step.config.machine_id = cloud.load_balancer.id
+        log "Using existing load balancer"
       else
+        log "Launching a new load balancer"
         machine = self.deployment.add_machine([:balancer],machine_blueprint)
         machine.launch!
         step.config.machine_id = machine.id

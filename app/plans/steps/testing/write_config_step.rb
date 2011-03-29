@@ -1,6 +1,6 @@
 class Steps::Testing::WriteConfigStep < Steps::Base
 
-  step_info "Step that writes config", :substeps => 3
+  step_info "(Z) Step that writes config", :substeps => 3
 
   class Options < HashModel
     attributes :dummy_config => nil
@@ -13,7 +13,7 @@ class Steps::Testing::WriteConfigStep < Steps::Base
 
 
   def finished?(step)
-    true
+    step.config.dummy_config == "We're at substep: #{step.substep}"
   end
 
 end

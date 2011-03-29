@@ -25,28 +25,27 @@ class DeploymentsController < ApplicationController
   def show
     @deployment = Deployment.find(params[:id])
 
+    return render :partial => 'details' if request.xhr? 
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @deployment }
     end
   end
 
-  # GET /deployments/new
-  # GET /deployments/new.xml
   def new
     @deployment = Deployment.new
     @blueprints = Blueprint.select_options
     @clouds = current_company.clouds
   end
 
-  # GET /deployments/1/edit
   def edit
     @deployment = Deployment.find(params[:id])
   end
 
-  # POST /deployments
-  # POST /deployments.xml
   def create
+    params[:deployment].delete(:blueprint_id) if params[:deployment][:blueprint_id].blank?
+    params[:deployment].delete(:cloud_id) if params[:deployment][:cloud_id].blank?
+
     @deployment = Deployment.new(params[:deployment])
     @blueprints = Blueprint.select_options
     @clouds = current_company.clouds
